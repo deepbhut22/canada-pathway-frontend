@@ -32,7 +32,7 @@ export default function Header() {
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: isAuth ? '/profile' : '/login', label: 'My Profile' },
-    { path:  !isProfileComplete ? '/questionnaire' : '/profile', label: 'Find My Pathway' },
+    { path:  !isProfileComplete ? '/questionnaire' : '/report', label: 'Find My Pathway' },
     { path: isAuth ? '/report' : '/login', label: 'My Report' },
   ];
 
