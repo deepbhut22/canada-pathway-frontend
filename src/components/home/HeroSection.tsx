@@ -39,7 +39,8 @@ export default function HeroSection() {
             <div className="flex flex-wrap gap-4">
               <Button 
                 size="lg" 
-                className="bg-white text-indigo-800 hover:text-white hover:border hover:border-white"
+                // style={{ color: '#035AA7'}}
+                className="bg-white text-primary-900 hover:text-white hover:border hover:border-white"
                 onClick={() => navigate('/questionnaire')}
                 leftIcon={<Compass className="h-5 w-5" />}
               >

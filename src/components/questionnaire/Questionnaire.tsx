@@ -18,7 +18,6 @@ import api from '../../utils/axios';
 
 export default function Questionnaire() {
   const { step = 'basic' } = useParams<{ step?: string }>();
-  console.log("step:", step);
 
   const navigate = useNavigate();
   const [isValid, setIsValid] = useState(false);
@@ -40,7 +39,6 @@ export default function Questionnaire() {
       // const {}      // await handleSave();
 
       const nextStep = getNextStep(currentStep);
-      console.log("Current step:", currentStep, "Next step:", nextStep);
 
       if (nextStep) {
         navigate(`/questionnaire/${nextStep}`);

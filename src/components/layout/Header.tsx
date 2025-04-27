@@ -5,6 +5,7 @@ import Button from '../ui/Button';
 import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import Shimmer from '../ui/Shimmer';
+import { useUserStore } from '../../store/userStore';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -18,22 +19,22 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
-  const navigationItems = [
-    { path: '/', label: 'Home' },
-    { path: '/profile', label: 'My Profile' },
-    { path: '/questionnaire', label: 'Find My Pathway' },
-    { path: '/report', label: 'My Report' },
-  ];
 
   const isActive = (path: string) => location.pathname === path;
 
   const isAuth = useAuthStore((state) => state.isAuthenticated);
-
+  const isProfileComplete = useUserStore((state) => state.userProfile.isComplete);
   const isLoading = useAuthStore((state) => state.isLoading);
-  React.useEffect(() => {
+  React.useEffect(() => {    
     // console.log("loading",useAuthStore.getState().isLoading);
-    console.log(isAuth);
   },[isAuth]);
+
+  const navigationItems = [
+    { path: '/', label: 'Home' },
+    { path: isAuth ? '/profile' : '/login', label: 'My Profile' },
+    { path:  !isProfileComplete ? '/questionnaire' : '/profile', label: 'Find My Pathway' },
+    { path: isAuth ? '/report' : '/login', label: 'My Report' },
+  ];
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
@@ -10,10 +10,32 @@ import { navigationSteps } from '../utils/helpers';
 export default function Profile() {
   const navigate = useNavigate();
   const { userProfile, resetUserProfile } = useUserStore();
-  const { basicInfo, isComplete } = userProfile;
-  
+  const { basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo, isComplete } = userProfile;
+
   const hasStartedProfile = !!basicInfo.fullName;
-  
+
+  // Determine which steps are completed
+  const completedSteps = useMemo(() => {
+    return {
+      basic: !!basicInfo.fullName && !!basicInfo.email && !!basicInfo.citizenCountry && !!basicInfo.residenceCountry,
+      education: educationInfo && educationInfo.educationList && educationInfo.educationList.length > 0,
+      work: workInfo && workInfo.workExperienceList && workInfo.workExperienceList.length > 0,
+      language: languageInfo && (languageInfo.primaryLanguage || (languageInfo.hasSecondLanguage && languageInfo.secondLanguageTest.type)),
+      spouse: spouseInfo.maritalStatus && spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada),
+      dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
+      connection: connectionInfo && connectionInfo.connectionList && connectionInfo.connectionList.length > 0,
+      joboffer: jobOfferInfo && jobOfferInfo.jobOffer && jobOfferInfo.jobOffer.jobTitle,
+      // Add more steps as needed
+    };
+  }, [basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo]);
+
+  // Calculate progress percentage
+  const progressPercentage = useMemo(() => {
+    const completed = Object.values(completedSteps).filter(Boolean).length;
+    const total = Object.keys(completedSteps).length;
+    return Math.round((completed / total) * 100);
+  }, [completedSteps]);
+
   const renderProfileStatus = () => {
     if (isComplete) {
       return (
@@ -23,32 +45,40 @@ export default function Profile() {
         </div>
       );
     }
-    
+
     if (hasStartedProfile) {
       return (
         <div className="text-primary-600">
-          <span className="font-medium">Profile In Progress</span>
+          <span className="font-medium">Profile In Progress ({progressPercentage}%)</span>
         </div>
       );
     }
-    
+
     return (
       <div className="text-secondary-500">
         <span className="font-medium">Profile Not Started</span>
       </div>
     );
   };
-  
+
   const handleStartOrContinue = () => {
     if (hasStartedProfile) {
-      // Navigate to the last incomplete step
-      navigate('/questionnaire');
+      // Find the first incomplete step
+      const firstIncompleteStep = navigationSteps.find(step =>
+        !completedSteps[step.id]
+      );
+
+      if (firstIncompleteStep) {
+        navigate(`/questionnaire/${firstIncompleteStep.id}`);
+      } else {
+        navigate('/questionnaire');
+      }
     } else {
       // Start from the beginning
       navigate('/questionnaire/basic');
     }
   };
-  
+
   return (
     <Layout>
       <div className="py-12 bg-white border-b border-secondary-200">
@@ -70,7 +100,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {hasStartedProfile ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -120,26 +150,24 @@ export default function Profile() {
                         Profile Completion
                       </h3>
                       <div className="mt-5 space-y-4">
-                        {navigationSteps.map((step, index) => {
-                          const isCompleted = index === 0; // For demo purposes, only mark first step as completed
-                          
+                        {navigationSteps.map((step) => {
+                          const isStepCompleted = completedSteps[step.id];
+
                           return (
                             <div key={step.id} className="flex items-center">
-                              <div className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full mr-3 ${
-                                isCompleted
+                              <div className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full mr-3 ${isStepCompleted
                                   ? 'bg-primary-100 text-primary-600'
                                   : 'bg-secondary-100 text-secondary-500'
-                              }`}>
-                                {isCompleted ? (
+                                }`}>
+                                {isStepCompleted ? (
                                   <CheckCircle2 className="h-5 w-5" />
                                 ) : (
-                                  <span className="text-xs font-medium">{index + 1}</span>
+                                  <span className="text-xs font-medium">{navigationSteps.findIndex(s => s.id === step.id) + 1}</span>
                                 )}
                               </div>
                               <div className="flex-grow">
-                                <div className={`text-sm font-medium ${
-                                  isCompleted ? 'text-secondary-900' : 'text-secondary-500'
-                                }`}>
+                                <div className={`text-sm font-medium ${isStepCompleted ? 'text-secondary-900' : 'text-secondary-500'
+                                  }`}>
                                   {step.title}
                                 </div>
                               </div>
@@ -148,7 +176,7 @@ export default function Profile() {
                                 size="sm"
                                 onClick={() => navigate(`/questionnaire/${step.id}`)}
                               >
-                                {isCompleted ? 'Edit' : 'Complete'}
+                                {isStepCompleted ? 'Edit' : 'Complete'}
                               </Button>
                             </div>
                           );
@@ -158,8 +186,8 @@ export default function Profile() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end space-x-3">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => {
                       if (confirm('Are you sure you want to reset your profile? This cannot be undone.')) {
                         resetUserProfile();
@@ -168,7 +196,7 @@ export default function Profile() {
                   >
                     Reset Profile
                   </Button>
-                  <Button 
+                  <Button
                     onClick={handleStartOrContinue}
                     leftIcon={<Edit className="h-4 w-4" />}
                   >
@@ -177,7 +205,7 @@ export default function Profile() {
                 </CardFooter>
               </Card>
             </div>
-            
+
             <div className="lg:col-span-1 space-y-6">
               <Card>
                 <CardHeader>
@@ -193,7 +221,7 @@ export default function Profile() {
                       <p className="text-secondary-600 mb-4">
                         You've completed all the required information for your profile.
                       </p>
-                      <Button 
+                      <Button
                         onClick={() => navigate('/report')}
                         leftIcon={<FileText className="h-4 w-4" />}
                       >
@@ -216,7 +244,7 @@ export default function Profile() {
                   )}
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Quick Links</CardTitle>
@@ -259,8 +287,8 @@ export default function Profile() {
             <p className="text-lg text-secondary-600 mb-8">
               Complete your profile to discover your personalized Canadian immigration pathways. Our AI-powered system will analyze your information and provide tailored recommendations.
             </p>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               onClick={() => navigate('/questionnaire/basic')}
               leftIcon={<Edit className="h-5 w-5" />}
             >
