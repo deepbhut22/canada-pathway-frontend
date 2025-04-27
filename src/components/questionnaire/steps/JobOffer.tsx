@@ -29,17 +29,18 @@ export default function JobOffer({
   const { jobOfferInfo } = userProfile;
   
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [jobOffer, setJobOffer] = useState<JobOffer>({
-    jobTitle: '',
-    nocCode: '',
-    isPaid: true,
-    hoursPerWeek: null,
-    province: '',
-    isLMIA: false,
-    startDate: '',
-    hasEndDate: false,
-    endDate: ''
-  });
+  const jobOffer = jobOfferInfo.jobOffer;
+  // const [jobOffer, setJobOffer] = useState<JobOffer>({
+  //   jobTitle: '',
+  //   nocCode: '',
+  //   isPaid: true,
+  //   hoursPerWeek: null,
+  //   province: '',
+  //   isLMIA: false,
+  //   startDate: '',
+  //   hasEndDate: false,
+  //   endDate: ''
+  // });
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -102,15 +103,33 @@ export default function JobOffer({
     
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      setJobOffer(prev => ({
-        ...prev,
+      updateJobOfferInfo({
         [name]: checked,
-        endDate: name === 'hasEndDate' && !checked ? '' : prev.endDate
-      }));
+        jobOffer: jobOffer
+        // endDate: name === 'hasEndDate' && !checked ? '' : jobOffer.endDate
+      });
+      // setJobOffer(prev => ({
+      //   ...prev,
+      //   [name]: checked,
+      //   endDate: name === 'hasEndDate' && !checked ? '' : prev.endDate
+      // }));
     } else if (type === 'number') {
-      setJobOffer(prev => ({ ...prev, [name]: value ? parseInt(value) : null }));
+      updateJobOfferInfo({
+        ...jobOfferInfo,
+        jobOffer: {
+          ...jobOffer,
+          [name]: value ? parseInt(value) : null
+        }
+      })
+      // setJobOffer(prev => ({ ...prev, [name]: value ? parseInt(value) : null }));
     } else {
-      setJobOffer(prev => ({ ...prev, [name]: value }));
+      updateJobOfferInfo({
+        ...jobOfferInfo,
+        jobOffer: {
+          ...jobOffer,
+          [name]: value
+        }
+      })
     }
 
     // Update the job offer in the store

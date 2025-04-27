@@ -38,6 +38,7 @@ const useAuthStore = create<AuthState & {
             user: response.data.user,
             isAuthenticated: true,
           });
+          
           useUserStore.getState().resetUserProfile();
           useUserStore.setState({ userProfile: response.data.userProfile });
           set({ isLoading: false });

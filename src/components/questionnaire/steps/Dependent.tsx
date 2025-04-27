@@ -92,7 +92,7 @@ export default function Dependent({
       (newDependent.residenceCountry !== 'canada' || newDependent.residencyStatus)
     ) {
       addDependent({
-        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
+        id: crypto.randomUUID(),
         relationship: newDependent.relationship!,
         age: newDependent.age,
         citizenCountry: newDependent.citizenCountry,
@@ -104,7 +104,8 @@ export default function Dependent({
         age: 0,
         citizenCountry: '',
         residenceCountry: '',
-        residencyStatus: ''
+        residencyStatus: '',
+        relationship: ''
       });
     }
   };
@@ -238,6 +239,9 @@ export default function Dependent({
                   >
                     <div className="flex justify-between items-start">
                       <div>
+                        <p className="text-sm text-secondary-600">
+                          Age: {dependent.age}
+                        </p>
                         <p className="text-sm text-secondary-600">
                           Age: {dependent.age}
                         </p>
