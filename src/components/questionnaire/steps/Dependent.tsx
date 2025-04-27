@@ -92,7 +92,7 @@ export default function Dependent({
       (newDependent.residenceCountry !== 'canada' || newDependent.residencyStatus)
     ) {
       addDependent({
-        id: crypto.randomUUID(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         relationship: newDependent.relationship!,
         age: newDependent.age,
         citizenCountry: newDependent.citizenCountry,

@@ -112,7 +112,7 @@ export default function Education({
   const handleAddEducation = () => {
     if (newEducation.type && newEducation.country && newEducation.startDate) {
       addEducation({
-        id: crypto.randomUUID(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         type: newEducation.type as Education['type'],
         country: newEducation.country,
         province: newEducation.province,

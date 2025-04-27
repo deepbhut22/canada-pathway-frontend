@@ -14,6 +14,7 @@ import Connection from '../../components/questionnaire/steps/Connection';
 import Work from './steps/Work';
 import JobOffer from './steps/JobOffer';
 import api from '../../utils/axios';
+// import { useAuthStore } from '../../store/authStore';
 
 export default function Questionnaire() {
   const { step = 'basic' } = useParams<{ step?: string }>();
@@ -36,7 +37,7 @@ export default function Questionnaire() {
 
     try {
       // If you want to save the data before navigation, uncomment this
-      // await handleSave();
+      // const {}      // await handleSave();
 
       const nextStep = getNextStep(currentStep);
       console.log("Current step:", currentStep, "Next step:", nextStep);

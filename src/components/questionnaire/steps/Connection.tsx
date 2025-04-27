@@ -100,7 +100,7 @@ export default function Connection({
       newConnection.residencyStartDate
     ) {
       addConnection({
-        id: crypto.randomUUID(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         relationship: newConnection.relationship as Connection['relationship'],
         // dateOfBirth: newConnection.dateOfBirth,
         residencyStatus: newConnection.residencyStatus as Connection['residencyStatus'],

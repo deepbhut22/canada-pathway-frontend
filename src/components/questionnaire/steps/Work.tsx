@@ -113,7 +113,7 @@ export default function Work({
       (newWork.isCurrentJob || newWork.endDate)
     ) {
       addWorkExperience({
-        id: crypto.randomUUID(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         jobTitle: newWork.jobTitle,
         isPaid: newWork.isPaid || false,
         isSelfEmployed: newWork.isSelfEmployed || false,
