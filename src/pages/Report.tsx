@@ -1,27 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { FileText, Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight } from 'lucide-react';
+import { FileText, Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2 } from 'lucide-react';
+import useAuthStore from '../store/authStore';
+import api from '../utils/axios';
+import { useExpressEntryStore } from '../store/reports';
+import { usePNPStore } from '../store/reports';
+
+import { useReportData } from '../hooks/useReportData';
+import LoadingSpinner from '../components/ui/LoadinSpinner';
+
 
 export default function Report() {
   const navigate = useNavigate();
   const { userProfile } = useUserStore();
   const { isComplete, basicInfo } = userProfile;
-  
-  // For demo purposes, we'll show a placeholder report
-  // In a real app, this would be generated based on the user's profile data
 
-  if (!isComplete && !basicInfo.fullName) {
-    // Redirect to profile creation if profile is not complete
-    React.useEffect(() => {
+  const [eligiblePrograms, setEligiblePrograms] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    const pnpReport = usePNPStore.getState().report;
+    if (pnpReport?.pnpAssessment) {
+      setEligiblePrograms(pnpReport.pnpAssessment.filter((program) => program.status === 'Eligible'));
+    }
+    console.log(eligiblePrograms);
+  }, []);
+
+  // const isLoading = useExpressEntryStore((state) => state.isLoading);  
+  const profile = useExpressEntryStore((state) => state.profile);
+
+  // Use the useReportData hook to handle fetching both Express Entry and PNP data
+  const { isLoading } = useReportData();
+  
+  React.useEffect(() => {
+    if (!isComplete || !basicInfo.fullName) {
       navigate('/profile');
-    }, []);
+    }
+  }, [isComplete, basicInfo.fullName, navigate]);
     
-    return null;
-  }
+
+
+  // const generateExpressEntryReport = async () => {
+  //   const reponse = await api.get(`/report/express-entry/${useAuthStore.getState().user?._id}`);
+  //   useExpressEntryStore.getState().updateProfile(reponse.data);
+
+  //   console.log(useExpressEntryStore.getState().profile);
+  // }
+
+  // const generateReport = async () => {
+  //   // console.log(useAuthStore.getState().user?._id);
+  //   generateExpressEntryReport();
+  // }
 
   return (
     <Layout>
@@ -49,6 +81,12 @@ export default function Report() {
               >
                 Update Profile
               </Button>
+              <Button
+                leftIcon={<Edit className="h-4 w-4" />}
+                // onClick={generateReport}
+              >
+                Generate Report
+              </Button>
             </div>
           </div>
         </div>
@@ -56,7 +94,7 @@ export default function Report() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
+          {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div> : <div className="lg:col-span-2 space-y-8">
             <Card>
               <CardHeader className="bg-primary-50">
                 <div className="flex justify-between items-center">
@@ -74,82 +112,183 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary-600">467</div>
+                      <div className="text-3xl font-bold text-primary-600">{profile?.crsScore}</div>
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
                   
                   <div className="border-t border-secondary-200 pt-4">
-                    <h4 className="font-medium text-secondary-900 mb-3">Score Breakdown</h4>
+                    <h4 className="font-medium text-secondary-900 mb-3 underline">Score Breakdown</h4>
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-600">Core/Human Capital Factors</span>
-                        <span className="text-sm font-medium">258 / 460</span>
+                      <div className="flex justify-between items-center flex-wrap">
+                        <div>
+                          <h4 className="text-sm font-medium">Core/Human Capital Factors : </h4>
+                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.coreHumanCapital.reason}</p>
+                        </div>
+                        <span className="text-sm font-medium">{profile?.scoreBreakdown.coreHumanCapital.score} / {profile?.scoreBreakdown.coreHumanCapital.maximum}</span>
+                      </div>
+                      <div className="flex justify-between items-center flex-wrap">
+                        <div>
+                          <h4 className="text-sm font-medium">Spouse Factors : </h4>
+                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.spouseFactors.reason}</p>
+                        </div>
+                        <span className="text-sm font-medium">{profile?.scoreBreakdown.spouseFactors.score} / {profile?.scoreBreakdown.spouseFactors.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-600">Spouse Factors</span>
-                        <span className="text-sm font-medium">0 / 40</span>
+                        <div>
+                          <h4 className="text-sm font-medium">Skill Transferability : </h4>
+                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.skillTransferability.reason}</p>
+                        </div>
+                        <span className="text-sm font-medium">{profile?.scoreBreakdown.skillTransferability.score} / {profile?.scoreBreakdown.skillTransferability.maximum}</span>
+                        
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-600">Skill Transferability</span>
-                        <span className="text-sm font-medium">89 / 100</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-secondary-600">Additional Points</span>
-                        <span className="text-sm font-medium">120 / 600</span>
+                        <div>
+                          <h4 className="text-sm font-medium">Additional Points : </h4>
+                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.additionalPoints.reason}</p>
+                        </div>
+                        <span className="text-sm font-medium">{profile?.scoreBreakdown.additionalPoints.score} / {profile?.scoreBreakdown.additionalPoints.maximum}</span>
+                        
                       </div>
                     </div>
                   </div>
                   
                   <div className="border-t border-secondary-200 pt-4">
-                    <h4 className="font-medium text-secondary-900 mb-2">Eligibility Status</h4>
+                    <h4 className="font-medium text-secondary-900 mb-2 underline">Eligibility Status</h4>
                     <div className="flex items-start mt-2">
                       <div className="flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        {useExpressEntryStore.getState().profile?.eligibilityStatus[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          Federal Skilled Worker Program (FSWP)
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[0].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          You meet all minimum requirements for the Federal Skilled Worker Program.
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[0].details}
                         </p>
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        {useExpressEntryStore.getState().profile?.eligibilityStatus[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          Canadian Experience Class (CEC)
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[1].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          You qualify for the Canadian Experience Class based on your Canadian work experience.
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[1].details}
                         </p>
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                        {useExpressEntryStore.getState().profile?.eligibilityStatus[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          Federal Skilled Trades Program (FSTP)
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[2].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          You do not currently meet the requirements for the Federal Skilled Trades Program.
+                          {useExpressEntryStore.getState().profile?.eligibilityStatus[2].details}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-secondary-200 pt-4">
+                    <h4 className="font-medium text-secondary-900 mb-2 underline">Category-Based Eligibility</h4>
+                    <div className="flex items-start mt-2">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].details}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].details}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].details}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].details}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].details}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start mt-4">
+                      <div className="flex-shrink-0">
+                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                      </div>
+                      <div className="ml-3">
+                        <h5 className="text-sm font-medium text-secondary-900">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].program}
+                        </h5>
+                        <p className="text-sm text-secondary-600">
+                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].details}
                         </p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="border-t border-secondary-200 pt-4">
+                  {/* <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-3">Recent Draw Information</h4>
                     <p className="text-sm text-secondary-600 mb-2">
-                      Based on recent Express Entry draws, your score of <span className="font-medium">467</span> would have been:
+                      Based on recent Express Entry draws, your score of <span className="font-medium">{useExpressEntryStore.getState().profile?.crsScore}</span> would have been:
                     </p>
                     <div className="bg-green-50 border border-green-200 rounded-md p-3">
                       <div className="flex">
@@ -158,12 +297,12 @@ export default function Report() {
                         </div>
                         <div className="ml-3">
                           <p className="text-sm font-medium text-green-800">
-                            Above the minimum score in 3 of the last 5 Express Entry draws
+                            {useExpressEntryStore.getState().profile?.eligibilityStatus[2].details}
                           </p>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </CardContent>
               <CardFooter className="bg-primary-50">
@@ -175,9 +314,9 @@ export default function Report() {
                     Learn more about Express Entry
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </a>
-                  <Button size="sm">
+                  {/* <Button size="sm">
                     Improve Your Score
-                  </Button>
+                  </Button> */}
                 </div>
               </CardFooter>
             </Card>
@@ -401,7 +540,7 @@ export default function Report() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div>}
           
           <div className="lg:col-span-1 space-y-6">
             <Card>

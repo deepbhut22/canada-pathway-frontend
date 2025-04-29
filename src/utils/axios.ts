@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 // Create instance
+// const api = axios.create({
+//     baseURL: 'http://3.98.13.227:5000/api',
+// });
+
 const api = axios.create({
-    baseURL: 'http://3.98.13.227:5000/api',
+    baseURL: 'http://localhost:5000/api',
 });
 
 // Add JWT to headers
