@@ -35,6 +35,7 @@ interface ExpressEntryProfile {
 interface ExpressEntryState {
   profile: ExpressEntryProfile | null;
   isLoading: boolean;
+  recommendations: ExpressEntryRecommendation[] | null;
   error: string | null;
   updateProfile: (profile: ExpressEntryProfile) => void;
   updateCategoryEligibility: (eligibility: CategoryEligibility[]) => void;
@@ -42,11 +43,19 @@ interface ExpressEntryState {
   updateScoreBreakdown: (breakdown: ExpressEntryProfile['scoreBreakdown']) => void;
   updateCRSScore: (score: number) => void;
   fetchReportData: (userId: string) => Promise<void>;
+  fetchRecommendations: (userId: string) => Promise<void>;
   reset: () => void;
+}
+
+interface ExpressEntryRecommendation {
+  question: string;
+  answer: string;
+  reason: string;
 }
 
 const useExpressEntryStore = create<ExpressEntryState>((set) => ({
   profile: null,
+  recommendations: null,
   isLoading: false,
   error: null,
 
@@ -85,6 +94,21 @@ const useExpressEntryStore = create<ExpressEntryState>((set) => ({
         set({ profile: response.data, isLoading: false });
       } else {
         set({ error: 'Failed to fetch report data', isLoading: false });
+      }
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
+    }
+  },
+
+  fetchRecommendations: async (userId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.get(`/report/recommendations/${userId}`);
+      console.log(response);
+      if (response.status === 200) {
+        set({ recommendations: response.data, isLoading: false });
+      } else {
+        set({ error: 'Failed to fetch recommendations', isLoading: false });
       }
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false });

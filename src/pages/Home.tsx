@@ -39,7 +39,8 @@ export default function Home() {
               <NewsSection
                 title="Latest Immigration News"
                 subtitle="Stay informed about the latest updates and changes in Canadian immigration"
-                news={generalNews.slice(0, 3)}
+                // news={generalNews.slice(0, 3)}
+                news={generalNews}
                 viewAllLink="/news"
               />
             </div>

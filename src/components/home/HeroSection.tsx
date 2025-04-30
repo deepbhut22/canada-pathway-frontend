@@ -1,96 +1,261 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import { Compass, MapPin, CheckCircle } from 'lucide-react';
-import Button from '../ui/Button';
 
-export default function HeroSection() {
-  const navigate = useNavigate();
+// Network Animation Component
+const NetworkAnimation = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current! as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId: number;
+
+    // Set canvas dimensions
+    const handleResize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    // Particles for network
+    const particles: any[] = [];
+    const particleCount = 600; // Increased particle count
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3, // Slower movement
+        vy: (Math.random() - 0.5) * 0.3, // Slower movement
+        radius: Math.random() * 1.5 + 0.2, // Smaller particles
+      });
+    }
+
+    // Animation loop
+    const animate = () => {
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Move particles
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap around edges instead of bouncing for smoother effect
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        // Draw particle
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx!.fillStyle = 'rgba(80, 120, 220, 0.4)'; // More subtle blue
+        ctx!.fill();
+
+        // Connect particles that are close
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) { // Increased connection distance
+            ctx!.beginPath();
+            ctx!.moveTo(p.x, p.y);
+            ctx!.lineTo(p2.x, p2.y);
+            ctx!.strokeStyle = `rgba(70, 130, 230, ${0.15 * (1 - distance / 120)})`; // More subtle lines
+            ctx!.lineWidth = 0.3; // Thinner lines
+            ctx!.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="w-full h-full" />;
+};
+
+// Text animation with typewriter effect
+const TypewriterText = ({ text }: { text: string }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 20);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text]);
+
+  return <span>{displayedText}<span className="animate-pulse">|</span></span>;
+};
+
+// Fade-in animation
+const FadeIn = ({ children, delay = 0, duration = 800 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
 
   return (
-    <div className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                Find Your Perfect <br />
-                Canadian Immigration Pathway
+    <div
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+        transition: `opacity ${duration}ms ease, transform ${duration}ms ease`,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+export default function HeroSection() {
+  return (
+    <div className="bg-gray-950 text-white min-h-screen flex items-center relative overflow-hidden">
+      {/* Background network effect for the entire section */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none w-full h-full">
+        <NetworkAnimation />
+      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Column - Main Text */}
+          <div className="space-y-8 w-max">
+            <FadeIn delay={30}>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-blue-50 w-[80%]">
+                <TypewriterText text="Find Your Perfect Canadian Immigration Pathway" />
               </h1>
-              <p className="text-lg md:text-xl text-primary-100 max-w-lg">
-                AI-powered guidance to navigate your journey to Canada with personalized recommendations and expert support.
+            </FadeIn>
+
+            <FadeIn delay={2000}>
+              <p className="text-lg text-blue-200 max-w-xl">
+                AI-powered guidance to navigate your journey to Canada with personalized
+                recommendations and expert support.
               </p>
-            </div>
-            
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 mr-2 text-primary-300 mt-0.5 flex-shrink-0" />
-                <p className="text-primary-100">Comprehensive assessment of over 80+ immigration programs</p>
+            </FadeIn>
+
+            <FadeIn delay={2300}>
+              <div className="flex items-start space-x-3 mb-2">
+                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-base font-medium mb-1">Comprehensive Assessment</h3>
+                  <p className="text-blue-200 text-xs">
+                    Evaluate eligibility across 80+ immigration programs
+                  </p>
+                </div>
               </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 mr-2 text-primary-300 mt-0.5 flex-shrink-0" />
-                <p className="text-primary-100">Real-time program matching based on your unique profile</p>
+              <div className="flex items-start space-x-3 mb-2">
+                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-base font-medium mb-1">Real-Time Matching</h3>
+                  <p className="text-blue-200 text-xs">
+                    Get matched with pathways based on your qualifications
+                  </p>
+                </div>
               </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-6 w-6 mr-2 text-primary-300 mt-0.5 flex-shrink-0" />
-                <p className="text-primary-100">Personalized CRS score calculation and program eligibility</p>
+              <div className="flex items-start space-x-3">
+                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-base font-medium mb-1">Personalized Scoring</h3>
+                  <p className="text-blue-200 text-xs">
+                    Calculate your CRS score across multiple programs
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            <div className="flex flex-wrap gap-4">
-              <Button 
-                size="lg" 
-                id="hero-button"
-                // style={{ color: '#035ca9'}}
-                className="bg-white text-primary-900 hover:text-white hover:border hover:border-white"
-                onClick={() => navigate('/questionnaire')}
-                leftIcon={<Compass className="h-5 w-5" />}
-              >
-                Find My Pathway
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-primary-700 hover:text-primary-700"
-                onClick={() => navigate('/profile')}
-                leftIcon={<MapPin className="h-5 w-5" />}
-              >
-                View My Profile
-              </Button>
-            </div>
+            </FadeIn>
+
+            <FadeIn delay={2750}>
+              <div className="flex flex-wrap gap-4">
+                {/* <button className="px-6 py-3 bg-transparent border border-blue-400 text-blue-100 rounded-md font-medium transition-all duration-300 hover:bg-blue-900 flex items-center"> */}
+                  <button className="px-6 py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center hover:border hover:border-secondary-950">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  View My Profile
+                </button>
+                <button className="px-6 py-3 bg-white text-gray-950 rounded-md font-bold transition-all duration-300 hover:bg-secondary-950 hover:text-white flex items-center hover:border hover:border-white">
+                  <Compass className="h-5 w-5 mr-2" />
+                  Find My Pathway
+                </button>
+              </div>
+              
+            </FadeIn>
           </div>
-          
-          <div className="hidden lg:block relative h-96">
-            <div className="absolute inset-0 bg-primary-900 bg-opacity-100 rounded-lg overflow-hidden ">
-              <img 
-                src="https://images.pexels.com/photos/756790/pexels-photo-756790.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                alt="Canada Landscape" 
-                // className="w-full h-full object-cover mix-blend-overlay opacity-100"
-                className="w-full h-full object-cover opacity-80"
-              />
-            </div>
-            <div className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center">
-              <div className="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg max-w-md">
-                <h2 className="text-primary-700 text-xl font-semibold mb-3">Trusted by thousands of immigrants</h2>
-                <p className="text-secondary-700 mb-4">
-                  Join over 10,000 users who have successfully navigated their Canadian immigration journey with our guidance.
-                </p>
-                <div className="flex justify-center space-x-4">
-                  <div className="text-center">
-                    <div className="text-primary-600 font-bold text-2xl">97%</div>
-                    <div className="text-xs text-secondary-500">Success Rate</div>
+
+          {/* Right Column - Empty to maintain layout, network is now background */}
+          <div className="hidden lg:block h-96">
+            {/* Content removed as the animation is now in the background */}
+          </div>
+        </div>
+
+        {/* Features Section - Below Main Text */}
+        <div className="">
+          {/* <FadeIn delay={3000}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-base font-medium mb-1">Comprehensive Assessment</h3>
+                    <p className="text-blue-200 text-xs">
+                      Evaluate eligibility across 80+ immigration programs
+                    </p>
                   </div>
-                  <div className="text-center">
-                    <div className="text-primary-600 font-bold text-2xl">10k+</div>
-                    <div className="text-xs text-secondary-500">Active Users</div>
+                </div>
+              </div>
+
+              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-base font-medium mb-1">Real-Time Matching</h3>
+                    <p className="text-blue-200 text-xs">
+                      Get matched with pathways based on your qualifications
+                    </p>
                   </div>
-                  <div className="text-center">
-                    <div className="text-primary-600 font-bold text-2xl">4.9</div>
-                    <div className="text-xs text-secondary-500">User Rating</div>
+                </div>
+              </div>
+
+              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-base font-medium mb-1">Personalized Scoring</h3>
+                    <p className="text-blue-200 text-xs">
+                      Calculate your CRS score across multiple programs
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </FadeIn> */}
+
+          <FadeIn delay={2950}>
+            <div className="mt-10 text-center text-blue-300 text-xs">
+              Join over 10,000+ users who have successfully found their pathway to Canada
+            </div>
+          </FadeIn>
         </div>
       </div>
     </div>

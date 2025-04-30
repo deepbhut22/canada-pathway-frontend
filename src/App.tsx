@@ -8,11 +8,14 @@ import Report from './pages/Report';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import useAuthStore from './store/authStore';
+import AllNewsPage from './pages/AllNews';
+import { getGeneralNews, getProvincialNews } from './data/dummyNews';
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
   const isAuth = useAuthStore((state) => state.isAuthenticated);
-
+  const generalNews = getGeneralNews();
+  const provincialNews = getProvincialNews();
   useEffect(() => {
     initializeAuth();
   }, [isAuth]);
@@ -24,6 +27,12 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/news"
+          element={
+              <AllNewsPage allNews={[...generalNews, ...provincialNews]} />
+          }
+        />
 
         {/* Protected routes */}
         <Route

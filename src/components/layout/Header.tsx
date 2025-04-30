@@ -34,6 +34,7 @@ export default function Header() {
     { path: isAuth ? '/profile' : '/login', label: 'My Profile' },
     { path:  !isProfileComplete ? '/questionnaire' : '/report', label: 'Find My Pathway' },
     { path: isAuth ? '/report' : '/login', label: 'My Report' },
+    { path: '/news', label: 'News' },
   ];
 
   return (
@@ -47,9 +48,9 @@ export default function Header() {
             </Link>
             
             <nav className="hidden md:ml-10 md:flex md:space-x-8">
-              {navigationItems.map((item) => (
+              {navigationItems.map((item, idx) => (
                 <Link
-                  key={item.path}
+                  key={item.path + " " + idx}
                   to={item.path}
                   className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
                     isActive(item.path)

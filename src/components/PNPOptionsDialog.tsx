@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog } from './ui/Dialog';
 import Button from './ui/Button';
 import { cn } from '../lib/utils';

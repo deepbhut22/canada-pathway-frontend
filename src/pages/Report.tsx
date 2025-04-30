@@ -7,13 +7,15 @@ import Button from '../components/ui/Button';
 import { FileText, Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import api from '../utils/axios';
-import { useExpressEntryStore } from '../store/reports';
+import { useExpressEntryStore, useRecommendationStore } from '../store/reports';
 import { usePNPStore } from '../store/reports';
 
 import { useReportData } from '../hooks/useReportData';
 import LoadingSpinner from '../components/ui/LoadinSpinner';
 import { PNPOptionsDialog } from '../components/PNPOptionsDialog';
 import { SuggestionsDialog } from '../components/SuggestionsDialog';
+import { alternativePrograms } from '../utils/dummyData';
+import { AlternativePathwaysDialog } from '../components/AlternativePathwaysDialog';
 
 interface PNPAssessment {
   id?: string;
@@ -39,26 +41,21 @@ export default function Report() {
 
   const [showPNPOptionsDialog, setShowPNPOptionsDialog] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showAlternativePathwaysDialog, setShowAlternativePathwaysDialog] = useState(false);  
   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
 
   // const pnpReport = usePNPStore.getState().report;
   const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
-  React.useEffect(() => {
-    console.log(usePNPStore.getState().isLoading);
-    console.log(eligiblePrograms);
-  }, []);
-
   // const isLoading = useExpressEntryStore((state) => state.isLoading);  
-  const profile = useExpressEntryStore((state) => state.profile);
-
+  const expressEntryProfile = useExpressEntryStore((state) => state.profile);
+  const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
   const { isLoading } = useReportData();
-  const { isLoading: isLoadingPNP } = usePNPStore();
   
   React.useEffect(() => {
     if (!isComplete || !basicInfo.fullName) {
       navigate('/profile');
-    }
+    }    
   }, [isComplete, basicInfo.fullName, navigate]);
     
 
@@ -77,6 +74,15 @@ export default function Report() {
       selected: selectedPNPOption === (assessment.id || `pnp-${index}`)
     }));
   };
+
+  async function generateReport(): Promise<void> {
+    try {
+      const response = await api.get(`/report/recommendation/${useAuthStore.getState().user?._id}`);
+      console.log(response);
+    } catch (error) {
+      console.error('Error generating report:', error);
+    }
+  }
 
   return (
     <Layout>
@@ -104,12 +110,12 @@ export default function Report() {
               >
                 Update Profile
               </Button>
-              {/* <Button
+              <Button
                 leftIcon={<Edit className="h-4 w-4" />}
-                // onClick={generateReport}
+                onClick={generateReport}
               >
                 Generate Report
-              </Button> */}
+              </Button>
             </div>
           </div>
         </div>
@@ -137,7 +143,7 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary-600">{profile?.crsScore}</div>
+                      <div className="text-3xl font-bold text-primary-600">{expressEntryProfile?.crsScore}</div>
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
@@ -148,31 +154,31 @@ export default function Report() {
                       <div className="flex justify-between items-center flex-wrap">
                         <div>
                           <h4 className="text-sm font-medium">Core/Human Capital Factors : </h4>
-                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.coreHumanCapital.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{profile?.scoreBreakdown.coreHumanCapital.score} / {profile?.scoreBreakdown.coreHumanCapital.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.score} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center flex-wrap">
                         <div>
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
-                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.spouseFactors.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{profile?.scoreBreakdown.spouseFactors.score} / {profile?.scoreBreakdown.spouseFactors.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors.score} / {expressEntryProfile?.scoreBreakdown.spouseFactors.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div>
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
-                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.skillTransferability.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{profile?.scoreBreakdown.skillTransferability.score} / {profile?.scoreBreakdown.skillTransferability.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability.score} / {expressEntryProfile?.scoreBreakdown.skillTransferability.maximum}</span>
                         
                       </div>
                       <div className="flex justify-between items-center">
                         <div>
                           <h4 className="text-sm font-medium">Additional Points : </h4>
-                          <p className="text-sm text-secondary-600">{profile?.scoreBreakdown.additionalPoints.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{profile?.scoreBreakdown.additionalPoints.score} / {profile?.scoreBreakdown.additionalPoints.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints.score} / {expressEntryProfile?.scoreBreakdown.additionalPoints.maximum}</span>
                         
                       </div>
                     </div>
@@ -182,42 +188,42 @@ export default function Report() {
                     <h4 className="font-medium text-secondary-900 mb-2 underline">Eligibility Status</h4>
                     <div className="flex items-start mt-2">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.eligibilityStatus[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[0].program}
+                          {expressEntryProfile?.eligibilityStatus[0].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[0].details}
+                          {expressEntryProfile?.eligibilityStatus[0].details}
                         </p>
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.eligibilityStatus[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[1].program}
+                          {expressEntryProfile?.eligibilityStatus[1].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[1].details}
+                          {expressEntryProfile?.eligibilityStatus[1].details}
                         </p>
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.eligibilityStatus[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[2].program}
+                          {expressEntryProfile?.eligibilityStatus[2].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.eligibilityStatus[2].details}
+                          {expressEntryProfile?.eligibilityStatus[2].details}
                         </p>
                       </div>
                     </div>
@@ -227,84 +233,84 @@ export default function Report() {
                     <h4 className="font-medium text-secondary-900 mb-2 underline">Category-Based Eligibility</h4>
                     <div className="flex items-start mt-2">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].program}
+                          {expressEntryProfile?.categoryBasedEligibility[0].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[0].details}
+                          {expressEntryProfile?.categoryBasedEligibility[0].details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].program}
+                          {expressEntryProfile?.categoryBasedEligibility[1].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[1].details}
+                          {expressEntryProfile?.categoryBasedEligibility[1].details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].program}
+                          {expressEntryProfile?.categoryBasedEligibility[2].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[2].details}
+                          {expressEntryProfile?.categoryBasedEligibility[2].details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[3].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].program}
+                          {expressEntryProfile?.categoryBasedEligibility[3].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[3].details}
+                          {expressEntryProfile?.categoryBasedEligibility[3].details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[4].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].program}
+                          {expressEntryProfile?.categoryBasedEligibility[4].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[4].details}
+                          {expressEntryProfile?.categoryBasedEligibility[4].details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[5].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].program}
+                          {expressEntryProfile?.categoryBasedEligibility[5].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {useExpressEntryStore.getState().profile?.categoryBasedEligibility[5].details}
+                          {expressEntryProfile?.categoryBasedEligibility[5].details}
                         </p>
                       </div>
                     </div>
@@ -333,7 +339,10 @@ export default function Report() {
               <CardFooter className="bg-primary-50">
                 <div className="w-full flex justify-between items-center">
                   <a 
-                    href="#" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp
+"
                     className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center"
                   >
                     Learn more about Express Entry
@@ -349,11 +358,11 @@ export default function Report() {
             {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div>
              : 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
+              <Card className='flex flex-col gap-2 justify-between'>
                 <CardHeader>
                   <CardTitle>Provincial Nominee Program</CardTitle>
                 </CardHeader>
-                <CardContent>
+                    <CardContent >
                   <div className="space-y-4">
                     {eligiblePrograms?.map((program, index) => (
                       <div key={`pnp-${index}`} className="flex items-start">
@@ -388,7 +397,7 @@ export default function Report() {
                       size="sm"
                       className="w-full"
                     >
-                      Show Suggestions
+                      Show PNP Suggestions
                     </Button>
                 </CardFooter>
               </Card>
@@ -399,21 +408,30 @@ export default function Report() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+
+
+                    {alternativePrograms.slice(0, 3).map((program, idx) => (
+                      <div 
+                        key={`alternative-${idx}`}
+                        className="flex items-start"
+                      >
+                        <div className="flex-shrink-0">
+                          {program.status === 'Active' ? <CheckCircle className="h-5 w-5 text-green-500" /> : program.status === 'Temporarily Paused' ? <AlertTriangle className="h-5 w-5 text-yellow-500" /> : <AlertTriangle className="h-5 w-5 text-red-500" />}
+                        </div>
+                        <div className="ml-3">
+                          <h5 className="text-sm font-medium text-secondary-900">
+                            {program.title}
+                          </h5>
+                          <p className="text-sm text-secondary-600">
+                            {program.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h5 className="text-sm font-medium text-secondary-900">
-                          Atlantic Immigration Program
-                        </h5>
-                        <p className="text-sm text-secondary-600">
-                          Requires job offer from designated employer in Atlantic provinces
-                        </p>
-                      </div>
-                    </div>
+
+                    ))}
+
                     
-                    <div className="flex items-start">
+                    {/* <div className="flex items-start">
                       <div className="flex-shrink-0">
                         <AlertTriangle className="h-5 w-5 text-yellow-500" />
                       </div>
@@ -439,12 +457,17 @@ export default function Report() {
                           Requires business concept and support from designated organization
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Explore Alternative Pathways
+                  <Button 
+                    onClick={() => setShowAlternativePathwaysDialog(true)}
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                  >
+                    Explore All Alternative Pathways
                   </Button>
                 </CardFooter>
               </Card>
@@ -455,19 +478,26 @@ export default function Report() {
                 <CardTitle>Next Steps and Recommendations</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
+                <div className="space-y-6"> 
                   <div>
                     <h4 className="font-medium text-secondary-900 mb-3">Improve Your CRS Score</h4>
                     <ul className="space-y-3">
-                      <li className="flex items-start">
-                        <div className="flex-shrink-0 h-5 w-5 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs mr-3 mt-0.5">
-                          1
-                        </div>
-                        <p className="text-secondary-600">
-                          <span className="font-medium text-secondary-900">Retake language test:</span> Improving your English scores could add up to 24 more points to your profile.
-                        </p>
-                      </li>
-                      <li className="flex items-start">
+
+                      {!isLoading && expressEntryRecommendations?.map((recommendation, index) => (
+                        <li 
+                          key={`recommendation-${index}`}
+                          className="flex items-start"
+                        >
+                          <div className="flex-shrink-0 h-5 w-5 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs mr-3 mt-0.5">
+                            {index + 1  }
+                          </div>
+                          <p className="text-secondary-600">
+                            <span className="font-medium text-secondary-900">{recommendation.question}</span> {recommendation.answer}
+                          </p>
+                        </li>
+                      ))}
+
+                      {/* <li className="flex items-start">
                         <div className="flex-shrink-0 h-5 w-5 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs mr-3 mt-0.5">
                           2
                         </div>
@@ -482,7 +512,7 @@ export default function Report() {
                         <p className="text-secondary-600">
                           <span className="font-medium text-secondary-900">Provincial nomination:</span> Actively pursue provincial nomination, which adds 600 points to your CRS score.
                         </p>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   
@@ -685,6 +715,12 @@ export default function Report() {
         isOpen={showSuggestions}
         onClose={() => setShowSuggestions(false)}
         options={usePNPStore.getState().report?.suggestions || []}
+        onOptionSelect={() => {}}
+      />
+      <AlternativePathwaysDialog
+        isOpen={showAlternativePathwaysDialog}
+        onClose={() => setShowAlternativePathwaysDialog(false)}
+        options={alternativePrograms}
         onOptionSelect={() => {}}
       />
     </Layout>
