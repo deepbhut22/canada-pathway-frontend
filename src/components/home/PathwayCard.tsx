@@ -31,6 +31,7 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
       </p>
       <Button
         onClick={handleFindPathway}
+        // id="hero-button"
         className="w-full justify-between"
         rightIcon={<ChevronRight className="h-5 w-5" />}
       >

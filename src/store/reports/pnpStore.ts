@@ -23,6 +23,7 @@ interface PNPState {
   report: PNPReport | null;
   isLoading: boolean;
   error: string | null;
+  eligiblePrograms: PNPAssessment[] | null;
   updateReport: (report: PNPReport) => void;
   updateAssessment: (assessment: PNPAssessment[]) => void;
   updateSuggestions: (suggestions: Suggestion[]) => void;
@@ -32,6 +33,7 @@ interface PNPState {
 
 const usePNPStore = create<PNPState>((set) => ({
   report: null,
+  eligiblePrograms: null,
   isLoading: false,
   error: null,
 
@@ -53,9 +55,13 @@ const usePNPStore = create<PNPState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.get(`/report/pnp/${userId}`);
-      console.log('PNP Response:', response);
+      // console.log('PNP Response:', response);
       if (response.status === 200) {
-        set({ report: response.data, isLoading: false });
+        set({ 
+          report: response.data, 
+          isLoading: false,
+          eligiblePrograms: response.data.pnpAssessment.filter((program: PNPAssessment) => program.status === 'Eligible' || program.status === 'Partially Eligible')
+        });
       } else {
         set({ error: 'Failed to fetch PNP report data', isLoading: false });
       }

@@ -31,6 +31,7 @@ const CtaSection: React.FC<CtaSectionProps> = ({ isAuthenticated, isProfileCompl
         </p>
         <Button 
           size="lg" 
+          id="hero-button"
           className="bg-white text-primary-700 hover:bg-primary-50"
           onClick={handleCallToAction}
         >

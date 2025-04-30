@@ -12,20 +12,39 @@ import { usePNPStore } from '../store/reports';
 
 import { useReportData } from '../hooks/useReportData';
 import LoadingSpinner from '../components/ui/LoadinSpinner';
+import { PNPOptionsDialog } from '../components/PNPOptionsDialog';
+import { SuggestionsDialog } from '../components/SuggestionsDialog';
 
+interface PNPAssessment {
+  id?: string;
+  province: string;
+  stream_name: string;
+  status: string;
+  reason: string;
+}
+
+interface PNPOption {
+  id: string;
+  province: string;
+  stream_name: string;
+  status: string;
+  reason: string;
+  selected: boolean;
+}
 
 export default function Report() {
   const navigate = useNavigate();
   const { userProfile } = useUserStore();
   const { isComplete, basicInfo } = userProfile;
 
-  const [eligiblePrograms, setEligiblePrograms] = useState<any[]>([]);
+  const [showPNPOptionsDialog, setShowPNPOptionsDialog] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
 
+  // const pnpReport = usePNPStore.getState().report;
+  const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
   React.useEffect(() => {
-    const pnpReport = usePNPStore.getState().report;
-    if (pnpReport?.pnpAssessment) {
-      setEligiblePrograms(pnpReport.pnpAssessment.filter((program) => program.status === 'Eligible'));
-    }
+    console.log(usePNPStore.getState().isLoading);
     console.log(eligiblePrograms);
   }, []);
 
@@ -34,6 +53,7 @@ export default function Report() {
 
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
   const { isLoading } = useReportData();
+  const { isLoading: isLoadingPNP } = usePNPStore();
   
   React.useEffect(() => {
     if (!isComplete || !basicInfo.fullName) {
@@ -42,18 +62,21 @@ export default function Report() {
   }, [isComplete, basicInfo.fullName, navigate]);
     
 
+  const handlePNPOptionSelect = (optionId: string) => {
+    setSelectedPNPOption(optionId);
+    // You can add additional logic here when an option is selected
+  };
 
-  // const generateExpressEntryReport = async () => {
-  //   const reponse = await api.get(`/report/express-entry/${useAuthStore.getState().user?._id}`);
-  //   useExpressEntryStore.getState().updateProfile(reponse.data);
-
-  //   console.log(useExpressEntryStore.getState().profile);
-  // }
-
-  // const generateReport = async () => {
-  //   // console.log(useAuthStore.getState().user?._id);
-  //   generateExpressEntryReport();
-  // }
+  const transformPNPOptions = (assessments: PNPAssessment[]): PNPOption[] => {
+    return assessments.map((assessment, index) => ({
+      id: assessment.id || `pnp-${index}`,
+      province: assessment.province,
+      stream_name: assessment.stream_name,
+      status: assessment.status,
+      reason: assessment.reason,
+      selected: selectedPNPOption === (assessment.id || `pnp-${index}`)
+    }));
+  };
 
   return (
     <Layout>
@@ -81,17 +104,19 @@ export default function Report() {
               >
                 Update Profile
               </Button>
-              <Button
+              {/* <Button
                 leftIcon={<Edit className="h-4 w-4" />}
                 // onClick={generateReport}
               >
                 Generate Report
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
       </div>
       
+      {isLoading ? <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50 h-[70vh] flex items-center justify-center"><LoadingSpinner  size='large' message='Loading Report...'/></div>
+       : 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div> : <div className="lg:col-span-2 space-y-8">
@@ -321,6 +346,8 @@ export default function Report() {
               </CardFooter>
             </Card>
             
+            {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div>
+             : 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -328,53 +355,41 @@ export default function Report() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                    {eligiblePrograms?.map((program, index) => (
+                      <div key={`pnp-${index}`} className="flex items-start">
+                        <div className="flex-shrink-0">
+                          {program.status === 'Eligible' ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        </div>
+                        <div className="ml-3">
+                          <h3>{program.province}</h3>
+                          <h5 className="text-sm font-medium text-secondary-900">
+                            {program.stream_name}
+                          </h5>
+                          <p className="text-sm text-secondary-600">
+                            {program.reason}
+                          </p>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h5 className="text-sm font-medium text-secondary-900">
-                          Ontario Immigrant Nominee Program
-                        </h5>
-                        <p className="text-sm text-secondary-600">
-                          Human Capital Priorities Stream
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      </div>
-                      <div className="ml-3">
-                        <h5 className="text-sm font-medium text-secondary-900">
-                          British Columbia PNP
-                        </h5>
-                        <p className="text-sm text-secondary-600">
-                          Tech Worker Stream
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                      </div>
-                      <div className="ml-3">
-                        <h5 className="text-sm font-medium text-secondary-900">
-                          Alberta Advantage Immigration Program
-                        </h5>
-                        <p className="text-sm text-secondary-600">
-                          Express Entry Stream (Your CRS score is below the typical cutoff)
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
+                <CardFooter className="flex flex-col gap-2">
+                  <Button
+                    onClick={() => setShowPNPOptionsDialog(true)}
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                  >
                     View All PNP Options
                   </Button>
+                    <Button
+                      onClick={() => setShowSuggestions(true)}
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                    >
+                      Show Suggestions
+                    </Button>
                 </CardFooter>
               </Card>
               
@@ -433,7 +448,7 @@ export default function Report() {
                   </Button>
                 </CardFooter>
               </Card>
-            </div>
+            </div>}
             
             <Card>
               <CardHeader>
@@ -659,7 +674,19 @@ export default function Report() {
             </Card>
           </div>
         </div>
-      </div>
+      </div>}
+      <PNPOptionsDialog
+        isOpen={showPNPOptionsDialog}
+        onClose={() => setShowPNPOptionsDialog(false)}
+        options={transformPNPOptions(usePNPStore.getState().report?.pnpAssessment || [])}
+        onOptionSelect={handlePNPOptionSelect}
+      />
+      <SuggestionsDialog
+        isOpen={showSuggestions}
+        onClose={() => setShowSuggestions(false)}
+        options={usePNPStore.getState().report?.suggestions || []}
+        onOptionSelect={() => {}}
+      />
     </Layout>
   );
 }
