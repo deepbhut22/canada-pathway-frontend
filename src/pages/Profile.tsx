@@ -81,7 +81,7 @@ export default function Profile() {
 
   return (
     <Layout>
-      <div className="py-12 bg-white border-b border-secondary-200">
+      <div className="py-12 bg-white mt-12 border-b border-secondary-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex-1 min-w-0">

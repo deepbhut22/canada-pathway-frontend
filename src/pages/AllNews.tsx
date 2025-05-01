@@ -79,7 +79,7 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
 
     return (
         <Layout>
-            <div className="bg-gray-50 min-h-screen">
+            <div className="bg-gray-50 min-h-screen mt-8">
                 {/* Hero Section */}
                 <div className="bg-secondary-900 text-white">
                     <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">

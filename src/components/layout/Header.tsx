@@ -1,16 +1,19 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MapPin, Menu, X } from 'lucide-react';
+import { LogOutIcon, Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import Shimmer from '../ui/Shimmer';
 import { useUserStore } from '../../store/userStore';
+import canadaLogoLight from '../../../assets/canada-logo-light.png';
+import canadaLogoDark from '../../../assets/canada-logo-dark.png';
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -19,44 +22,79 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
-
   const isActive = (path: string) => location.pathname === path;
 
   const isAuth = useAuthStore((state) => state.isAuthenticated);
   const isProfileComplete = useUserStore((state) => state.userProfile.isComplete);
   const isLoading = useAuthStore((state) => state.isLoading);
-  React.useEffect(() => {    
-    // console.log("loading",useAuthStore.getState().isLoading);
-  },[isAuth]);
+
+  const isHome = location.pathname === '/';
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    // Track scroll position to add styling when scrolled
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when screen size changes to prevent menu issues
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMenuOpen]);
 
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: isAuth ? '/profile' : '/login', label: 'My Profile' },
-    { path:  !isProfileComplete ? '/questionnaire' : '/report', label: 'Find My Pathway' },
-    { path: isAuth ? '/report' : '/login', label: 'My Report' },
+    { path: isAuth ? isProfileComplete ? '/report' : '/questionnaire' : '/login', label: 'My Report' },
     { path: '/news', label: 'News' },
   ];
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className={`fixed top-0 pt-2 pb-2 left-0 right-0 z-50 transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-md' : 'bg-transparent' : 'bg-white/90 backdrop-blur-sm shadow-md'}`}>
+      <div className="max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center" onClick={closeMenu}>
-              <MapPin className="h-8 w-8 text-primary-600" />
-              <span className="ml-2 text-xl font-bold text-secondary-900">CanadaPath</span>
+            <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
+              {isHome ? !isScrolled ? (
+                <img src={canadaLogoLight} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
+              ) : (
+                <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
+              ) :
+              <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
+              }
             </Link>
-            
-            <nav className="hidden md:ml-10 md:flex md:space-x-8">
+            <nav className="hidden md:ml-6 lg:ml-10 xl:ml-20 md:flex md:space-x-4 lg:space-x-8">
               {navigationItems.map((item, idx) => (
                 <Link
                   key={item.path + " " + idx}
                   to={item.path}
-                  className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
-                    isActive(item.path)
-                      ? 'border-primary-500 text-secondary-900'
-                      : 'border-transparent text-secondary-500 hover:border-secondary-300 hover:text-secondary-700'
-                  }`}
+                  className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 
+                    
+                    ${isHome ? isScrolled ?
+                      isActive(item.path)
+                        ? 'border-secondary-950 font-bold text-secondary-950'
+                        : 'border-transparent font-bold text-secondary-700 hover:border-secondary-950 hover:text-secondary-950'
+                      :
+                      isActive(item.path)
+                        ? 'border-white text-white'
+                        : 'border-transparent text-blue-200 hover:border-white hover:text-white'
+                      :
+                      isActive(item.path)
+                        ? 'border-black font-bold text-black'
+                        : 'border-transparent font-bold text-secondary-700 hover:border-secondary-900 hover:text-secondary-900'
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -64,36 +102,41 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className='flex items-center gap-4 hidden sm:flex'>
-          {isLoading !== true ? 
-            useAuthStore.getState().isAuthenticated ? 
-              <>
-                <span className='text-secondary-900 text-lg'>Welcome, 
-                  <span className="text-primary-600 text-2xl font-bold">
-                    {useAuthStore.getState().user!.firstName}
+          <div className='flex items-center gap-2 sm:gap-4 hidden sm:flex'>
+            {isLoading !== true ?
+              useAuthStore.getState().isAuthenticated ?
+                <>
+                  <span className={`text-sm md:text-base lg:text-lg ${isHome ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
+                    Welcome,
+                    <span className={`md:text-lg lg:text-2xl font-bold ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
+                      {useAuthStore.getState().user!.firstName}
+                    </span>
                   </span>
-                </span>
-                <Button onClick={() => useAuthStore.getState().logout()} size="sm" variant="outline"
-                  className=''  
-                >Logout</Button>
-              </>
+                  <Button
+                    onClick={() => useAuthStore.getState().logout()}
+                    size="sm"
+                    variant="outline"
+                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white' : 'text-secondary-950 border border-secondary-950'}`}
+                  >
+                    <LogOutIcon className={`w-4 h-4 ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-800'}`} />
+                  </Button>
+                </>
+                :
+                <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
+                  <Button onClick={() => navigate('/login')} size="sm" variant="outline" className={`${isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white'}`}>Sign In</Button>
+                  <Button onClick={() => navigate('/register')} size="sm" className={`${isScrolled ? 'text-white bg-secondary-950 border border-secondary-950' : 'text-black border border-secondary-950 bg-white'}`}>Sign Up</Button>
+                </div>
               :
-              <div className="hidden md:flex md:items-center md:space-x-4">
-              <Button onClick={() => navigate('/login')} size="sm" variant="outline">Sign In</Button>
-              <Button onClick={() => navigate('/register')} size="sm">Sign Up</Button>
-            </div>
-            :
-            <Shimmer className="hidden sm:block w-32 h-8 md:w-40 md:h-10 lg:w-60 lg:h-10" />
-
-          }
+              <Shimmer className="hidden sm:block w-24 h-8 md:w-32 md:h-9 lg:w-40 lg:h-10" />
+            }
           </div>
-          
-          
+
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              className={`inline-flex items-center justify-center p-2 rounded-md ${isHome ? isScrolled ? 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100' : 'text-white hover:text-blue-200' : 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100'} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary-950 border`}
+              aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
@@ -106,30 +149,87 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - with improved transitions and styling */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className={`md:hidden transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-md' : 'bg-transparent shadow-md backdrop-blur-sm' : 'bg-white/95 backdrop-blur-sm shadow-md'}`}>
           <div className="pt-2 pb-3 space-y-1">
             {navigationItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                    isActive(item.path)
+                      ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                      : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                    :
+                    isActive(item.path)
+                      ? 'bg-secondary-950 border-blue-400 text-white'
+                      : 'border-transparent text-blue-200 hover:bg-gray-800/40 hover:border-blue-300 hover:text-white'
+                    :
                   isActive(item.path)
-                    ? 'bg-primary-50 border-primary-500 text-primary-700'
-                    : 'border-transparent text-secondary-500 hover:bg-secondary-50 hover:border-secondary-300 hover:text-secondary-700'
-                }`}
+                    ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                    : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                  }`}
                 onClick={closeMenu}
               >
                 {item.label}
               </Link>
             ))}
           </div>
-          <div className="pt-4 pb-3 border-t border-secondary-200">
-            <div className="flex items-center px-4 space-x-2">
-              <Button size="sm" variant="outline" className="w-full">Sign In</Button>
-              <Button size="sm" className="w-full">Sign Up</Button>
-            </div>
+
+          {/* Mobile authentication buttons */}
+          <div className={`pt-3 pb-3 border-t ${isHome ? isScrolled ? 'bg-white/90' : 'bg-secondary-950 border-y border-secondary-50' : 'bg-white/95'}`}>
+            {isLoading !== true ?
+              useAuthStore.getState().isAuthenticated ?
+                <div className="flex items-center justify-between px-4">
+                  <span className={`text-base ${isHome ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
+                    Welcome,
+                    <span className={`ml-1 text-lg font-bold ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
+                      {useAuthStore.getState().user!.firstName}
+                    </span>
+                  </span>
+                  <Button
+                    onClick={() => {
+                      useAuthStore.getState().logout();
+                      closeMenu();
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className={`${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950 border border-secondary-950'}`}
+                  >
+                    <LogOutIcon className={`w-4 h-4 mr-1 ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-800 border border-secondary-800'}`} />
+                    Logout
+                  </Button>
+                </div>
+                :
+                <div className="flex items-center px-4 space-x-2">
+                  <Button
+                    onClick={() => {
+                      navigate('/login');
+                      closeMenu();
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className={`w-full ${isHome ? isScrolled ? 'bg-secondary-950 border border-white text-white hover:bg-white hover:text-secondary-950' : 'bg-transparent text-white border border-white hover:bg-white hover:text-secondary-950' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate('/register');
+                      closeMenu();
+                    }}
+                    size="sm"
+                    className={`w-full ${isHome ? isScrolled ? 'bg-white border border-secondary-950 text-black' : 'bg-white text-black border border-secondary-950 ' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              :
+              <div className="px-4">
+                <Shimmer className="w-full h-10" />
+              </div>
+            }
           </div>
         </div>
       )}

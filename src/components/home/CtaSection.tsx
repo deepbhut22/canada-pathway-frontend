@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
+import { ConstellationBackground } from '../layout/MainBackground';
 
 interface CtaSectionProps {
   isAuthenticated: boolean;
@@ -23,7 +24,10 @@ const CtaSection: React.FC<CtaSectionProps> = ({ isAuthenticated, isProfileCompl
   };
 
   return (
-    <div className="bg-primary-700 text-white py-16">
+    <div className="bg-secondary-900 w-1/2 mx-auto mb-10 rounded-lg text-white py-16">
+      <div className="absolute inset-0 opacity-30 pointer-events-none w-full h-min">
+        <ConstellationBackground />
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl font-bold mb-6">Begin Your Canadian Journey Today</h2>
         <p className="text-xl max-w-2xl mx-auto mb-8">

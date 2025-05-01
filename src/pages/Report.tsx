@@ -86,7 +86,7 @@ export default function Report() {
 
   return (
     <Layout>
-      <div className="py-8 bg-white border-b border-secondary-200">
+      <div className="py-8 bg-white mt-16 border-b border-secondary-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex-1 min-w-0">
@@ -151,22 +151,25 @@ export default function Report() {
                   <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-3 underline">Score Breakdown</h4>
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center flex-wrap">
-                        <div>
-                          <h4 className="text-sm font-medium">Core/Human Capital Factors : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.reason}</p>
+                        <div className="flex justify-between items-start flex-wrap gap-2">
+                          <div className="flex-[1_1_0%] min-w-0 pr-2">
+                            <h4 className="text-sm font-medium">Core/Human Capital Factors:</h4>
+                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.reason}</p>
+                          </div>
+                          <span className="text-sm font-medium whitespace-nowrap">
+                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital.score} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital.maximum}
+                          </span>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.score} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital.maximum}</span>
-                      </div>
+
                       <div className="flex justify-between items-center flex-wrap">
-                        <div>
+                        <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors.reason}</p>
                         </div>
                         <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors.score} / {expressEntryProfile?.scoreBreakdown.spouseFactors.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <div>
+                        <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability.reason}</p>
                         </div>
@@ -174,7 +177,7 @@ export default function Report() {
                         
                       </div>
                       <div className="flex justify-between items-center">
-                        <div>
+                        <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Additional Points : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints.reason}</p>
                         </div>

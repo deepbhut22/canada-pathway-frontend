@@ -1,93 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Compass, MapPin, CheckCircle } from 'lucide-react';
+import { CheckCircle, TextSelectionIcon } from 'lucide-react';
 
-// Network Animation Component
-const NetworkAnimation = () => {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current! as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId: number;
-
-    // Set canvas dimensions
-    const handleResize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    // Particles for network
-    const particles: any[] = [];
-    const particleCount = 600; // Increased particle count
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3, // Slower movement
-        vy: (Math.random() - 0.5) * 0.3, // Slower movement
-        radius: Math.random() * 1.5 + 0.2, // Smaller particles
-      });
-    }
-
-    // Animation loop
-    const animate = () => {
-      ctx!.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        // Move particles
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Wrap around edges instead of bouncing for smoother effect
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        // Draw particle
-        ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx!.fillStyle = 'rgba(80, 120, 220, 0.4)'; // More subtle blue
-        ctx!.fill();
-
-        // Connect particles that are close
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) { // Increased connection distance
-            ctx!.beginPath();
-            ctx!.moveTo(p.x, p.y);
-            ctx!.lineTo(p2.x, p2.y);
-            ctx!.strokeStyle = `rgba(70, 130, 230, ${0.15 * (1 - distance / 120)})`; // More subtle lines
-            ctx!.lineWidth = 0.3; // Thinner lines
-            ctx!.stroke();
-          }
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="w-full h-full" />;
-};
 
 // Text animation with typewriter effect
 const TypewriterText = ({ text }: { text: string }) => {
@@ -105,11 +18,11 @@ const TypewriterText = ({ text }: { text: string }) => {
     }
   }, [currentIndex, text]);
 
-  return <span>{displayedText}<span className="animate-pulse">|</span></span>;
+  return <span>{displayedText}<span className="animate-pulse"></span></span>;
 };
 
 // Fade-in animation
-const FadeIn = ({ children, delay = 0, duration = 800 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
+const FadeIn = ({ children, delay = 0, duration = 1000 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -133,131 +46,374 @@ const FadeIn = ({ children, delay = 0, duration = 800 }: { children: React.React
   );
 };
 
+
+
+const ConstellationBackground: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestIdRef = useRef<number>(0);
+  const mousePosition = useRef({ x: 0, y: 0 });
+  const mouseIsActive = useRef(false);
+  const lastMouseMoveTime = useRef(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Enhanced constellation points with variable brightness and size
+    const pointCount = 300;
+    const points: {
+      x: number;
+      y: number;
+      z: number;
+      baseSize: number;
+      size: number;
+      speed: number;
+      brightness: number;
+      pulseSpeed: number;
+      pulsePhase: number;
+      color: { h: number; s: number; l: number; };
+    }[] = [];
+
+    // Create diverse star types with different colors
+    for (let i = 0; i < pointCount; i++) {
+      // Different star colors (using HSL)
+      // Blue, white, yellow, orange stars with probability weights
+      let color;
+      const colorRand = Math.random();
+
+      if (colorRand < 0.4) {
+        // White to blue-white stars
+        color = { h: 210 + Math.random() * 30, s: 10 + Math.random() * 30, l: 80 + Math.random() * 20 };
+      } else if (colorRand < 0.7) {
+        // Pure white stars
+        color = { h: 0, s: 0, l: 90 + Math.random() * 10 };
+      } else if (colorRand < 0.9) {
+        // Yellow to yellow-white stars
+        color = { h: 40 + Math.random() * 20, s: 30 + Math.random() * 40, l: 80 + Math.random() * 15 };
+      } else {
+        // Orange to red stars (rare)
+        color = { h: 20 + Math.random() * 20, s: 70 + Math.random() * 30, l: 60 + Math.random() * 20 };
+      }
+
+      points.push({
+        x: (Math.random() - 0.5) * canvas.width * 1.5,
+        y: (Math.random() - 0.5) * canvas.height * 1.5,
+        z: Math.random() * 1000 + 500,
+        baseSize: Math.random() * 2.5 + 0.8,
+        size: 0, // Will be calculated in animation loop
+        speed: Math.random() * 1.2 + 0.3,
+        brightness: Math.random() * 0.4 + 0.6,
+        pulseSpeed: Math.random() * 0.03 + 0.01,
+        pulsePhase: Math.random() * Math.PI * 2,
+        color
+      });
+    }
+
+    // Track mouse movement with inactivity detection
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePosition.current = {
+        x: e.clientX,
+        y: e.clientY
+      };
+      mouseIsActive.current = true;
+      lastMouseMoveTime.current = Date.now();
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Animation constants with improved values
+    const PERSPECTIVE = 600;
+    const GLOBAL_RADIUS = Math.min(canvas.width, canvas.height) * 0.5;
+    const CONNECTION_DISTANCE = 150;
+    const MAX_CONNECTIONS = 3; // Limit connections per star for better performance
+
+    let time = 0;
+
+    const animate = () => {
+      // Create beautiful dark blue to black gradient background
+      const bgGradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, canvas.width * 0.7
+      );
+      bgGradient.addColorStop(0, 'rgba(5, 15, 35, 0.3)');
+      bgGradient.addColorStop(1, 'rgba(0, 5, 15, 0.3)');
+
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      time += 0.01;
+
+      // Check if mouse is inactive (after 2 seconds)
+      if (mouseIsActive.current && Date.now() - lastMouseMoveTime.current > 2000) {
+        mouseIsActive.current = false;
+      }
+
+      // Center of the canvas
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // Prepare array for projected points (needed for connections)
+      const projectedPoints: {
+        x: number;
+        y: number;
+        z: number;
+        size: number;
+        brightness: number;
+        color: { h: number; s: number; l: number; };
+        originalIndex: number;
+      }[] = [];
+
+      // Update and draw points
+      points.forEach((point, i) => {
+        // Move point depending on mouse activity
+        if (mouseIsActive.current) {
+          // Create a swirling effect around mouse when active
+          const mouseX = mousePosition.current.x;
+          const mouseY = mousePosition.current.y;
+
+          // Calculate angle from mouse to point
+          const dx = centerX + point.x - mouseX;
+          const dy = centerY + point.y - mouseY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 400) {
+            // Create swirl effect
+            const angle = Math.atan2(dy, dx);
+            const swirl = 0.01 * (1 - dist / 400);
+
+            // Apply swirl to position
+            point.x += Math.cos(angle + Math.PI / 2) * swirl * 10;
+            point.y += Math.sin(angle + Math.PI / 2) * swirl * 10;
+          }
+
+          // Slow down z movement when mouse is active
+          point.z -= point.speed * 0.5;
+        } else {
+          // Normal z movement
+          point.z -= point.speed;
+        }
+
+        // If point is too close, reset it to far away
+        if (point.z < 1) {
+          point.z = 1500;
+          point.x = (Math.random() - 0.5) * canvas.width * 1.5;
+          point.y = (Math.random() - 0.5) * canvas.height * 1.5;
+        }
+
+        // Calculate pulsating size
+        const pulse = Math.sin(time * point.pulseSpeed + point.pulsePhase) * 0.2 + 0.8;
+        point.size = point.baseSize * pulse;
+
+        // Project 3D position to 2D with perspective
+        const scale = PERSPECTIVE / (PERSPECTIVE + point.z);
+        const projectedX = centerX + point.x * scale;
+        const projectedY = centerY + point.y * scale;
+        const projectedSize = point.size * scale;
+
+        // Store projected point for connection lines
+        if (projectedX >= 0 && projectedX <= canvas.width &&
+          projectedY >= 0 && projectedY <= canvas.height) {
+          projectedPoints.push({
+            x: projectedX,
+            y: projectedY,
+            z: point.z,
+            size: projectedSize,
+            brightness: point.brightness * (1 - point.z / 1500) * pulse,
+            color: point.color,
+            originalIndex: i
+          });
+        }
+      });
+
+      // Sort projected points by Z depth for proper layering
+      projectedPoints.sort((a, b) => b.z - a.z);
+
+      // Draw connection lines first (behind stars)
+      projectedPoints.forEach((point, i) => {
+        // Find closest points for connections
+        const connections: { target: typeof projectedPoints[0], distance: number }[] = [];
+
+        projectedPoints.forEach((otherPoint, j) => {
+          if (i === j) return; // Skip self
+
+          // Calculate distance between projected points
+          const dx = point.x - otherPoint.x;
+          const dy = point.y - otherPoint.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Store connection if close enough
+          if (distance < CONNECTION_DISTANCE) {
+            connections.push({ target: otherPoint, distance });
+          }
+        });
+
+        // Sort connections by distance and take only the closest ones
+        connections
+          .sort((a, b) => a.distance - b.distance)
+          .slice(0, MAX_CONNECTIONS)
+          .forEach(({ target, distance }) => {
+            // Calculate opacity based on distance and point brightness
+            const opacity = (1 - distance / CONNECTION_DISTANCE) *
+              Math.min(point.brightness, target.brightness) * 0.15;
+
+            // Create gradient line
+            const gradient = ctx.createLinearGradient(point.x, point.y, target.x, target.y);
+            gradient.addColorStop(0, `hsla(${point.color.h}, ${point.color.s}%, ${point.color.l}%, ${opacity})`);
+            gradient.addColorStop(1, `hsla(${target.color.h}, ${target.color.s}%, ${target.color.l}%, ${opacity})`);
+
+            // Draw line
+            ctx.beginPath();
+            ctx.moveTo(point.x, point.y);
+            ctx.lineTo(target.x, target.y);
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = Math.min(point.size, target.size) * 0.3;
+            ctx.stroke();
+          });
+      });
+
+      // Now draw stars (on top of connection lines)
+      projectedPoints.forEach(point => {
+        // Calculate color and opacity for star
+        const starOpacity = point.brightness;
+        const starColor = `hsla(${point.color.h}, ${point.color.s}%, ${point.color.l}%, ${starOpacity})`;
+
+        // Draw star with glow effect
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+        ctx.fillStyle = starColor;
+        ctx.fill();
+
+        // Add glow around brighter stars
+        if (point.size > 1.2 || point.brightness > 0.7) {
+          const glowSize = point.size * 3;
+          const glowGradient = ctx.createRadialGradient(
+            point.x, point.y, point.size * 0.5,
+            point.x, point.y, glowSize
+          );
+
+          glowGradient.addColorStop(0, `hsla(${point.color.h}, ${point.color.s}%, ${point.color.l}%, ${starOpacity * 0.3})`);
+          glowGradient.addColorStop(1, `hsla(${point.color.h}, ${point.color.s}%, ${point.color.l}%, 0)`);
+
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, glowSize, 0, Math.PI * 2);
+          ctx.fillStyle = glowGradient;
+          ctx.fill();
+
+          // Add subtle cross-shaped light rays for the brightest stars
+          if (point.size > 1.8 || point.brightness > 0.85) {
+            const rayLength = point.size * 6;
+            const rayOpacity = starOpacity * 0.15;
+
+            ctx.beginPath();
+            ctx.moveTo(point.x - rayLength, point.y);
+            ctx.lineTo(point.x + rayLength, point.y);
+            ctx.moveTo(point.x, point.y - rayLength);
+            ctx.lineTo(point.x, point.y + rayLength);
+
+            ctx.strokeStyle = `hsla(${point.color.h}, ${point.color.s}%, ${point.color.l}%, ${rayOpacity})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      });
+
+      requestIdRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(requestIdRef.current);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="z-0 w-full h-full pointer-events-none" />;
+};
+
+
+
 export default function HeroSection() {
   return (
-    <div className="bg-gray-950 text-white min-h-screen flex items-center relative overflow-hidden">
-      {/* Background network effect for the entire section */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none w-full h-full">
-        <NetworkAnimation />
+    <div className="pt-10 bg-gray-950 text-white min-h-screen flex items-center relative overflow-hidden">
+      {/* Background network effect for the entire page */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none w-full">
+        <ConstellationBackground />
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Left Column - Main Text */}
-          <div className="space-y-8 w-max">
+          <div className="space-y-6 md:space-y-8 w-full sm:w-max">
             <FadeIn delay={30}>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-blue-50 w-[80%]">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-blue-50 max-w-full md:max-w-[90%] lg:max-w-[80%]">
                 <TypewriterText text="Find Your Perfect Canadian Immigration Pathway" />
               </h1>
             </FadeIn>
 
             <FadeIn delay={2000}>
-              <p className="text-lg text-blue-200 max-w-xl">
-                AI-powered guidance to navigate your journey to Canada with personalized
+              <p className="text-base sm:text-md md:text-lg text-blue-200 max-w-xl">
+                <span className="glow-text font-bold text-white">AI-powered guidance</span> to navigate your journey to Canada with personalized
                 recommendations and expert support.
               </p>
             </FadeIn>
 
             <FadeIn delay={2300}>
-              <div className="flex items-start space-x-3 mb-2">
-                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="text-base font-medium mb-1">Comprehensive Assessment</h3>
-                  <p className="text-blue-200 text-xs">
-                    Evaluate eligibility across 80+ immigration programs
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3 mb-2">
-                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="text-base font-medium mb-1">Real-Time Matching</h3>
-                  <p className="text-blue-200 text-xs">
-                    Get matched with pathways based on your qualifications
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="text-base font-medium mb-1">Personalized Scoring</h3>
-                  <p className="text-blue-200 text-xs">
-                    Calculate your CRS score across multiple programs
-                  </p>
-                </div>
+              <div className="space-y-4">
+                {[
+                  {
+                    title: "Comprehensive Assessment",
+                    desc: "Evaluate eligibility across 80+ immigration programs",
+                  },
+                  {
+                    title: "Real-Time Matching",
+                    desc: "Get matched with pathways based on your qualifications",
+                  },
+                  {
+                    title: "Personalized Scoring",
+                    desc: "Calculate your CRS score across multiple programs",
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start space-x-3">
+                    <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-sm sm:text-base font-medium mb-1">{item.title}</h3>
+                      <p className="text-blue-200 text-xs sm:text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </FadeIn>
 
             <FadeIn delay={2750}>
-              <div className="flex flex-wrap gap-4">
-                {/* <button className="px-6 py-3 bg-transparent border border-blue-400 text-blue-100 rounded-md font-medium transition-all duration-300 hover:bg-blue-900 flex items-center"> */}
-                  <button className="px-6 py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center hover:border hover:border-secondary-950">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  View My Profile
-                </button>
-                <button className="px-6 py-3 bg-white text-gray-950 rounded-md font-bold transition-all duration-300 hover:bg-secondary-950 hover:text-white flex items-center hover:border hover:border-white">
-                  <Compass className="h-5 w-5 mr-2" />
-                  Find My Pathway
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
+                <button className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center justify-center hover:border-secondary-950">
+                  <TextSelectionIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  <span className="text-sm sm:text-base text-center">Get My All In One AI-Powered PR Report</span>
                 </button>
               </div>
-              
             </FadeIn>
           </div>
 
-          {/* Right Column - Empty to maintain layout, network is now background */}
+          {/* Right Column - Optional image/graphic */}
           <div className="hidden lg:block h-96">
-            {/* Content removed as the animation is now in the background */}
+            {/* Leave empty or include optional illustration */}
           </div>
-        </div>
-
-        {/* Features Section - Below Main Text */}
-        <div className="">
-          {/* <FadeIn delay={3000}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-base font-medium mb-1">Comprehensive Assessment</h3>
-                    <p className="text-blue-200 text-xs">
-                      Evaluate eligibility across 80+ immigration programs
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-base font-medium mb-1">Real-Time Matching</h3>
-                    <p className="text-blue-200 text-xs">
-                      Get matched with pathways based on your qualifications
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-900/70 border border-blue-900/50 p-4 rounded-md shadow-sm">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-base font-medium mb-1">Personalized Scoring</h3>
-                    <p className="text-blue-200 text-xs">
-                      Calculate your CRS score across multiple programs
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeIn> */}
-
-          <FadeIn delay={2950}>
-            <div className="mt-10 text-center text-blue-300 text-xs">
-              Join over 10,000+ users who have successfully found their pathway to Canada
-            </div>
-          </FadeIn>
         </div>
       </div>
     </div>
   );
+
 }

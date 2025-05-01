@@ -4,32 +4,32 @@ import { Heart, BarChart, Lightbulb, RefreshCw, Clock, MessageSquare } from 'luc
 export default function FeaturesSection() {
   const features = [
     {
-      icon: <BarChart className="h-6 w-6 text-primary-600" />,
+      icon: <BarChart className="h-6 w-6 text-secondary-600" />,
       title: 'Express Entry Calculator',
       description: 'Estimate your Comprehensive Ranking System (CRS) score to determine your chances in the Express Entry pool.'
     },
     {
-      icon: <Lightbulb className="h-6 w-6 text-primary-600" />,
+      icon: <Lightbulb className="h-6 w-6 text-secondary-600" />,
       title: 'Program Matching',
       description: 'Our AI analyzes your profile against all Canadian immigration programs to find your best options.'
     },
     {
-      icon: <RefreshCw className="h-6 w-6 text-primary-600" />,
+      icon: <RefreshCw className="h-6 w-6 text-secondary-600" />,
       title: 'Real-time Updates',
       description: 'Stay informed with the latest changes to immigration policies, draw results, and program requirements.'
     },
     {
-      icon: <Clock className="h-6 w-6 text-primary-600" />,
+      icon: <Clock className="h-6 w-6 text-secondary-600" />,
       title: 'Processing Times',
       description: 'Track current processing times for different immigration programs and application types.'
     },
     {
-      icon: <Heart className="h-6 w-6 text-primary-600" />,
+      icon: <Heart className="h-6 w-6 text-secondary-600" />,
       title: 'PNP Guidance',
       description: 'Navigate provincial nomination programs with province-specific eligibility assessments.'
     },
     {
-      icon: <MessageSquare className="h-6 w-6 text-primary-600" />,
+      icon: <MessageSquare className="h-6 w-6 text-secondary-600" />,
       title: 'AI-powered Chat',
       description: 'Get instant answers to your immigration questions from our intelligent assistant.'
     }

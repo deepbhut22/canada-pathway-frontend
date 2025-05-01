@@ -88,7 +88,7 @@ export default function NewsSection({ title, subtitle, news, viewAllLink }: News
           {viewAllLink && (
             <a
               href={viewAllLink}
-              className="mt-4 md:mt-0 inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
+              className="mt-4 md:mt-0 inline-flex items-center text-secondary-800 hover:text-secondary-950 hover:underline font-medium"
             >
               View all
               <ArrowRight className="ml-1 h-4 w-4" />

@@ -81,20 +81,33 @@ export const HorizontalSlider = <T,>({
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-gray-900/50 hover:bg-gray-900/75 text-white p-2 rounded-full transition-colors"
+            className="absolute left-0 top-[45%] -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 focus:outline-none"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="h-6 w-6 text-secondary-700" />
           </button>
+
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-gray-900/50 hover:bg-gray-900/75 text-white p-2 rounded-full transition-colors"
+            className="absolute right-0 top-[45%] -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 focus:outline-none"
             aria-label="Next slide"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="h-6 w-6 text-secondary-700" />
           </button>
         </>
       )}
+      {/* Slider indicators */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {Array.from({ length: items.length - itemsPerSlide + 1 }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-primary-600' : 'bg-gray-300'
+              }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };

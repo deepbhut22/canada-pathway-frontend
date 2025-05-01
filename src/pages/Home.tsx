@@ -30,60 +30,73 @@ export default function Home() {
 
   return (
     <Layout>
+      {/* Hero section remains at the top for immediate impact */}
       <HeroSection />
 
+      {/* Latest News component first as requested */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <NewsSection
-                title="Latest Immigration News"
-                subtitle="Stay informed about the latest updates and changes in Canadian immigration"
-                // news={generalNews.slice(0, 3)}
-                news={generalNews}
-                viewAllLink="/news"
-              />
+          <NewsSection
+            title="Latest Immigration News"
+            subtitle="Stay informed about the latest updates and changes in Canadian immigration"
+            news={generalNews}
+            viewAllLink="/news"
+          />
+        </div>
+      </div>
+
+      {/* Recent Draws and Pathway Card side by side with equal height */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Find Your Pathway */}
+            <div className="h-full flex flex-col">
+              <div className="flex-grow bg-white rounded-lg shadow-md p-6 h-full">
+                <PathwayCard
+                  isAuthenticated={isAuthenticated}
+                  isProfileComplete={userProfile?.isComplete || false}
+                />
+              </div>
             </div>
 
-            <div className="lg:col-span-1">
-              <PathwayCard
-                isAuthenticated={isAuthenticated}
-                isProfileComplete={userProfile?.isComplete || false}
-              />
-
-              <div className="mt-8 bg-secondary-100 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-secondary-900 mb-4">Recent Draw Results</h3>
+            {/* Recent Draw Results */}
+            <div className="h-full flex flex-col">
+              <div className="flex-grow bg-secondary-50 rounded-lg p-6 border border-secondary-100 h-full">
+                <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draw Results</h3>
+                <p className="text-secondary-700 mb-4">
+                  Latest invitation rounds for Canada's immigration programs.
+                </p>
                 <div className="space-y-4">
                   <div className="border-b border-secondary-200 pb-3">
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium">Express Entry</div>
+                      <div className="font-medium text-secondary-800">Express Entry</div>
                       <div className="text-sm text-secondary-500">Apr 20, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm">3,500 invitations</div>
-                      <div className="text-sm font-medium">CRS: 475</div>
+                      <div className="text-sm text-secondary-600">3,500 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 475</div>
                     </div>
                   </div>
 
                   <div className="border-b border-secondary-200 pb-3">
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium">PNP Only</div>
+                      <div className="font-medium text-secondary-800">PNP Only</div>
                       <div className="text-sm text-secondary-500">Apr 12, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm">1,200 invitations</div>
-                      <div className="text-sm font-medium">CRS: 772</div>
+                      <div className="text-sm text-secondary-600">1,200 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 772</div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium">Healthcare Workers</div>
+                      <div className="font-medium text-secondary-800">Healthcare Workers</div>
                       <div className="text-sm text-secondary-500">Apr 5, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm">1,500 invitations</div>
-                      <div className="text-sm font-medium">CRS: 458</div>
+                      <div className="text-sm text-secondary-600">1,500 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 458</div>
                     </div>
                   </div>
                 </div>
@@ -93,10 +106,21 @@ export default function Home() {
         </div>
       </div>
 
-      <FeaturesSection />
+      {/* Provincial News */}
       <ProvincialSection provincialNews={provincialNews} />
+
+      {/* Provincial section links */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FeaturesSection />
+        </div>
+      </div>
+
+      {/* Testimonial Section */}
       <TestimonialSection />
-      <CtaSection isAuthenticated={isAuthenticated} isProfileComplete={userProfile?.isComplete || false} />
+
+      {/* Call to action remains at the bottom to drive conversion */}
+      {/* <CtaSection isAuthenticated={isAuthenticated} isProfileComplete={userProfile?.isComplete || false} /> */}
     </Layout>
   );
 }

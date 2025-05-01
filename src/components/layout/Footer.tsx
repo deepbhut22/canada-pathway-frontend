@@ -1,10 +1,9 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Mail, Phone, Globe } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary-900 text-white">
+    <footer className="bg-secondary-900 text-white min-w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
@@ -77,11 +76,11 @@ export default function Footer() {
                 <span className="text-secondary-300 text-sm">www.canadapath.com</span>
               </div>
             </div>
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <button className="bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
                 Book a Consultation
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         
