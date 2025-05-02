@@ -89,8 +89,8 @@ export default function Report() {
       <div className="py-8 bg-white mt-16 border-b border-secondary-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold leading-7 text-secondary-900 sm:text-3xl sm:truncate">
+            <div className="flex flex-col w-full">
+              <h1 className="text-2xl font-bold text-secondary-900 sm:text-3xl">
                 Your Immigration Pathway Report
               </h1>
               <p className="mt-2 text-sm text-secondary-500">
@@ -116,10 +116,10 @@ export default function Report() {
 
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
-                onClick={generateReport}
+                // onClick={generateReport}
                 className="w-full md:w-auto"
               >
-                Generate Report
+                Re-Generate Report
               </Button>
             </div>
 
@@ -149,7 +149,7 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 20 : 0} - {expressEntryProfile?.crsScore! + 20}</div>
+                      <div className="text-2xl font-bold text-primary-600">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 10 : 0} - {expressEntryProfile?.crsScore! + 10}</div>
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export default function Report() {
                             <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital?.reason}</p>
                           </div>
                           <span className="text-sm font-medium whitespace-nowrap">
-                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! + 5}
+                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! + 5} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.maximum}
                           </span>
                         </div>
 
@@ -172,14 +172,14 @@ export default function Report() {
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors?.score !== 0 ? expressEntryProfile?.scoreBreakdown.spouseFactors?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.spouseFactors?.score! + 5}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors?.score} / {expressEntryProfile?.scoreBreakdown.spouseFactors?.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.skillTransferability?.score! + 5}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.skillTransferability?.score! + 5} / {expressEntryProfile?.scoreBreakdown.skillTransferability?.maximum}</span>
                         
                       </div>
                       <div className="flex justify-between items-center">
@@ -187,7 +187,7 @@ export default function Report() {
                           <h4 className="text-sm font-medium">Additional Points : </h4>
                           <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown.additionalPoints?.score! + 5}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown.additionalPoints?.score! + 5} / {expressEntryProfile?.scoreBreakdown.additionalPoints?.maximum}</span>
                         
                       </div>
                     </div>
