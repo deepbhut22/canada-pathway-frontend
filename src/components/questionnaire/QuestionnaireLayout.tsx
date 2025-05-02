@@ -33,7 +33,7 @@ export default function QuestionnaireLayout({
   const prevStep = getPreviousStep(currentStep);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-secondary-900 mb-2">Find Your Canadian Immigration Pathway</h1>
         <p className="text-secondary-600">
@@ -73,13 +73,15 @@ export default function QuestionnaireLayout({
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0 w-full">
+        {/* Left: Back or Previous Button */}
+        <div className="w-full sm:w-auto">
           {prevStep ? (
             <Button
               variant="outline"
               onClick={onPrevious}
               leftIcon={<ChevronLeft className="h-4 w-4" />}
+              className="w-full sm:w-auto"
             >
               Previous
             </Button>
@@ -88,18 +90,20 @@ export default function QuestionnaireLayout({
               variant="outline"
               onClick={() => navigate('/')}
               leftIcon={<ChevronLeft className="h-4 w-4" />}
+              className="w-full sm:w-auto"
             >
               Back to Home
             </Button>
           )}
         </div>
 
-        <div className="flex space-x-3">
+        {/* Right: Action Buttons */}
+        <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 w-full sm:w-auto">
           {onSave && (
             <Button
               variant="secondary"
               onClick={onSave}
-              className={`${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full sm:w-auto ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
               leftIcon={<Save className="h-4 w-4" />}
               disabled={!isValid || isSubmitting}
             >
@@ -113,7 +117,7 @@ export default function QuestionnaireLayout({
               disabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
               rightIcon={<ChevronRight className="h-4 w-4" />}
-              className={`${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full sm:w-auto ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Continue
             </Button>
@@ -122,6 +126,7 @@ export default function QuestionnaireLayout({
               onClick={onNext}
               disabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
+              className="w-full sm:w-auto"
             >
               Submit
             </Button>

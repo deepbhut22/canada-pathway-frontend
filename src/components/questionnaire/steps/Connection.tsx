@@ -220,7 +220,7 @@ export default function Connection({
                 <Button
                   onClick={handleAddConnection}
                   disabled={!newConnection.relationship || !newConnection.residencyStatus || !newConnection.province || !newConnection.residencyStartDate}
-                  leftIcon={<Plus className="h-4 w-4" />}
+                  // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Family Member
                 </Button>

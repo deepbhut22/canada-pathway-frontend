@@ -36,7 +36,10 @@ export default function Questionnaire() {
 
     try {
       // If you want to save the data before navigation, uncomment this
-      // const {}      // await handleSave();
+      const res = await handleSave();
+      console.log(res);
+      alert("Progress saved successfully!");
+      
 
       const nextStep = getNextStep(currentStep);
 
@@ -48,6 +51,7 @@ export default function Questionnaire() {
         navigate('/report');
       }
     } catch (error) {
+      alert("Error saving progress!");
       console.error('Error during navigation:', error);
     } finally {
       setIsSubmitting(false);

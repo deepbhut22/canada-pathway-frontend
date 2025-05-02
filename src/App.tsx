@@ -10,6 +10,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import useAuthStore from './store/authStore';
 import AllNewsPage from './pages/AllNews';
 import { getGeneralNews, getProvincialNews } from './data/dummyNews';
+import { MessagePopup } from './components/ui/MessagePopup';
+import { CheckCircle } from 'lucide-react';
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -21,53 +23,74 @@ export default function App() {
   }, [isAuth]);
 
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/news"
-          element={
-              <AllNewsPage allNews={[...generalNews, ...provincialNews]} />
-          }
-        />
+    <>
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/news"
+            element={
+                <AllNewsPage allNews={[...generalNews, ...provincialNews]} />
+            }
+          />
 
-        {/* Protected routes */}
-        <Route
-          path="/questionnaire"
-          element={
-            <ProtectedRoute>
-              <Questionnaire />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/questionnaire/:step"
-          element={
-            <ProtectedRoute>
-              <Questionnaire />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/report"
-          element={
-            <ProtectedRoute>
-              <Report />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
+          {/* Protected routes */}
+          <Route
+            path="/questionnaire"
+            element={
+              <ProtectedRoute>
+                <Questionnaire />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/questionnaire/:step"
+            element={
+              <ProtectedRoute>
+                <Questionnaire />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/report"
+            element={
+              <ProtectedRoute>
+                <Report />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </>
   );
 }
+
+const benefits = [
+  {
+    text: "Personalized immigration pathways tailored to your qualifications",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Detailed eligibility assessment for all Canadian immigration programs",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Step-by-step guidance on document requirements and application process",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Real-time updates when your eligibility changes for any program",
+    icon: <CheckCircle className="h-5 w-5" />
+  }
+];

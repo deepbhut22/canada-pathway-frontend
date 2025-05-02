@@ -97,26 +97,32 @@ export default function Report() {
                 Last updated: {new Date().toLocaleDateString('en-CA')}
               </p>
             </div>
-            <div className="mt-5 flex md:mt-0 md:ml-4 space-x-3">
+            <div className="mt-5 flex flex-col md:flex-row md:mt-0 md:ml-4 space-y-3 md:space-y-0 md:space-x-3 w-full">
               <Button
                 variant="outline"
                 leftIcon={<Download className="h-4 w-4" />}
+                className="w-full md:w-auto"
               >
                 Download Report
               </Button>
+
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
                 onClick={() => navigate('/profile')}
+                className="w-full md:w-auto"
               >
                 Update Profile
               </Button>
+
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
                 onClick={generateReport}
+                className="w-full md:w-auto"
               >
                 Generate Report
               </Button>
             </div>
+
           </div>
         </div>
       </div>
@@ -143,7 +149,7 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary-600">{expressEntryProfile?.crsScore}</div>
+                      <div className="text-2xl font-bold text-primary-600">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 20 : 0} - {expressEntryProfile?.crsScore! + 20}</div>
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
@@ -154,34 +160,34 @@ export default function Report() {
                         <div className="flex justify-between items-start flex-wrap gap-2">
                           <div className="flex-[1_1_0%] min-w-0 pr-2">
                             <h4 className="text-sm font-medium">Core/Human Capital Factors:</h4>
-                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital.reason}</p>
+                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital?.reason}</p>
                           </div>
                           <span className="text-sm font-medium whitespace-nowrap">
-                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital.score} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital.maximum}
+                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! + 5}
                           </span>
                         </div>
 
                       <div className="flex justify-between items-center flex-wrap">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors.score} / {expressEntryProfile?.scoreBreakdown.spouseFactors.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors?.score !== 0 ? expressEntryProfile?.scoreBreakdown.spouseFactors?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.spouseFactors?.score! + 5}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability.score} / {expressEntryProfile?.scoreBreakdown.skillTransferability.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.skillTransferability?.score! + 5}</span>
                         
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Additional Points : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints.score} / {expressEntryProfile?.scoreBreakdown.additionalPoints.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown.additionalPoints?.score! + 5}</span>
                         
                       </div>
                     </div>
@@ -195,10 +201,10 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.eligibilityStatus[0].program}
+                          {expressEntryProfile?.eligibilityStatus[0]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[0].details}
+                          {expressEntryProfile?.eligibilityStatus[0]?.details}
                         </p>
                       </div>
                     </div>
@@ -209,10 +215,10 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.eligibilityStatus[1].program}
+                          {expressEntryProfile?.eligibilityStatus[1]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[1].details}
+                          {expressEntryProfile?.eligibilityStatus[1]?.details}
                         </p>
                       </div>
                     </div>
@@ -223,10 +229,10 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.eligibilityStatus[2].program}
+                          {expressEntryProfile?.eligibilityStatus[2]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[2].details}
+                          {expressEntryProfile?.eligibilityStatus[2]?.details}
                         </p>
                       </div>
                     </div>
@@ -243,7 +249,7 @@ export default function Report() {
                           {expressEntryProfile?.categoryBasedEligibility[0].program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[0].details}
+                          {expressEntryProfile?.categoryBasedEligibility[0]?.details}
                         </p>
                       </div>
                     </div>
@@ -254,10 +260,10 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.categoryBasedEligibility[1].program}
+                          {expressEntryProfile?.categoryBasedEligibility[1]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[1].details}
+                          {expressEntryProfile?.categoryBasedEligibility[1]?.details}
                         </p>
                       </div>
                     </div>
@@ -268,10 +274,10 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.categoryBasedEligibility[2].program}
+                          {expressEntryProfile?.categoryBasedEligibility[2]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[2].details}
+                          {expressEntryProfile?.categoryBasedEligibility[2]?.details}
                         </p>
                       </div>
                     </div>
@@ -296,24 +302,24 @@ export default function Report() {
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.categoryBasedEligibility[4].program}
+                          {expressEntryProfile?.categoryBasedEligibility[4]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[4].details}
+                          {expressEntryProfile?.categoryBasedEligibility[4]?.details}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {expressEntryProfile?.categoryBasedEligibility[5].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.categoryBasedEligibility[5]?.isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.categoryBasedEligibility[5].program}
+                          {expressEntryProfile?.categoryBasedEligibility[5]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[5].details}
+                          {expressEntryProfile?.categoryBasedEligibility[5]?.details}
                         </p>
                       </div>
                     </div>

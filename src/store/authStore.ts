@@ -215,11 +215,15 @@ const useAuthStore = create<AuthState & {
   loginWithGoogle: () => Promise<void>;
   logout: () => void;
   initializeAuth: () => Promise<void>;
+  setIsPopupOpen: (isPopupOpen: boolean) => void;
 }>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: true,
   error: null,
+  isPopupOpen: false,
+
+  setIsPopupOpen: (isPopupOpen: boolean) => set({ isPopupOpen: isPopupOpen }),
 
   initializeAuth: async () => {
     set({ isLoading: true });

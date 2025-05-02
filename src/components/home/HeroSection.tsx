@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CheckCircle, TextSelectionIcon } from 'lucide-react';
-
+import useAuthStore from '../../store/authStore';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '../../store/userStore';
 
 // Text animation with typewriter effect
 const TypewriterText = ({ text }: { text: string }) => {
@@ -346,6 +348,18 @@ const ConstellationBackground: React.FC = () => {
 
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
+  function handleRedirect(): void {
+    if (!useAuthStore.getState().isAuthenticated) {
+      navigate('/login');
+    } else if (useAuthStore.getState().isAuthenticated && !useUserStore.getState().userProfile.isComplete) {
+      useAuthStore.getState().setIsPopupOpen(true);
+    } else {
+      navigate('/report');
+    }
+  }
+
   return (
     <div className="pt-10 bg-gray-950 text-white min-h-screen flex items-center relative overflow-hidden">
       {/* Background network effect for the entire page */}
@@ -399,7 +413,9 @@ export default function HeroSection() {
 
             <FadeIn delay={2750}>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
-                <button className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center justify-center hover:border-secondary-950">
+                <button 
+                  onClick={handleRedirect}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center justify-center hover:border-secondary-950">
                   <TextSelectionIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                   <span className="text-sm sm:text-base text-center">Get My All In One AI-Powered PR Report</span>
                 </button>

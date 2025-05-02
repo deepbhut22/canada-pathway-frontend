@@ -105,7 +105,8 @@ export default function Work({
   };
 
   const handleAddWork = () => {
-    console.log({...newWork, ...userProfile.workInfo});
+    // console.log({...newWork, ...userProfile.workInfo});
+
     if (
       newWork.jobTitle &&
       newWork.country &&
@@ -127,8 +128,7 @@ export default function Work({
         isCurrentJob: newWork.isCurrentJob || false,
         endDate: newWork.endDate || ''
       });
-      console.log("added");
-      
+      // console.log("added");
       
       setNewWork({
         jobTitle: '',
@@ -348,7 +348,7 @@ export default function Work({
                 <Button
                   onClick={handleAddWork}
                   disabled={!newWork.jobTitle || !newWork.country || !newWork.startDate || (!newWork.isCurrentJob && !newWork.endDate)}
-                  leftIcon={<Plus className="h-4 w-4" />}
+                  // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Work Experience
                 </Button>

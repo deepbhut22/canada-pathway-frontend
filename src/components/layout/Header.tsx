@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LogOutIcon, Menu, X } from 'lucide-react';
+import { CheckCircle, LogOutIcon, Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Shimmer from '../ui/Shimmer';
 import { useUserStore } from '../../store/userStore';
 import canadaLogoLight from '../../../assets/canada-logo-light.png';
 import canadaLogoDark from '../../../assets/canada-logo-dark.png';
+import { MessagePopup } from '../ui/MessagePopup';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,10 +57,25 @@ export default function Header() {
 
   const navigationItems = [
     { path: '/', label: 'Home' },
-    { path: isAuth ? '/profile' : '/login', label: 'My Profile' },
-    { path: isAuth ? isProfileComplete ? '/report' : '/questionnaire' : '/login', label: 'My Report' },
+    { path: '/profile', label: 'My Profile' },
+    { path: "/report", label: 'My Report' },
     { path: '/news', label: 'News' },
   ];
+
+  const handleRedirect = (path: string) => {
+    console.log(isAuth, isProfileComplete, path);
+    if (!isAuth) {
+      navigate('/login');
+    } else if (isAuth && !isProfileComplete && path === '/report') {
+      console.log("done");
+      useAuthStore.getState().setIsPopupOpen(true);
+    } else {
+      navigate(path);
+    }
+
+    // Always close the menu when navigating
+    closeMenu();
+  };
 
   return (
     <header className={`fixed top-0 pt-2 pb-2 left-0 right-0 z-50 transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-md' : 'bg-transparent' : 'bg-white/90 backdrop-blur-sm shadow-md'}`}>
@@ -72,16 +88,16 @@ export default function Header() {
               ) : (
                 <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
               ) :
-              <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
+                <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
               }
             </Link>
             <nav className="hidden md:ml-6 lg:ml-10 xl:ml-20 md:flex md:space-x-4 lg:space-x-8">
               {navigationItems.map((item, idx) => (
-                <Link
+                <p
                   key={item.path + " " + idx}
-                  to={item.path}
-                  className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 
-                    
+                  // to={item.path}
+                  onClick={() => handleRedirect(item.path)}
+                  className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 cursor-pointer
                     ${isHome ? isScrolled ?
                       isActive(item.path)
                         ? 'border-secondary-950 font-bold text-secondary-950'
@@ -97,7 +113,7 @@ export default function Header() {
                     }`}
                 >
                   {item.label}
-                </Link>
+                </p>
               ))}
             </nav>
           </div>
@@ -123,8 +139,14 @@ export default function Header() {
                 </>
                 :
                 <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
-                  <Button onClick={() => navigate('/login')} size="sm" variant="outline" className={`${isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white'}`}>Sign In</Button>
-                  <Button onClick={() => navigate('/register')} size="sm" className={`${isScrolled ? 'text-white bg-secondary-950 border border-secondary-950' : 'text-black border border-secondary-950 bg-white'}`}>Sign Up</Button>
+                  <Button
+                    onClick={() => navigate('/login')}
+                    size="sm" variant="outline"
+                    className={`${isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-transparent'}`}>Sign In</Button>
+                  <Button
+                    onClick={() => navigate('/register')}
+                    size="sm" variant="outline"
+                    className={`${isScrolled ? 'text-white bg-secondary-950 border border-secondary-950 hover:text-white hover:bg-secondary-950' : 'bg-white text-secondary-950 border-secondary-950'}`}>Sign Up</Button>
                 </div>
               :
               <Shimmer className="hidden sm:block w-24 h-8 md:w-32 md:h-9 lg:w-40 lg:h-10" />
@@ -158,19 +180,19 @@ export default function Header() {
                 key={item.path}
                 to={item.path}
                 className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
-                    isActive(item.path)
-                      ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
-                      : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
-                    :
-                    isActive(item.path)
-                      ? 'bg-secondary-950 border-blue-400 text-white'
-                      : 'border-transparent text-blue-200 hover:bg-gray-800/40 hover:border-blue-300 hover:text-white'
-                    :
+                  isActive(item.path)
+                    ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                    : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                  :
+                  isActive(item.path)
+                    ? 'bg-secondary-950 border-blue-400 text-white'
+                    : 'border-transparent text-blue-200 hover:bg-gray-800/40 hover:border-blue-300 hover:text-white'
+                  :
                   isActive(item.path)
                     ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
                     : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
                   }`}
-                onClick={closeMenu}
+                onClick={() => handleRedirect(item.path)}
               >
                 {item.label}
               </Link>
@@ -233,6 +255,53 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      {/* MessagePopup component with correct props */}
+      <MessagePopup
+        isOpen={useAuthStore.getState().isPopupOpen}
+        onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
+        title="Profile Incomplete"
+        message="Please complete your profile to access this page."
+        type="warning"
+        actionText="Go to Profile"
+        onAction={() => {
+          navigate('/profile');
+          useAuthStore.getState().setIsPopupOpen(false);
+        }}
+        cancelText="Close"
+        maxWidth="2xl"
+        benefits={benefits}
+        illustration={
+          <div className="flex items-center justify-center flex flex-col gap-4">
+            <h2 className="text-2xl font-bold">Steps to complete your profile</h2>
+            <ul className="list-disc list-inside">
+              <li>Go to Profile</li>
+              <li>Complete each section of the questionnaire</li>
+              <li>DO not forget to save your progress</li>
+              <li>Get your report</li>
+            </ul>
+          </div>
+        }
+      />
     </header>
   );
 }
+
+const benefits = [
+  {
+    text: "Personalized immigration pathways tailored to your qualifications",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Detailed eligibility assessment for all Canadian immigration programs",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Step-by-step guidance on document requirements and application process",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Real-time updates when your eligibility changes for any program",
+    icon: <CheckCircle className="h-5 w-5" />
+  }
+];

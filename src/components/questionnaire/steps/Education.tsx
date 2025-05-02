@@ -290,7 +290,7 @@ export default function Education({
                 <Button
                   onClick={handleAddEducation}
                   disabled={!newEducation.type || !newEducation.country || !newEducation.startDate}
-                  leftIcon={<Plus className="h-4 w-4" />}
+                  // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Education
                 </Button>

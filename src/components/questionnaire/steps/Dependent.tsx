@@ -92,7 +92,7 @@ export default function Dependent({
       (newDependent.residenceCountry !== 'canada' || newDependent.residencyStatus)
     ) {
       addDependent({
-        id: crypto.randomUUID(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         relationship: newDependent.relationship!,
         age: newDependent.age,
         citizenCountry: newDependent.citizenCountry,
@@ -222,7 +222,7 @@ export default function Dependent({
                 <Button
                   onClick={handleAddDependent}
                   disabled={!newDependent.age || !newDependent.citizenCountry || !newDependent.residenceCountry}
-                  leftIcon={<Plus className="h-4 w-4" />}
+                  // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Dependent
                 </Button>
