@@ -47,7 +47,7 @@ export default function Dependent({
     citizenCountry: '',
     residenceCountry: '',
     residencyStatus: '',
-    relationship: ''
+    // relationship: ''
   });
 
   const validateForm = () => {
@@ -93,7 +93,7 @@ export default function Dependent({
     ) {
       addDependent({
         id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
-        relationship: newDependent.relationship!,
+        // relationship: newDependent.relationship!,
         age: newDependent.age,
         citizenCountry: newDependent.citizenCountry,
         residenceCountry: newDependent.residenceCountry,
@@ -105,7 +105,7 @@ export default function Dependent({
         citizenCountry: '',
         residenceCountry: '',
         residencyStatus: '',
-        relationship: ''
+        // relationship: ''
       });
     }
   };
@@ -149,19 +149,19 @@ export default function Dependent({
             <div className="border border-secondary-200 rounded-md p-4 mt-6 bg-secondary-50">
               <h3 className="text-lg font-medium mb-4">Add Dependent</h3>
               <div className="space-y-4">
-              <FormGroup>
+              {/* <FormGroup>
                 <FormLabel htmlFor="type" required>Relationship</FormLabel>
                 <FormControl>
                   <Select
                     id="relationship"
                     name="relationship"
-                    value={newDependent.relationship}
+                    // value={newDependent.relationship}
                     options={RELATIONSHIP_OPTIONS}
                     onChange={handleNewDependentChange}
                     placeholder="Enter relationship"
                   />
                 </FormControl>
-              </FormGroup>
+              </FormGroup> */}
                 <FormGroup>
                   <FormLabel htmlFor="age" required>Age</FormLabel>
                   <FormControl>
@@ -239,9 +239,6 @@ export default function Dependent({
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-sm text-secondary-600">
-                          Age: {dependent.age}
-                        </p>
                         <p className="text-sm text-secondary-600">
                           Age: {dependent.age}
                         </p>

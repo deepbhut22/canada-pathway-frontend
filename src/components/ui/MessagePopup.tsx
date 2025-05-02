@@ -27,9 +27,6 @@ interface MessagePopupProps {
     maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 }
 
-console.log("groo");
-
-
 export function MessagePopup({
     isOpen,
     onClose,

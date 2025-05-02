@@ -10,13 +10,15 @@ import CtaSection from '../components/home/CtaSection';
 import { getGeneralNews, getProvincialNews } from '../data/dummyNews';
 import useAuthStore from '../store/authStore';
 import { useUserStore } from '../store/userStore';
-
+import { MessagePopup } from '../components/ui/MessagePopup';
+import { CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
   const generalNews = getGeneralNews();
   const provincialNews = getProvincialNews();
-
+  const navigate = useNavigate();
   // If still loading auth state, you could show a loading spinner here
   if (isLoading) {
     return (
@@ -121,6 +123,50 @@ export default function Home() {
 
       {/* Call to action remains at the bottom to drive conversion */}
       {/* <CtaSection isAuthenticated={isAuthenticated} isProfileComplete={userProfile?.isComplete || false} /> */}
+      <MessagePopup
+        isOpen={useAuthStore.getState().isPopupOpen}
+        onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
+        title="Profile Incomplete"
+        message="Please complete your profile to access this page."
+        type="warning"
+        actionText="Go to Profile"
+        onAction={() => {
+          useAuthStore.getState().setIsPopupOpen(false);
+          navigate('/profile');
+        }}
+        cancelText="Close"
+        maxWidth="2xl"
+        benefits={benefits}
+        illustration={
+          <div className="flex items-center justify-center flex flex-col gap-4">
+            <h2 className="text-2xl font-bold">Steps to complete your profile</h2>
+            <ul className="list-disc list-inside">
+              <li>Go to Profile</li>
+              <li>Complete each section of the questionnaire</li>
+              <li>DO not forget to save your progress</li>
+              <li>Get your report</li>
+            </ul>
+          </div>
+        }
+      />  
     </Layout>
-  );
+  );  
 }
+const benefits = [
+  {
+    text: "Personalized immigration pathways tailored to your qualifications",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Detailed eligibility assessment for all Canadian immigration programs",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Step-by-step guidance on document requirements and application process",
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: "Real-time updates when your eligibility changes for any program",
+    icon: <CheckCircle className="h-5 w-5" />
+  }
+];

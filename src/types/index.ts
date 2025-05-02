@@ -17,21 +17,22 @@ export interface BasicInfo {
   fullName: string;
   email: string;
   gender: 'male' | 'female' | 'other' | '';
+  age: number | null;
   citizenCountry: string;
   residenceCountry: string;
-  admissibilityIssue: boolean;
-  residencyIntent: boolean;
-  availableFunds: number | null;
+  province?: string;
 }
 
-export interface LanguageTest {
-  type: 'IELTS' | 'CELPIP' | 'PTE' | 'TEF' | 'TCF' | '';
-  testDate: string;
-  readingScore: number | null;
-  writingScore: number | null;
-  speakingScore: number | null;
-  listeningScore: number | null;
-}
+// export interface LanguageTest {
+//   type: 'IELTS' | 'CELPIP' | 'PTE' | 'TEF' | 'TCF' | '';
+//   testDate: string;
+//   readingScore: number | null;
+//   writingScore: number | null;
+//   speakingScore: number | null;
+//   listeningScore: number | null;
+// }
+
+export type LanguageTest = any;
 
 export interface LanguageInfo {
   primaryLanguage: 'english' | 'french' | '';
@@ -47,9 +48,9 @@ export interface Education {
   country: string;
   fieldOfStudy: string;
   province?: string;
-  startDate: string;
+  // startDate: string;
   inProgress: boolean;
-  endDate: string;
+  // endDate: string;
 }
 
 export interface EducationInfo {
@@ -72,7 +73,7 @@ export interface Dependent {
   citizenCountry: string;
   residenceCountry: string;
   residencyStatus: 'permanent residence' | 'work permit' | 'student permit' | 'citizen' | 'refugee' | '';
-  relationship: string;
+  // relationship: string;
 }
 
 export interface DependentInfo {
@@ -80,34 +81,35 @@ export interface DependentInfo {
   dependentList: Dependent[];
 }
 
-export interface Connection {
-  id: string;
-  relationship: 'child' | 'sibling' | 'parent' | 'grandparent' | 'in-law' | 'first cousin' | '';
-  // dateOfBirth: string;
-  residencyStatus: 'permanent residence' | 'work permit' | 'student permit' | 'citizen' | 'refugee' | '';
-  province: string;
-  residencyStartDate: string;
-}
+// export interface Connection {
+//   id: string;
+//   relationship: 'child' | 'sibling' | 'parent' | 'grandparent' | 'in-law' | 'first cousin' | '';
+//   // dateOfBirth: string;
+//   residencyStatus: 'permanent residence' | 'work permit' | 'student permit' | 'citizen' | 'refugee' | '';
+//   province: string;
+//   residencyStartDate: string;
+// }
 
 export interface ConnectionInfo {
-  hasConnections: boolean;
-  connectionList: Connection[];
+  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: boolean;
 }
 
 export interface WorkExperience {
   id: string;
   jobTitle: string;
-  isPaid: boolean;
+  // isPaid: boolean;
   isSelfEmployed: boolean;
-  hoursPerWeek: number | null;
+  // hoursPerWeek: number | null;
   country: string;
   province?: string;
   workPermitType?: 'open' | 'closed' | 'refugee' | '';
-  hasLMIA: boolean;
+  // hasLMIA: boolean;
   nocCode: string;
-  startDate: string;
+  // startDate: string;
   isCurrentJob: boolean;
-  endDate: string;
+  // endDate: string;
+  numberOfMonths: number;
+  tier: Number
 }
 
 export interface WorkInfo {
@@ -118,13 +120,14 @@ export interface WorkInfo {
 export interface JobOffer {
   jobTitle: string;
   nocCode: string;
-  isPaid: boolean;
-  hoursPerWeek: number | null;
+  // isPaid: boolean;
+  // hoursPerWeek: number | null;
   province: string;
-  isLMIA: boolean;
+  // isLMIA: boolean;
   startDate: string;
-  hasEndDate: boolean;
-  endDate: string;
+  // hasEndDate: boolean;
+  // endDate: string;
+  tier: Number;
 }
 
 export interface JobOfferInfo {

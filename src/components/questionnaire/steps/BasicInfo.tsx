@@ -9,7 +9,6 @@ import {
   FormHelperText,
   Input,
   Select,
-  Checkbox,
   RadioGroup
 } from '../../ui/Form';
 
@@ -34,6 +33,22 @@ const RESIDENCE_OPTIONS = [
   { value: 'canada', label: 'Canada' },
   { value: 'usa', label: 'United States' },
   { value: 'other', label: 'Other' }
+];
+
+const PROVINCE_OPTIONS = [
+  { value: 'Alberta', label: 'Alberta' },
+  { value: 'British Columbia', label: 'British Columbia' },
+  { value: 'Manitoba', label: 'Manitoba' },
+  { value: 'New Brunswick', label: 'New Brunswick' },
+  { value: 'Newfoundland and Labrador', label: 'Newfoundland and Labrador' },
+  { value: 'Nova Scotia', label: 'Nova Scotia' },
+  { value: 'Ontario', label: 'Ontario' },
+  { value: 'Prince Edward Island', label: 'Prince Edward Island' },
+  { value: 'Quebec', label: 'Quebec' },
+  { value: 'Saskatchewan', label: 'Saskatchewan' },
+  { value: 'Northwest Territories', label: 'Northwest Territories' },
+  { value: 'Nunavut', label: 'Nunavut' },
+  { value: 'Yukon', label: 'Yukon' }
 ];
 
 const GENDER_OPTIONS = [
@@ -68,6 +83,12 @@ export default function BasicInfo({
     if (!basicInfo.gender) {
       newErrors.gender = 'Please select your gender';
     }
+
+    if (basicInfo.age === null) {
+      newErrors.age = 'Age is required';
+    } else if (basicInfo.age < 18 || basicInfo.age > 100) {
+      newErrors.age = 'Age must be between 18 and 100';
+    }
     
     if (!basicInfo.citizenCountry) {
       newErrors.citizenCountry = 'Please select your country of citizenship';
@@ -76,11 +97,9 @@ export default function BasicInfo({
     if (!basicInfo.residenceCountry) {
       newErrors.residenceCountry = 'Please select your country of residence';
     }
-    
-    if (basicInfo.availableFunds === null) {
-      newErrors.availableFunds = 'Please enter your available funds';
-    } else if (basicInfo.availableFunds < 0) {
-      newErrors.availableFunds = 'Available funds cannot be negative';
+
+    if (basicInfo.residenceCountry === 'canada' && !basicInfo.province) {
+      newErrors.province = 'Please select your province';
     }
     
     setErrors(newErrors);
@@ -96,11 +115,8 @@ export default function BasicInfo({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
-    if (type === 'checkbox') {
-      const checked = (e.target as HTMLInputElement).checked;
-      updateBasicInfo({ [name]: checked });
-    } else if (name === 'availableFunds') {
-      updateBasicInfo({ [name]: value ? parseFloat(value) : null });
+    if (name === 'age') {
+      updateBasicInfo({ [name]: value ? parseInt(value) : null });
     } else {
       updateBasicInfo({ [name]: value });
     }
@@ -141,6 +157,24 @@ export default function BasicInfo({
           </FormControl>
           {errors.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
           <FormHelperText>We'll use this to send you updates about your immigration process.</FormHelperText>
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel htmlFor="age" required>Age</FormLabel>
+          <FormControl>
+            <Input
+              id="age"
+              name="age"
+              type="number"
+              value={basicInfo.age === null ? '' : String(basicInfo.age)}
+              onChange={handleChange}
+              placeholder="Enter your age"
+              error={!!errors.age}
+              min={18}
+              max={100}
+            />
+          </FormControl>
+          {errors.age && <div className="text-red-500 text-xs mt-1">{errors.age}</div>}
         </FormGroup>
 
         <FormGroup>
@@ -192,38 +226,28 @@ export default function BasicInfo({
           {errors.residenceCountry && <div className="text-red-500 text-xs mt-1">{errors.residenceCountry}</div>}
           <FormHelperText>The country where you are currently living.</FormHelperText>
         </FormGroup>
+
+        {basicInfo.residenceCountry === 'canada' && (
+          <FormGroup>
+            <FormLabel htmlFor="province" required>Province/Territory</FormLabel>
+            <FormControl>
+              <Select
+                id="province"
+                name="province"
+                value={basicInfo.province || ''}
+                onChange={handleChange}
+                options={PROVINCE_OPTIONS}
+                placeholder="Select your province or territory"
+                error={!!errors.province}
+              />
+            </FormControl>
+            {errors.province && <div className="text-red-500 text-xs mt-1">{errors.province}</div>}
+            <FormHelperText>Select the province or territory where you currently reside.</FormHelperText>
+          </FormGroup>
+        )}
       </FormSection>
 
-      <FormSection title="Immigration Factors" description="Additional factors that may affect your immigration application.">
-        <FormGroup>
-          <FormLabel htmlFor="admissibilityIssue">Admissibility Issues</FormLabel>
-          <FormControl>
-            <Checkbox
-              id="admissibilityIssue"
-              name="admissibilityIssue"
-              checked={basicInfo.admissibilityIssue}
-              onChange={handleChange}
-              label="I have legal or medical conditions that might affect my admissibility to Canada"
-            />
-          </FormControl>
-          <FormHelperText>
-            This includes criminal history, security concerns, health conditions, or previous immigration issues.
-          </FormHelperText>
-        </FormGroup>
-
-        <FormGroup>
-          <FormLabel htmlFor="residencyIntent">Residency Intent</FormLabel>
-          <FormControl>
-            <Checkbox
-              id="residencyIntent"
-              name="residencyIntent"
-              checked={basicInfo.residencyIntent}
-              onChange={handleChange}
-              label="I intend to reside permanently in Canada after obtaining my immigration status"
-            />
-          </FormControl>
-        </FormGroup>
-
+      {/* <FormSection title="Financial Information" description="Information about your available funds for immigration.">
         <FormGroup>
           <FormLabel htmlFor="availableFunds" required>Available Settlement Funds (CAD)</FormLabel>
           <FormControl>
@@ -242,7 +266,7 @@ export default function BasicInfo({
             The amount of money available for your settlement in Canada. This is an important factor for many immigration programs.
           </FormHelperText>
         </FormGroup>
-      </FormSection>
+      </FormSection> */}
     </Form>
   );
 }

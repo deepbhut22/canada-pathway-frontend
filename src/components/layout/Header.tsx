@@ -132,9 +132,9 @@ export default function Header() {
                     onClick={() => useAuthStore.getState().logout()}
                     size="sm"
                     variant="outline"
-                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white' : 'text-secondary-950 border border-secondary-950'}`}
+                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-white hover:text-black' : 'text-secondary-950 border border-secondary-950'}`}
                   >
-                    <LogOutIcon className={`w-4 h-4 ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-800'}`} />
+                    <LogOutIcon className={`w-4 h-4 ${isHome ? isScrolled ? 'text-secondary-950' : 'hover:text-secondary-950' : 'text-secondary-800'}`} />
                   </Button>
                 </>
                 :
@@ -255,34 +255,6 @@ export default function Header() {
           </div>
         </div>
       )}
-
-      {/* MessagePopup component with correct props */}
-      <MessagePopup
-        isOpen={useAuthStore.getState().isPopupOpen}
-        onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
-        title="Profile Incomplete"
-        message="Please complete your profile to access this page."
-        type="warning"
-        actionText="Go to Profile"
-        onAction={() => {
-          navigate('/profile');
-          useAuthStore.getState().setIsPopupOpen(false);
-        }}
-        cancelText="Close"
-        maxWidth="2xl"
-        benefits={benefits}
-        illustration={
-          <div className="flex items-center justify-center flex flex-col gap-4">
-            <h2 className="text-2xl font-bold">Steps to complete your profile</h2>
-            <ul className="list-disc list-inside">
-              <li>Go to Profile</li>
-              <li>Complete each section of the questionnaire</li>
-              <li>DO not forget to save your progress</li>
-              <li>Get your report</li>
-            </ul>
-          </div>
-        }
-      />
     </header>
   );
 }

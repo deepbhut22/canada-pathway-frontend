@@ -121,10 +121,7 @@ const isProfileComplete = (profile: UserProfile): boolean => {
     basicInfo.fullName &&
     basicInfo.email &&
     basicInfo.citizenCountry &&
-    basicInfo.residenceCountry &&
-    basicInfo.availableFunds !== null &&
-    typeof basicInfo.admissibilityIssue === 'boolean' &&
-    typeof basicInfo.residencyIntent === 'boolean'
+    basicInfo.residenceCountry
   );
 
   // Education checks
@@ -176,9 +173,7 @@ const isProfileComplete = (profile: UserProfile): boolean => {
 
   // Connection checks
   const connectionComplete: boolean = !!(
-    (typeof connectionInfo.hasConnections === 'boolean') &&
-    (!connectionInfo.hasConnections ||
-      (connectionInfo.hasConnections && connectionInfo.connectionList.length > 0))
+    (typeof connectionInfo?.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident === 'boolean')
   );
 
   // Job offer checks
@@ -188,13 +183,14 @@ const isProfileComplete = (profile: UserProfile): boolean => {
       (jobOfferInfo.hasJobOffer &&
         jobOfferInfo.jobOffer.jobTitle &&
         jobOfferInfo.jobOffer.nocCode &&
-        typeof jobOfferInfo.jobOffer.isPaid === 'boolean' &&
-        jobOfferInfo.jobOffer.hoursPerWeek !== null &&
+        // typeof jobOfferInfo.jobOffer.isPaid === 'boolean' &&
+        // jobOfferInfo.jobOffer.hoursPerWeek !== null &&
         jobOfferInfo.jobOffer.province &&
-        typeof jobOfferInfo.jobOffer.isLMIA === 'boolean' &&
-        jobOfferInfo.jobOffer.startDate &&
-        typeof jobOfferInfo.jobOffer.hasEndDate === 'boolean' &&
-        (!jobOfferInfo.jobOffer.hasEndDate || jobOfferInfo.jobOffer.endDate)))
+        // typeof jobOfferInfo.jobOffer.isLMIA === 'boolean' &&
+        jobOfferInfo.jobOffer.startDate
+        // typeof jobOfferInfo.jobOffer.hasEndDate === 'boolean' &&
+        // (!jobOfferInfo.jobOffer.hasEndDate || jobOfferInfo.jobOffer.endDate)
+      ))
   );
 
   return !!(

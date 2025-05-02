@@ -25,7 +25,7 @@ export default function Profile() {
       language: languageInfo && (languageInfo.primaryLanguage || (languageInfo.hasSecondLanguage && languageInfo.secondLanguageTest.type)),
       spouse: spouseInfo.maritalStatus && spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada),
       dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
-      connection: connectionInfo && connectionInfo.connectionList && connectionInfo.connectionList.length > 0,
+      connection: connectionInfo && connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident,
       joboffer: jobOfferInfo && jobOfferInfo.jobOffer && jobOfferInfo.jobOffer.jobTitle,
       // Add more steps as needed
     };
@@ -114,9 +114,9 @@ export default function Profile() {
                 <CardContent>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium leading-6 text-secondary-900">
+                      {/* <h3 className="text-lg font-medium leading-6 text-secondary-900">
                         Personal Information
-                      </h3>
+                      </h3> */}
                       <div className="mt-5 border-t border-secondary-200">
                         <dl className="sm:divide-y sm:divide-secondary-200">
                           <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">

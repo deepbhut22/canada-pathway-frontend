@@ -14,7 +14,6 @@ import Connection from '../../components/questionnaire/steps/Connection';
 import Work from './steps/Work';
 import JobOffer from './steps/JobOffer';
 import api from '../../utils/axios';
-// import { useAuthStore } from '../../store/authStore';
 
 export default function Questionnaire() {
   const { step = 'basic' } = useParams<{ step?: string }>();
@@ -36,11 +35,8 @@ export default function Questionnaire() {
 
     try {
       // If you want to save the data before navigation, uncomment this
-      const res = await handleSave();
-      console.log(res);
-      alert("Progress saved successfully!");
+      await handleSave();
       
-
       const nextStep = getNextStep(currentStep);
 
       if (nextStep) {
@@ -51,7 +47,6 @@ export default function Questionnaire() {
         navigate('/report');
       }
     } catch (error) {
-      alert("Error saving progress!");
       console.error('Error during navigation:', error);
     } finally {
       setIsSubmitting(false);
@@ -65,6 +60,8 @@ export default function Questionnaire() {
   };
 
   const handleSave = async () => {
+    console.log(useUserStore.getState().userProfile.languageInfo);
+    
     try {
       const currentStepData = getCurrentStepName(currentStep);
       const response = await api.put(`/profile/${currentStep}`, currentStepData);

@@ -2,18 +2,17 @@ import { create } from 'zustand';
 import { 
   UserProfile, BasicInfo, LanguageInfo, EducationInfo, 
   SpouseInfo, DependentInfo, ConnectionInfo, WorkInfo, JobOfferInfo,
-  Education, Dependent, Connection, WorkExperience
+  Education, Dependent, WorkExperience
 } from '../types';
 
 const defaultBasicInfo: BasicInfo = {
   fullName: '',
   email: '',
   gender: '',
+  age: null,
   citizenCountry: '',
   residenceCountry: '',
-  admissibilityIssue: false,
-  residencyIntent: false,
-  availableFunds: null
+  province: '',
 };
 
 const defaultLanguageInfo: LanguageInfo = {
@@ -58,8 +57,9 @@ const defaultDependentInfo: DependentInfo = {
 };
 
 const defaultConnectionInfo: ConnectionInfo = {
-  hasConnections: false,
-  connectionList: []
+  // hasConnections: false,
+  // connectionList: []
+  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: false
 };
 
 const defaultWorkInfo: WorkInfo = {
@@ -72,13 +72,14 @@ const defaultJobOfferInfo: JobOfferInfo = {
   jobOffer: {
     jobTitle: '',
     nocCode: '',
-    isPaid: false,
-    hoursPerWeek: null,
+    // isPaid: false,
+    // hoursPerWeek: null,
     province: '',
-    isLMIA: false,
+    // isLMIA: false,
     startDate: '',
-    hasEndDate: false,
-    endDate: ''
+    // hasEndDate: false,
+    // endDate: '',
+    tier: 0
   }
 };
 
@@ -105,9 +106,9 @@ interface UserState {
   updateDependentInfo: (info: Partial<DependentInfo>) => void;
   addDependent: (dependent: Dependent) => void;
   removeDependent: (id: string) => void;
-  updateConnectionInfo: (info: Partial<ConnectionInfo>) => void;
-  addConnection: (connection: Connection) => void;
-  removeConnection: (id: string) => void;
+  updateConnectionInfo: (info: boolean) => void;
+  // addConnection: (connection: Connection) => void;
+  // removeConnection: (id: string) => void;
   updateWorkInfo: (info: Partial<WorkInfo>) => void;
   addWorkExperience: (workExperience: WorkExperience) => void;
   removeWorkExperience: (id: string) => void;
@@ -198,34 +199,34 @@ export const useUserStore = create<UserState>()((set) => ({
     }
   })),
   
-  updateConnectionInfo: (info) => set((state) => ({
+  updateConnectionInfo: (info: boolean) => set((state) => ({
     userProfile: {
       ...state.userProfile,
-      connectionInfo: { ...state.userProfile.connectionInfo, ...info }
+      connectionInfo: { doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: info }
     }
   })),
   
-  addConnection: (connection) => set((state) => ({
-    userProfile: {
-      ...state.userProfile,
-      connectionInfo: {
-        ...state.userProfile.connectionInfo,
-        connectionList: [...state.userProfile.connectionInfo.connectionList, connection]
-      }
-    }
-  })),
+  // addConnection: (connection) => set((state) => ({
+  //   userProfile: {
+  //     ...state.userProfile,
+  //     connectionInfo: {
+  //       ...state.userProfile.connectionInfo,
+  //       connectionList: [...state.userProfile.connectionInfo.connectionList, connection]
+  //     }
+  //   }
+  // })),
   
-  removeConnection: (id) => set((state) => ({
-    userProfile: {
-      ...state.userProfile,
-      connectionInfo: {
-        ...state.userProfile.connectionInfo,
-        connectionList: state.userProfile.connectionInfo.connectionList.filter(
-          (conn) => conn.id !== id
-        )
-      }
-    }
-  })),
+  // removeConnection: (id) => set((state) => ({
+  //   userProfile: {
+  //     ...state.userProfile,
+  //     connectionInfo: {
+  //       ...state.userProfile.connectionInfo,
+  //       connectionList: state.userProfile.connectionInfo.connectionList.filter(
+  //         (conn) => conn.id !== id
+  //       )
+  //     }
+  //   }
+  // })),
   
   updateWorkInfo: (info) => set((state) => ({
     userProfile: {

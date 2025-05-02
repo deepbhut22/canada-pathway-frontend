@@ -160,34 +160,34 @@ export default function Report() {
                         <div className="flex justify-between items-start flex-wrap gap-2">
                           <div className="flex-[1_1_0%] min-w-0 pr-2">
                             <h4 className="text-sm font-medium">Core/Human Capital Factors:</h4>
-                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.coreHumanCapital?.reason}</p>
+                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.reason}</p>
                           </div>
                           <span className="text-sm font-medium whitespace-nowrap">
-                            {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.score! + 5} / {expressEntryProfile?.scoreBreakdown.coreHumanCapital?.maximum}
+                            {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
                           </span>
                         </div>
 
                       <div className="flex justify-between items-center flex-wrap">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.spouseFactors?.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.spouseFactors?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.spouseFactors?.score} / {expressEntryProfile?.scoreBreakdown.spouseFactors?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.spouseFactors?.score} / {expressEntryProfile?.scoreBreakdown?.spouseFactors?.maximum}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.skillTransferability?.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.skillTransferability?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown.skillTransferability?.score! + 5} / {expressEntryProfile?.scoreBreakdown.skillTransferability?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}</span>
                         
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Additional Points : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown.additionalPoints?.reason}</p>
+                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.additionalPoints?.reason}</p>
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown.additionalPoints?.score! + 5} / {expressEntryProfile?.scoreBreakdown.additionalPoints?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}</span>
                         
                       </div>
                     </div>
@@ -197,7 +197,7 @@ export default function Report() {
                     <h4 className="font-medium text-secondary-900 mb-2 underline">Eligibility Status</h4>
                     <div className="flex items-start mt-2">
                       <div className="flex-shrink-0">
-                        {expressEntryProfile?.eligibilityStatus[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[0]?.isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">

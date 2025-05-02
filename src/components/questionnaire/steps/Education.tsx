@@ -51,9 +51,7 @@ export default function Education({
     fieldOfStudy: '',
     country: '',
     province: '',
-    startDate: '',
     inProgress: false,
-    endDate: ''
   });
 
   const validateForm = () => {
@@ -102,7 +100,7 @@ export default function Education({
       setNewEducation(prev => ({
         ...prev,
         [name]: checked,
-        endDate: checked ? '' : prev.endDate
+        // endDate: checked ? '' : prev.endDate
       }));
     } else {
       setNewEducation(prev => ({ ...prev, [name]: value }));
@@ -110,15 +108,15 @@ export default function Education({
   };
 
   const handleAddEducation = () => {
-    if (newEducation.type && newEducation.country && newEducation.startDate) {
+    if (newEducation.type && newEducation.country && newEducation.fieldOfStudy) {
       addEducation({
         id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         type: newEducation.type as Education['type'],
         country: newEducation.country,
         province: newEducation.province,
-        startDate: newEducation.startDate,
+        // startDate: newEducation.startDate,
         inProgress: newEducation.inProgress || false,
-        endDate: newEducation.endDate || '',
+        // endDate: newEducation.endDate || '',
         fieldOfStudy: newEducation.fieldOfStudy!
       } as Education);
       
@@ -126,9 +124,9 @@ export default function Education({
         type: '',
         country: '',
         province: '',
-        startDate: '',
+        // startDate: '',
         inProgress: false,
-        endDate: ''
+        // endDate: ''
       });
     }
   };
@@ -247,7 +245,7 @@ export default function Education({
                   </FormGroup>
                 )}
 
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel htmlFor="startDate" required>Start Date</FormLabel>
                   <FormControl>
                     <Input
@@ -258,7 +256,7 @@ export default function Education({
                       onChange={handleNewEducationChange}
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup>
                   <FormControl>
@@ -272,7 +270,7 @@ export default function Education({
                   </FormControl>
                 </FormGroup>
 
-                {!newEducation.inProgress && (
+                {/* {!newEducation.inProgress && (
                   <FormGroup>
                     <FormLabel htmlFor="endDate" required>End Date</FormLabel>
                     <FormControl>
@@ -285,11 +283,11 @@ export default function Education({
                       />
                     </FormControl>
                   </FormGroup>
-                )}
+                )} */}
 
                 <Button
                   onClick={handleAddEducation}
-                  disabled={!newEducation.type || !newEducation.country || !newEducation.startDate}
+                  disabled={!newEducation.type || !newEducation.country || !newEducation.fieldOfStudy}
                   // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Education
@@ -298,11 +296,12 @@ export default function Education({
             </div>
 
             {educationInfo.educationList.length > 0 && (
-              <div className="mt-6 space-y-4">
+              <div 
+              className="mt-6 space-y-4">
                 <h3 className="text-lg font-medium">Added Education</h3>
-                {educationInfo.educationList.map((education) => (
+                {educationInfo.educationList.map((education, idx) => (
                   <div 
-                    key={education.id} 
+                    key={`ed- ${idx}`} 
                     className="bg-white border border-secondary-200 rounded-md p-4"
                   >
                     <div className="flex justify-between items-start">
@@ -319,8 +318,8 @@ export default function Education({
                           }
                         </p>
                         <p className="text-sm text-secondary-500 mt-1">
-                          {new Date(education.startDate).toLocaleDateString()} - {' '}
-                          {education.inProgress ? 'In Progress' : new Date(education.endDate).toLocaleDateString()}
+                          {/* {new Date(education.startDate).toLocaleDateString()} - {' '} */}
+                          {education.inProgress ? 'In Progress' : ''}
                         </p>
                       </div>
                       <Button

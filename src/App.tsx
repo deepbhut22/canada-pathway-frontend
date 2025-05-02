@@ -75,22 +75,3 @@ export default function App() {
     </>
   );
 }
-
-const benefits = [
-  {
-    text: "Personalized immigration pathways tailored to your qualifications",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Detailed eligibility assessment for all Canadian immigration programs",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Step-by-step guidance on document requirements and application process",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Real-time updates when your eligibility changes for any program",
-    icon: <CheckCircle className="h-5 w-5" />
-  }
-];

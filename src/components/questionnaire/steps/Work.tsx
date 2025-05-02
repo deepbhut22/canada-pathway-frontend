@@ -12,10 +12,12 @@ import {
   Input,
   Select,
   RadioGroup,
-  Checkbox
+  Checkbox,
+  SearchSelect
 } from '../../ui/Form';
 import Button from '../../ui/Button';
 import { Plus, Trash2 } from 'lucide-react';
+import { getNocOptions } from '../../../utils/dummyData';
 
 const YES_NO_OPTIONS = [
   { value: 'true', label: 'Yes' },
@@ -44,17 +46,17 @@ export default function Work({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [newWork, setNewWork] = useState<Partial<WorkExperience>>({
     jobTitle: '',
-    isPaid: true,
+    // isPaid: true,
     isSelfEmployed: false,
-    hoursPerWeek: null as number | null,
+    // hoursPerWeek: null as number | null,
     country: '',
     province: '',
     workPermitType: '',
-    hasLMIA: false,
+    // hasLMIA: false,
     nocCode: '',
-    startDate: '',
+    // startDate: '',
     isCurrentJob: false,
-    endDate: ''
+    // endDate: '',
   });
 
   const validateForm = () => {
@@ -88,14 +90,33 @@ export default function Work({
 
   const handleNewWorkChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
+    console.log(value);
+
+    if (typeof value === 'object' && value !== null) {
+      const { noc, title, tier } = value;
+      setNewWork(prev => ({
+        ...prev,
+        nocCode: noc,
+        jobTitle: title,
+        tier: tier
+      }));
+    }    
+    if (name === 'isSelfEmployed') {
+      setNewWork(prev => ({
+        ...prev,
+        [name]: value === 'true' // convert string to boolean
+      }));
+      return;
+    }
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setNewWork(prev => ({
         ...prev,
         [name]: checked,
-        endDate: name === 'isCurrentJob' && checked ? '' : prev.endDate
+        // endDate: name === 'isCurrentJob' && checked ? '' : prev.endDate
       }));
+    } else if (name === 'nocCode') {
+      // setNewWork(prev => ({ ...prev, nocCode: value }));
     } else if (type === 'number') {
       const numValue = value ? parseInt(value) : null;
       setNewWork(prev => ({ ...prev, [name]: numValue }));
@@ -105,44 +126,53 @@ export default function Work({
   };
 
   const handleAddWork = () => {
-    // console.log({...newWork, ...userProfile.workInfo});
+    // console.log({...newWork});
 
     if (
       newWork.jobTitle &&
-      newWork.country &&
-      newWork.startDate &&
-      (newWork.isCurrentJob || newWork.endDate)
+      newWork.country && 
+      newWork.nocCode &&
+      newWork.numberOfMonths &&
+      (newWork.country === 'canada' ? newWork.province : true) &&
+      (newWork.country === 'canada' ? newWork.workPermitType : true) &&
+      newWork.nocCode
+      // newWork.startDate &&
+      // (newWork.isCurrentJob || newWork.endDate)
     ) {
       addWorkExperience({
         id: Date.now().toString() + Math.random().toString(36).substring(2, 8),
         jobTitle: newWork.jobTitle,
-        isPaid: newWork.isPaid || false,
+        // isPaid: newWork.isPaid || false,
         isSelfEmployed: newWork.isSelfEmployed || false,
-        hoursPerWeek: newWork.hoursPerWeek || null,
+        // hoursPerWeek: newWork.hoursPerWeek || null,
         country: newWork.country,
         province: newWork.province,
         workPermitType: newWork.workPermitType as WorkExperience['workPermitType'],
-        hasLMIA: newWork.hasLMIA || false,
+        // hasLMIA: newWork.hasLMIA || false,
         nocCode: newWork.nocCode || '',
-        startDate: newWork.startDate,
+        // startDate: newWork.startDate,
         isCurrentJob: newWork.isCurrentJob || false,
-        endDate: newWork.endDate || ''
+        // endDate: newWork.endDate || ''
+        numberOfMonths: newWork.numberOfMonths || 0,
+        tier: newWork.tier || 0
       });
       // console.log("added");
       
       setNewWork({
         jobTitle: '',
-        isPaid: true,
+        // isPaid: true,
         isSelfEmployed: false,
-        hoursPerWeek: null,
+        // hoursPerWeek: null,
         country: '',
         province: '',
         workPermitType: '',
-        hasLMIA: false,
+        // hasLMIA: false,
         nocCode: '',
-        startDate: '',
+        // startDate: '',
         isCurrentJob: false,
-        endDate: ''
+        // endDate: ''
+        numberOfMonths: 0,
+        tier: 0
       });
     }
   };
@@ -178,7 +208,7 @@ export default function Work({
               <h3 className="text-lg font-medium mb-4">Add Work Experience</h3>
               
               <div className="space-y-4">
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel htmlFor="jobTitle" required>Occupation or Job Title</FormLabel>
                   <FormControl>
                     <Input
@@ -189,9 +219,45 @@ export default function Work({
                       placeholder="Enter your job title"
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
+
+                <SearchSelect
+                  items={getNocOptions().map(item => ({
+                    ...item,
+                    tier: String(item.tier),
+                    noc: String(item.noc)
+                  }))}
+                  value={{
+                    title: newWork.jobTitle || '',
+                    tier: newWork.nocCode || '',
+                    noc: newWork.nocCode || ''
+                  }}
+                  onChange={(value) => handleNewWorkChange({
+                    target: {
+                      name: 'nocCode',
+                      value: value,
+                      // jobTitle: value.title
+                    }
+                  } as any)}
+                  label="Search Your Job Title And NOC Code"
+                  placeholder="Search By Job Title"
+                  name="nocCode"
+                />
 
                 <FormGroup>
+                  <FormLabel required>NOC Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      name="nocCode"
+                      value={newWork.nocCode}
+                      disabled={true}
+                      className='bg-gray-100 text-gray-500 cursor-not-allowed'
+                      placeholder="NOC Code"
+                    />
+                  </FormControl>
+                </FormGroup>
+
+                {/* <FormGroup>
                   <FormLabel required>Is / Was the job paid?</FormLabel>
                   <FormControl>
                     <RadioGroup
@@ -202,7 +268,7 @@ export default function Work({
                       direction="horizontal"
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup>
                   <FormLabel required>Are you self-employed?</FormLabel>
@@ -217,7 +283,7 @@ export default function Work({
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel htmlFor="hoursPerWeek" required>Hours per Week</FormLabel>
                   <FormControl>
                     <Input
@@ -231,7 +297,7 @@ export default function Work({
                       placeholder="Enter hours per week"
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup>
                   <FormLabel htmlFor="country" required>Country of Employment</FormLabel>
@@ -279,7 +345,7 @@ export default function Work({
                   </>
                 )}
 
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel required>Does this job have an LMIA?</FormLabel>
                   <FormControl>
                     <RadioGroup
@@ -290,22 +356,37 @@ export default function Work({
                       direction="horizontal"
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
 
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel htmlFor="nocCode" required>NOC Code</FormLabel>
                   <FormControl>
-                    <Input
+                    <Select
                       id="nocCode"
                       name="nocCode"
                       value={newWork.nocCode}
                       onChange={handleNewWorkChange}
+                      // options={getNocOptions()}
                       placeholder="Enter NOC code"
+                    />
+                  </FormControl>
+                </FormGroup> */}
+     
+
+                <FormGroup>
+                  <FormLabel htmlFor="numberOfMonths" required>Number Of Months</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="numberOfMonths"
+                      name="numberOfMonths"
+                      value={newWork.numberOfMonths}
+                      onChange={handleNewWorkChange}
+                      placeholder="Enter number of months"
                     />
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup>
+                {/* <FormGroup>
                   <FormLabel htmlFor="startDate" required>Start Date</FormLabel>
                   <FormControl>
                     <Input
@@ -316,7 +397,7 @@ export default function Work({
                       onChange={handleNewWorkChange}
                     />
                   </FormControl>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup>
                   <FormControl>
@@ -330,7 +411,7 @@ export default function Work({
                   </FormControl>
                 </FormGroup>
 
-                {!newWork.isCurrentJob && (
+                {/* {!newWork.isCurrentJob && (
                   <FormGroup>
                     <FormLabel htmlFor="endDate" required>End Date</FormLabel>
                     <FormControl>
@@ -343,11 +424,11 @@ export default function Work({
                       />
                     </FormControl>
                   </FormGroup>
-                )}
+                )} */}
 
                 <Button
                   onClick={handleAddWork}
-                  disabled={!newWork.jobTitle || !newWork.country || !newWork.startDate || (!newWork.isCurrentJob && !newWork.endDate)}
+                  disabled={!newWork.jobTitle || !newWork.country || !newWork.nocCode}
                   // leftIcon={<Plus className="h-4 w-4" />}
                 >
                   Add Work Experience
@@ -368,15 +449,15 @@ export default function Work({
                         <p className="text-sm text-secondary-600">
                           Job Title: {work.jobTitle}
                         </p>
-                        <p className="text-sm text-secondary-600">
+                        {/* <p className="text-sm text-secondary-600">
                           Payment: {work.isPaid ? 'Paid' : 'Unpaid'}
-                        </p>
+                        </p> */}
                         <p className="text-sm text-secondary-600">
                           Self-employed: {work.isSelfEmployed ? 'Yes' : 'No'}
                         </p>
-                        <p className="text-sm text-secondary-600">
+                        {/* <p className="text-sm text-secondary-600">
                           Hours per Week: {work.hoursPerWeek}
-                        </p>
+                        </p> */}
                         <p className="text-sm text-secondary-600">
                           Country: {work.country === 'canada' ? 'Canada' : 'Other Country'}
                         </p>
@@ -390,15 +471,18 @@ export default function Work({
                             </p>
                           </>
                         )}
-                        <p className="text-sm text-secondary-600">
+                        {/* <p className="text-sm text-secondary-600">
                           LMIA: {work.hasLMIA ? 'Yes' : 'No'}
-                        </p>
+                        </p> */}
                         <p className="text-sm text-secondary-600">
                           NOC Code: {work.nocCode}
                         </p>
                         <p className="text-sm text-secondary-600">
-                          Period: {new Date(work.startDate).toLocaleDateString()} - {work.isCurrentJob ? 'Present' : new Date(work.endDate).toLocaleDateString()}
+                          Number of Months: {work.numberOfMonths}
                         </p>
+                        {/* <p className="text-sm text-secondary-600">
+                          Period: {new Date(work.startDate).toLocaleDateString()} - {work.isCurrentJob ? 'Present' : new Date(work.endDate).toLocaleDateString()}
+                        </p> */}
                       </div>
                       <Button
                         variant="ghost"

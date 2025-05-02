@@ -12,8 +12,10 @@ import {
   Input,
   Select,
   RadioGroup,
-  Checkbox
+  Checkbox,
+  SearchSelect
 } from '../../ui/Form';
+import { getNocOptions } from '../../../utils/dummyData';
 
 const YES_NO_OPTIONS = [
   { value: 'true', label: 'Yes' },
@@ -30,7 +32,7 @@ export default function JobOffer({
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const jobOffer = jobOfferInfo.jobOffer;
-  // const [jobOffer, setJobOffer] = useState<JobOffer>({
+  // const [jobOffer, setJobOffer] = useState<JobOffer>(jobOfferObj || {
   //   jobTitle: '',
   //   nocCode: '',
   //   isPaid: true,
@@ -39,7 +41,8 @@ export default function JobOffer({
   //   isLMIA: false,
   //   startDate: '',
   //   hasEndDate: false,
-  //   endDate: ''
+  //   endDate: '',
+  //   tier: 0
   // });
 
   const validateForm = () => {
@@ -56,18 +59,18 @@ export default function JobOffer({
       if (!jobOffer.nocCode) {
         newErrors.nocCode = 'Please enter the NOC code';
       }
-      if (!jobOffer.hoursPerWeek) {
-        newErrors.hoursPerWeek = 'Please enter hours per week';
-      }
+      // if (!jobOffer.hoursPerWeek) {
+      //   newErrors.hoursPerWeek = 'Please enter hours per week';
+      // }
       if (!jobOffer.province) {
         newErrors.province = 'Please select the province';
       }
       if (!jobOffer.startDate) {
         newErrors.startDate = 'Please enter the start date';
       }
-      if (jobOffer.hasEndDate && !jobOffer.endDate) {
-        newErrors.endDate = 'Please enter the end date';
-      }
+      // if (jobOffer.hasEndDate && !jobOffer.endDate) {
+      //   newErrors.endDate = 'Please enter the end date';
+      // }
     }
     
     setErrors(newErrors);
@@ -87,61 +90,82 @@ export default function JobOffer({
       jobOffer: hasJobOffer ? jobOffer : {
         jobTitle: '',
         nocCode: '',
-        isPaid: true,
-        hoursPerWeek: null,
+        // isPaid: true,
+        // hoursPerWeek: null,
         province: '',
-        isLMIA: false,
+        // isLMIA: false,
         startDate: '',
-        hasEndDate: false,
-        endDate: ''
+        // hasEndDate: false,
+        // endDate: '',
+        tier: 0
       }
     });
   };
 
-  const handleJobOfferChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const handleJobOfferChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | any) => {
+    const { name, value, type } = e.target || {};
+    // console.log(jobOfferInfo.jobOffer);
     
+
+    // Handle SearchSelect component selection
+    if (name === 'nocCode' && typeof value === 'object' && value !== null) {
+      // When selecting an item from SearchSelect
+      if (value) {
+        updateJobOfferInfo({
+          hasJobOffer: jobOfferInfo.hasJobOffer,
+          jobOffer: {
+            ...jobOffer,
+            nocCode: value.noc,
+            jobTitle: value.title,
+            tier: value.tier
+          }
+        });
+      }
+      // When clearing the selection
+      else {
+        updateJobOfferInfo({
+          hasJobOffer: jobOfferInfo.hasJobOffer,
+          jobOffer: {
+            ...jobOffer,
+            nocCode: '',
+            jobTitle: '',
+            tier: 0
+          }
+        });
+      }
+      return;
+    }
+
+    // Handle other form inputs
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       updateJobOfferInfo({
-        [name]: checked,
-        jobOffer: jobOffer
-        // endDate: name === 'hasEndDate' && !checked ? '' : jobOffer.endDate
+        hasJobOffer: jobOfferInfo.hasJobOffer,
+        jobOffer: {
+          ...jobOffer,
+          [name]: checked,
+          // endDate: name === 'hasEndDate' && !checked ? '' : jobOffer.endDate
+        }
       });
-      // setJobOffer(prev => ({
-      //   ...prev,
-      //   [name]: checked,
-      //   endDate: name === 'hasEndDate' && !checked ? '' : prev.endDate
-      // }));
     } else if (type === 'number') {
       updateJobOfferInfo({
-        ...jobOfferInfo,
+        hasJobOffer: jobOfferInfo.hasJobOffer,
         jobOffer: {
           ...jobOffer,
           [name]: value ? parseInt(value) : null
         }
-      })
-      // setJobOffer(prev => ({ ...prev, [name]: value ? parseInt(value) : null }));
+      });
     } else {
       updateJobOfferInfo({
-        ...jobOfferInfo,
+        hasJobOffer: jobOfferInfo.hasJobOffer,
         jobOffer: {
           ...jobOffer,
           [name]: value
         }
-      })
+      });
     }
-
-    // Update the job offer in the store
-    updateJobOfferInfo({
-      hasJobOffer: jobOfferInfo.hasJobOffer,
-      jobOffer: {
-        ...jobOffer,
-        [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked :
-                type === 'number' ? (value ? parseInt(value) : null) : value
-      }
-    });
   };
+
 
   return (
     <Form>
@@ -170,7 +194,27 @@ export default function JobOffer({
 
         {jobOfferInfo.hasJobOffer && (
           <div className="mt-6 space-y-4">
-            <FormGroup>
+
+            <SearchSelect
+              items={getNocOptions()}
+              value={jobOffer.nocCode ? {
+                title: jobOffer.jobTitle || '',
+                tier: (jobOffer.tier || 0).toString(),
+                noc: jobOffer.nocCode || ''
+              } : null}
+              onChange={(value) => handleJobOfferChange({
+                target: {
+                  name: 'nocCode',
+                  value: value
+                }
+              })}
+              label="Search Your Job Title And NOC Code"
+              placeholder="Search By Job Title"
+              name="nocCode"
+            />
+
+
+            {/* <FormGroup>
               <FormLabel htmlFor="jobTitle" required>Job Title / Occupation</FormLabel>
               <FormControl>
                 <Input
@@ -184,7 +228,7 @@ export default function JobOffer({
               {errors.jobTitle && (
                 <div className="text-red-500 text-xs mt-1">{errors.jobTitle}</div>
               )}
-            </FormGroup>
+            </FormGroup> */}
 
             <FormGroup>
               <FormLabel htmlFor="nocCode" required>NOC Code</FormLabel>
@@ -193,6 +237,8 @@ export default function JobOffer({
                   id="nocCode"
                   name="nocCode"
                   value={jobOffer.nocCode}
+                  disabled={true}
+                  className='bg-gray-100 text-gray-500 cursor-not-allowed'
                   onChange={handleJobOfferChange}
                   placeholder="Enter NOC code"
                 />
@@ -202,7 +248,7 @@ export default function JobOffer({
               )}
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormLabel required>Will the job be paid?</FormLabel>
               <FormControl>
                 <RadioGroup
@@ -213,9 +259,9 @@ export default function JobOffer({
                   direction="horizontal"
                 />
               </FormControl>
-            </FormGroup>
+            </FormGroup> */}
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormLabel htmlFor="hoursPerWeek" required>Hours per Week</FormLabel>
               <FormControl>
                 <Input
@@ -232,7 +278,7 @@ export default function JobOffer({
               {errors.hoursPerWeek && (
                 <div className="text-red-500 text-xs mt-1">{errors.hoursPerWeek}</div>
               )}
-            </FormGroup>
+            </FormGroup> */}
 
             <FormGroup>
               <FormLabel htmlFor="province" required>Province of Employment</FormLabel>
@@ -251,7 +297,7 @@ export default function JobOffer({
               )}
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormLabel required>Is this job LMIA exempt?</FormLabel>
               <FormControl>
                 <RadioGroup
@@ -262,10 +308,10 @@ export default function JobOffer({
                   direction="horizontal"
                 />
               </FormControl>
-            </FormGroup>
+            </FormGroup> */}
 
             <FormGroup>
-              <FormLabel htmlFor="startDate" required>Start Date</FormLabel>
+              <FormLabel htmlFor="startDate" required>Start Date (If this job offer is of your current job then enter today's date)</FormLabel>
               <FormControl>
                 <Input
                   id="startDate"
@@ -280,7 +326,7 @@ export default function JobOffer({
               )}
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormControl>
                 <Checkbox
                   id="hasEndDate"
@@ -290,9 +336,9 @@ export default function JobOffer({
                   label="This job offer has an end date"
                 />
               </FormControl>
-            </FormGroup>
+            </FormGroup> */}
 
-            {jobOffer.hasEndDate && (
+            {/* {jobOffer.hasEndDate && (
               <FormGroup>
                 <FormLabel htmlFor="endDate" required>End Date</FormLabel>
                 <FormControl>
@@ -308,7 +354,7 @@ export default function JobOffer({
                   <div className="text-red-500 text-xs mt-1">{errors.endDate}</div>
                 )}
               </FormGroup>
-            )}
+            )} */}
           </div>
         )}
       </FormSection>
