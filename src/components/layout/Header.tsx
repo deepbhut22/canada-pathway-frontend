@@ -29,6 +29,7 @@ export default function Header() {
   const isLoading = useAuthStore((state) => state.isLoading);
 
   const isHome = location.pathname === '/';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -62,11 +63,11 @@ export default function Header() {
   ];
 
   const handleRedirect = (path: string) => {
-    console.log(isAuth, isProfileComplete, path);
-    if (!isAuth) {
+    // console.log(isAuth, isProfileComplete, path);
+    if (!isAuth && path !== '/') {
       navigate('/login');
     } else if (isAuth && !isProfileComplete && path === '/report') {
-      console.log("done");
+      // console.log("done");
       useAuthStore.getState().setIsPopupOpen(true);
     } else {
       navigate(path);
@@ -91,7 +92,7 @@ export default function Header() {
               }
             </Link>
             <nav className="hidden md:ml-6 lg:ml-10 xl:ml-20 md:flex md:space-x-4 lg:space-x-8">
-              {navigationItems.map((item, idx) => (
+              {navigationItems.map((item, idx) => ( (!isAuthPage || item.path === '/') &&
                 <p
                   key={item.path + " " + idx}
                   // to={item.path}
@@ -137,7 +138,7 @@ export default function Header() {
                   </Button>
                 </>
                 :
-                <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
+                !isAuthPage && <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-4">
                   <Button
                     onClick={() => navigate('/login')}
                     size="sm" variant="outline"
