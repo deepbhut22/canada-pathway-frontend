@@ -10,8 +10,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import useAuthStore from './store/authStore';
 import AllNewsPage from './pages/AllNews';
 import { getGeneralNews, getProvincialNews } from './data/dummyNews';
-import { MessagePopup } from './components/ui/MessagePopup';
-import { CheckCircle } from 'lucide-react';
+import LegalInfoComponent from './pages/PrivacyPolicy';
 
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -30,6 +29,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/privacy-policy" element={<LegalInfoComponent />} />
           <Route
             path="/news"
             element={

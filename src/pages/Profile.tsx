@@ -254,25 +254,25 @@ export default function Profile() {
                 <CardContent>
                   <ul className="space-y-3">
                     <li>
-                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         Latest Draw Results
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/provincial-nominees.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         Provincial Nominee Programs
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         CRS Score Calculator
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         Processing Times
                       </a>

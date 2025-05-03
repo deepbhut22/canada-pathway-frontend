@@ -52,8 +52,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Find Your Pathway */}
-            <div className="h-full flex flex-col">
-              <div className="flex-grow bg-white rounded-lg shadow-md p-6 h-full">
+            <div className="h-full flex flex-col justify-center">
+              <div className="flex bg-white rounded-lg items-center justify-center shadow-xl border border-secondary-100 p-6 h-full">
                 <PathwayCard
                   isAuthenticated={isAuthenticated}
                   isProfileComplete={userProfile?.isComplete || false}
@@ -62,43 +62,52 @@ export default function Home() {
             </div>
 
             {/* Recent Draw Results */}
-            <div className="h-full flex flex-col">
+            <div className="h-full flex flex-col shadow-xl border border-secondary-100">
               <div className="flex-grow bg-secondary-50 rounded-lg p-6 border border-secondary-100 h-full">
-                <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draw Results</h3>
+                <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draws</h3>
                 <p className="text-secondary-700 mb-4">
                   Latest invitation rounds for Canada's immigration programs.
                 </p>
                 <div className="space-y-4">
                   <div className="border-b border-secondary-200 pb-3">
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium text-secondary-800">Express Entry</div>
-                      <div className="text-sm text-secondary-500">Apr 20, 2025</div>
+                      <div className="flex flex-col">
+                        <div className="font-medium text-secondary-800">Express Entry</div>
+                        <p className="text-secondary-600">Healthcare And Social Services Occupations</p>
+                      </div>
+                      <div className="text-sm text-secondary-500">May 02, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">3,500 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 475</div>
+                      <div className="text-sm text-secondary-600">500 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 510</div>
                     </div>
                   </div>
 
                   <div className="border-b border-secondary-200 pb-3">
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium text-secondary-800">PNP Only</div>
-                      <div className="text-sm text-secondary-500">Apr 12, 2025</div>
+                      <div className="flex flex-col">
+                        <div className="font-medium text-secondary-800">Manitoba PNP</div>
+                        <p className="text-secondary-600">Skilled Workers Overseas</p>
+                      </div>
+                      <div className="text-sm text-secondary-500">May 01, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">1,200 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 772</div>
+                      <div className="text-sm text-secondary-600">26 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">Score: 727</div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium text-secondary-800">Healthcare Workers</div>
-                      <div className="text-sm text-secondary-500">Apr 5, 2025</div>
+                      <div className="flex flex-col">
+                        <div className="font-medium text-secondary-800">Express Entry</div>
+                        <p className="text-secondary-600">Education Occupations</p>
+                      </div>
+                      <div className="text-sm text-secondary-500">May 01, 2025</div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">1,500 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 458</div>
+                      <div className="text-sm text-secondary-600">1,000 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 479</div>
                     </div>
                   </div>
                 </div>

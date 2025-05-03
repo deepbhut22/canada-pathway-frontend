@@ -8,8 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link to="/" className="flex items-center">
-              <MapPin className="h-6 w-6 text-primary-400" />
-              <span className="ml-2 text-xl font-bold">CanadaPath</span>
+              <img src="../../../../assets/canada-logo-light.png" alt="PathPR Logo" className="w-40 sm:w-48" />
+              {/* <MapPin className="h-6 w-6 text-primary-400" />
+              <span className="ml-2 text-xl font-bold">PathPR</span> */}
             </Link>
             <p className="text-secondary-300 text-sm max-w-xs">
               Your trusted guide to navigating Canadian immigration pathways with personalized assistance.
@@ -39,24 +40,24 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-secondary-100">Programs</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Express Entry</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Provincial Nominee</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Family Sponsorship</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Atlantic Immigration</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Quebec Skilled Worker</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">LMIA Work Permits</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Express Entry</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/provincial-nominees.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Provincial Nominee</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/family-sponsorship.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Family Sponsorship</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/atlantic-immigration.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Atlantic Immigration</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/quebec-skilled-workers.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Quebec Skilled Worker</a></li>
+              {/* <li><a href="#" className="text-secondary-300 hover:text-white text-sm">LMIA Work Permits</a></li> */}
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4 text-secondary-100">Resources</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Immigration News</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">CRS Calculator</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Processing Times</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">NOC Finder</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">Language Testing</a></li>
-              <li><a href="#" className="text-secondary-300 hover:text-white text-sm">FAQs</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/news.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Immigration News</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">CRS Calculator</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Processing Times</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/find-national-occupation-code.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">NOC Finder</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/language-test.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Language Testing</a></li>
+              <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/corporate/partners-service-providers/funding/frequently-asked-questions.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">FAQs</a></li>
             </ul>
           </div>
 
@@ -65,15 +66,15 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-start">
                 <Mail className="h-5 w-5 text-primary-400 mr-2 mt-0.5" />
-                <span className="text-secondary-300 text-sm">contact@canadapath.com</span>
+                <span className="text-secondary-300 text-sm">contact@pathpr.ca</span>
               </div>
-              <div className="flex items-start">
+              {/* <div className="flex items-start">
                 <Phone className="h-5 w-5 text-primary-400 mr-2 mt-0.5" />
                 <span className="text-secondary-300 text-sm">+1 (800) 123-4567</span>
-              </div>
+              </div> */}
               <div className="flex items-start">
                 <Globe className="h-5 w-5 text-primary-400 mr-2 mt-0.5" />
-                <span className="text-secondary-300 text-sm">www.canadapath.com</span>
+                <span className="text-secondary-300 text-sm">www.pathpr.ca</span>
               </div>
             </div>
             {/* <div className="mt-6">
@@ -87,12 +88,12 @@ export default function Footer() {
         <div className="border-t border-secondary-800 mt-10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-secondary-400">
-              © {new Date().getFullYear()} CanadaPath. All rights reserved.
+              © {new Date().getFullYear()} PathPR. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-sm text-secondary-400 hover:text-white">Privacy Policy</a>
-              <a href="#" className="text-sm text-secondary-400 hover:text-white">Terms of Service</a>
-              <a href="#" className="text-sm text-secondary-400 hover:text-white">Disclaimer</a>
+              <a href="/privacy-policy" className="text-sm text-secondary-400 hover:text-white">Privacy Policy</a>
+              <a href="/privacy-policy" className="text-sm text-secondary-400 hover:text-white">Terms of Service</a>
+              <a href="/privacy-policy" className="text-sm text-secondary-400 hover:text-white">Disclaimer</a>
             </div>
           </div>
         </div>
