@@ -60,12 +60,12 @@ export default function QuestionnaireLayout({
         </div>
 
         <div className="p-6">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-1">
+          {/* <h2 className="text-xl font-semibold text-secondary-900 mb-1">
             {navigationSteps[currentStepIndex].title}
-          </h2>
-          <p className="text-secondary-600 mb-6">
+          </h2> */}
+          {/* <p className="text-secondary-600 mb-6">
             {navigationSteps[currentStepIndex].description}
-          </p>
+          </p> */}
 
           <div className="space-y-6">
             {children}

@@ -101,7 +101,7 @@ export default function Report() {
               <Button
                 variant="outline"
                 leftIcon={<Download className="h-4 w-4" />}
-                className="w-full md:w-auto"
+                className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
               >
                 Download Report
               </Button>
@@ -109,7 +109,8 @@ export default function Report() {
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
                 onClick={() => navigate('/profile')}
-                className="w-full md:w-auto"
+                variant="outline"
+                className="w-full md:w-auto bg-secondary-950 text-white hover:bg-secondary-950 hover:text-white"
               >
                 Update Profile
               </Button>
@@ -117,7 +118,8 @@ export default function Report() {
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
                 // onClick={generateReport}
-                className="w-full md:w-auto"
+                variant="outline"
+                className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
               >
                 Re-Generate Report
               </Button>
@@ -136,7 +138,7 @@ export default function Report() {
               <CardHeader className="bg-primary-50">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl">Express Entry Profile</CardTitle>
-                  <div className="bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  <div className="bg-primary-100 text-secondary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                     Primary Recommendation
                   </div>
                 </div>
@@ -149,7 +151,7 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 10 : 0} - {expressEntryProfile?.crsScore! + 10}</div>
+                      <div className="text-2xl font-bold text-secondary-950">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 10 : 0} - {expressEntryProfile?.crsScore! + 10}</div>
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
@@ -431,6 +433,9 @@ export default function Report() {
                           <h5 className="text-sm font-medium text-secondary-900">
                             {program.title}
                           </h5>
+                          <p className={`text-sm text-secondary-600 ${program.status === 'Active' ? 'text-green-400' : program.status === 'Temporarily Paused' ? 'text-yellow-500' : 'text-red-900'}`}>
+                            {program.status}
+                          </p>
                           <p className="text-sm text-secondary-600">
                             {program.description}
                           </p>
