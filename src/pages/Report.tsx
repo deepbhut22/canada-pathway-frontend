@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { FileText, Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2 } from 'lucide-react';
+import { Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import api from '../utils/axios';
 import { useExpressEntryStore, useRecommendationStore } from '../store/reports';
@@ -16,6 +16,9 @@ import { PNPOptionsDialog } from '../components/PNPOptionsDialog';
 import { SuggestionsDialog } from '../components/SuggestionsDialog';
 import { alternativePrograms } from '../utils/dummyData';
 import { AlternativePathwaysDialog } from '../components/AlternativePathwaysDialog';
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface PNPAssessment {
   id?: string;
@@ -38,11 +41,13 @@ export default function Report() {
   const navigate = useNavigate();
   const { userProfile } = useUserStore();
   const { isComplete, basicInfo } = userProfile;
+  const reportContentRef = useRef(null);
 
   const [showPNPOptionsDialog, setShowPNPOptionsDialog] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showAlternativePathwaysDialog, setShowAlternativePathwaysDialog] = useState(false);  
   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // const pnpReport = usePNPStore.getState().report;
   const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
@@ -84,6 +89,126 @@ export default function Report() {
     }
   }
 
+  const downloadReport = async () => {
+    setIsDownloading(true);
+    console.log('Downloading report...');
+    try {
+      // Get the report content using the ref instead of getElementById
+      const reportContent = reportContentRef.current;
+
+      if (!reportContent) {
+        console.error('Report content not found');
+        setIsDownloading(false);
+        return;
+      }
+
+      // Create a new PDF document
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      // Add title page
+      pdf.setFontSize(24);
+      pdf.setTextColor(33, 33, 33);
+      pdf.text('Immigration Pathway Report', 105, 50, { align: 'center' });
+      pdf.setFontSize(14);
+      pdf.text(`For: ${basicInfo.fullName || 'User'}`, 105, 65, { align: 'center' });
+      pdf.setFontSize(12);
+      pdf.text(`Generated on: ${new Date().toLocaleDateString('en-CA')}`, 105, 75, { align: 'center' });
+
+      // Add logo placeholder
+      pdf.setFillColor(230, 244, 255);
+      pdf.rect(65, 100, 80, 30, 'F');
+      pdf.setTextColor(30, 64, 175);
+      pdf.setFontSize(16);
+      pdf.text('PATHWAY FINDER', 105, 115, { align: 'center' });
+      pdf.setFontSize(10);
+      pdf.text('Your Immigration Journey Simplified', 105, 122, { align: 'center' });
+
+      pdf.addPage();
+      // Get each section of the report that we want to include
+      const reportSections = (reportContent as HTMLElement).querySelectorAll('.pdf-section') || [];
+
+      // If no sections with the pdf-section class are found, try to convert the entire reportContent
+      if (reportSections.length === 0) {
+        console.log('No sections found, using entire report content');
+        try {
+          // Convert entire report content
+          const canvas = await html2canvas(reportContent, {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            allowTaint: true
+          });
+
+          // Calculate dimensions to fit on PDF
+          const imgWidth = 190;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+
+          // Add content
+          const imgData = canvas.toDataURL('image/png');
+          pdf.addImage(imgData, 'PNG', 10, 15, imgWidth, imgHeight);
+        } catch (error) {
+          console.error('Error converting entire report content:', error);
+        }
+      } else {
+        console.log(`Found ${reportSections.length} sections`);
+        let yOffset = 15;
+
+        // Add each section to PDF
+        for (let i = 0; i < reportSections.length; i++) {
+          const section = reportSections[i];
+
+          if (i > 0 && yOffset > 250) {
+            // Add a new page if we're running out of space
+            pdf.addPage();
+            yOffset = 15;
+          }
+
+          // Convert section to canvas
+          const canvas = await html2canvas(section as HTMLElement, {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            allowTaint: true
+          });
+
+          // Calculate dimensions to fit on PDF
+          const imgWidth = 190;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+
+          // Add section title
+          const sectionTitle = section.getAttribute('data-title');
+          if (sectionTitle) {
+            pdf.setFontSize(14);
+            pdf.setTextColor(30, 64, 175);
+            pdf.text(sectionTitle, 10, yOffset);
+            yOffset += 8;
+          }
+
+          // Add section content
+          const imgData = canvas.toDataURL('image/png');
+          pdf.addImage(imgData, 'PNG', 10, yOffset, imgWidth, imgHeight);
+
+          yOffset += imgHeight + 15;
+
+          // Add page break if not the last section
+          if (i < reportSections.length - 1 && yOffset > 250) {
+            pdf.addPage();
+            yOffset = 15;
+          }
+        }
+      }
+
+      // Save the PDF
+      pdf.save(`Immigration_Pathway_Report_${basicInfo.fullName || 'User'}_${new Date().toLocaleDateString('en-CA')}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again later.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+
   return (
     <Layout>
       <div className="py-8 bg-white mt-16 border-b border-secondary-200">
@@ -100,6 +225,7 @@ export default function Report() {
             <div className="mt-5 flex flex-col md:flex-row md:mt-0 md:ml-4 space-y-3 md:space-y-0 md:space-x-3 w-full">
               <Button
                 variant="outline"
+                onClick={downloadReport}
                 leftIcon={<Download className="h-4 w-4" />}
                 className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
               >
@@ -131,10 +257,10 @@ export default function Report() {
       
       {isLoading ? <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50 h-[70vh] flex items-center justify-center"><LoadingSpinner  size='large' message='Loading Report...'/></div>
        : 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" ref={reportContentRef}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div> : <div className="lg:col-span-2 space-y-8">
-            <Card>
+            <Card className="pdf-section" data-title="Express Entry Profile">
               <CardHeader className="bg-primary-50">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl">Express Entry Profile</CardTitle>
@@ -369,7 +495,7 @@ export default function Report() {
             {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div>
              : 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className='flex flex-col gap-2 justify-between'>
+              <Card className='flex flex-col gap-2 justify-between pdf-section' data-title="Provincial Nominee Program">
                 <CardHeader>
                   <CardTitle>Provincial Nominee Program</CardTitle>
                 </CardHeader>
@@ -413,7 +539,7 @@ export default function Report() {
                 </CardFooter>
               </Card>
               
-              <Card>
+              <Card className='pdf-section' data-title="Alternative Pathways">
                 <CardHeader>
                   <CardTitle>Alternative Pathways</CardTitle>
                 </CardHeader>
@@ -487,7 +613,7 @@ export default function Report() {
               </Card>
             </div>}
             
-            <Card>
+            <Card className='pdf-section' data-title="Next Steps and Recommendations">
               <CardHeader>
                 <CardTitle>Next Steps and Recommendations</CardTitle>
               </CardHeader>

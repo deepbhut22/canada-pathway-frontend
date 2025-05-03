@@ -102,7 +102,7 @@ export const HorizontalSlider = <T,>({
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-primary-600' : 'bg-gray-300'
+            className={`h-2 w-2 rounded-full ${currentIndex === index ? 'bg-secondary-900' : 'bg-gray-300'
               }`}
             aria-label={`Go to slide ${index + 1}`}
           />

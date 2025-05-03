@@ -11,7 +11,7 @@ import useAuthStore from './store/authStore';
 import AllNewsPage from './pages/AllNews';
 import { getGeneralNews, getProvincialNews } from './data/dummyNews';
 import LegalInfoComponent from './pages/PrivacyPolicy';
-
+import GoogleCallback from './pages/GoogleCallback';  
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
   const isAuth = useAuthStore((state) => state.isAuthenticated);
@@ -30,6 +30,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/privacy-policy" element={<LegalInfoComponent />} />
+          <Route path="/auth/google" element={<GoogleCallback />} />
           <Route
             path="/news"
             element={

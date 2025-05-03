@@ -13,6 +13,7 @@ import { useUserStore } from '../store/userStore';
 import { MessagePopup } from '../components/ui/MessagePopup';
 import { CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../components/ui/LoadinSpinner';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
@@ -22,11 +23,7 @@ export default function Home() {
   // If still loading auth state, you could show a loading spinner here
   if (isLoading) {
     return (
-      <Layout>
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-        </div>
-      </Layout>
+      <LoadingSpinner fullScreen={true} size='large' />
     );
   }
 

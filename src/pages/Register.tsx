@@ -1,59 +1,92 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
-import { 
-  Form,
-  FormSection,
-  FormGroup,
-  FormLabel,
-  FormControl,
-  FormHelperText,
-  Input,
-} from '../components/ui/Form';
-import Button from '../components/ui/Button';
+import BackgroundAnimation from '../components/home/BackgroundAnimation';
+import { CheckCircle } from 'lucide-react';
 
-export default function Register() {
+const Register = () => {
   const navigate = useNavigate();
-  const { register, loginWithGoogle, isLoading, error } = useAuthStore();
-  
+  const { register, isLoading, error } = useAuthStore();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();    
+    e.preventDefault();
     await register(email, password, firstName, lastName);
     navigate('/');
   };
-  
-  const handleGoogleLogin = async () => {
-    await loginWithGoogle();
-    navigate('/');
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:5000/api/auth/google';
   };
-  
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-secondary-900 tracking-tight">
-            Create Your Account
-          </h2>
-          <p className="mt-2 text-sm text-secondary-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
-              Sign in
-            </Link>
-          </p>
+    <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Left Side - Animation with Text Overlay - Hidden on mobile */}
+      <div className="relative hidden md:flex md:w-3/5 bg-gray-900 items-center justify-center overflow-hidden">
+        {/* Background Animation */}
+        <div className="absolute inset-0 w-full h-full">
+          <BackgroundAnimation />
         </div>
-        
-        <Form onSubmit={handleSubmit}>
-          <FormSection>
+
+        {/* Text Overlay */}
+        <div className="relative z-10 p-8 w-max">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 w-max">Welcome to PathPR</h1>
+          <p className="text-xl text-gray-300 mb-6">Ai Powered Immigration Assessment</p>
+          <div className="space-y-4">
+            {[
+              {
+                title: "Comprehensive Assessment",
+                desc: "Evaluate eligibility across 80+ immigration programs",
+              },
+              {
+                title: "Real-Time Matching",
+                desc: "Get matched with pathways based on your qualifications",
+              },
+              {
+                title: "Personalized Scoring",
+                desc: "Calculate your CRS score across multiple programs",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start space-x-3">
+                <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-sm sm:text-base font-medium mb-1 text-white">{item.title}</h3>
+                  <p className="text-blue-200 text-xs sm:text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Registration Form */}
+      <div className="w-full md:w-2/5 flex items-center justify-center p-6 lg:p-12 bg-white">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-secondary-950 tracking-tight">
+              Create Your Account
+            </h2>
+            <p className="mt-2 text-sm text-secondary-800">
+              Already have an account?{' '}
+              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                Sign in
+              </Link>
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <FormGroup>
-                <FormLabel htmlFor="firstName" required>First Name</FormLabel>
-                <FormControl>
-                  <Input
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-secondary-950">
+                  First Name
+                </label>
+                <div className="mt-1">
+                  <input
                     id="firstName"
                     name="firstName"
                     type="text"
@@ -61,16 +94,18 @@ export default function Register() {
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Enter your first name"
-                    className="focus:ring-primary-500 focus:border-primary-500"
+                    placeholder="First name"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
-                </FormControl>
-              </FormGroup>
+                </div>
+              </div>
 
-              <FormGroup>
-                <FormLabel htmlFor="lastName" required>Last Name</FormLabel>
-                <FormControl>
-                  <Input
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-secondary-950">
+                  Last Name
+                </label>
+                <div className="mt-1">
+                  <input
                     id="lastName"
                     name="lastName"
                     type="text"
@@ -78,17 +113,19 @@ export default function Register() {
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Enter your last name"
-                    className="focus:ring-primary-500 focus:border-primary-500"
+                    placeholder="Last name"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
-                </FormControl>
-              </FormGroup>
+                </div>
+              </div>
             </div>
 
-            <FormGroup>
-              <FormLabel htmlFor="email" required>Email address</FormLabel>
-              <FormControl>
-                <Input
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-secondary-950">
+                Email address
+              </label>
+              <div className="mt-1">
+                <input
                   id="email"
                   name="email"
                   type="email"
@@ -97,66 +134,91 @@ export default function Register() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="focus:ring-primary-500 focus:border-primary-500"
+                  className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
-              </FormControl>
-            </FormGroup>
+              </div>
+              <label htmlFor="email" className="block text-sm text-gray-500">
+                *Make sure to enter correct email address, you will receive your report on this email.
+              </label>
+            </div>
 
-            <FormGroup>
-              <FormLabel htmlFor="password" required>Password</FormLabel>
-              <FormControl>
-                <Input
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-secondary-950">
+                Password
+              </label>
+              <div className="mt-1 relative">
+                <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
-                  className="focus:ring-primary-500 focus:border-primary-500"
+                  className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
-              </FormControl>
-              <FormHelperText className="text-secondary-500">
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                      <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <p className="mt-2 text-sm text-gray-500">
                 Password must be at least 8 characters long
-              </FormHelperText>
-            </FormGroup>
+              </p>
+            </div>
 
             {error && (
-              <div className="text-red-500 text-sm mt-2 bg-red-50 p-3 rounded-md border border-red-200">
+              <div className="p-3 rounded-md bg-red-500/20 border border-red-400/40 text-red-600 text-sm">
                 {error}
               </div>
             )}
 
-            <div className="mt-6">
-              <Button
-                type="submit"
-                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Creating account...' : 'Create account'}
-              </Button>
-            </div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              {isLoading ? (
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : null}
+              {isLoading ? 'Creating account...' : 'Create account'}
+            </button>
 
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-secondary-200" />
+                  <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-secondary-500">
+                  <span className="px-2 bg-white text-gray-500">
                     Or continue with
                   </span>
                 </div>
               </div>
 
               <div className="mt-6">
-                <Button
+                <button
                   type="button"
-                  variant="outline"
-                  className="w-full border-secondary-200 hover:bg-secondary-50 text-secondary-700 font-medium py-2 px-4 rounded-md transition-colors duration-200"
                   onClick={handleGoogleLogin}
                   disabled={isLoading}
+                  className="w-full flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-secondary-950 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors"
                 >
                   <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                     <path
@@ -165,12 +227,14 @@ export default function Register() {
                     />
                   </svg>
                   Sign up with Google
-                </Button>
+                </button>
               </div>
             </div>
-          </FormSection>
-        </Form>
+          </form>
+        </div>
       </div>
     </div>
   );
-} 
+};
+
+export default Register;    

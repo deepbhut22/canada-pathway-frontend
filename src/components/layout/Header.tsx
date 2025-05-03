@@ -8,7 +8,6 @@ import Shimmer from '../ui/Shimmer';
 import { useUserStore } from '../../store/userStore';
 import canadaLogoLight from '../../../assets/canada-logo-light.png';
 import canadaLogoDark from '../../../assets/canada-logo-dark.png';
-import { MessagePopup } from '../ui/MessagePopup';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,13 +1,17 @@
 import axios from 'axios';
 
 // Create instance
-const api = axios.create({
-    baseURL: 'http://3.98.13.227:5000/api',
-});
+// const api = axios.create({
+//     baseURL: 'http://3.98.13.227:5000/api',
+// });
 
 // const api = axios.create({
 //     baseURL: 'http://localhost:5000/api',
 // });
+
+const api = axios.create({
+    baseURL: 'https://8654-152-59-23-77.ngrok-free.app/api',
+});
 
 // Add JWT to headers
 api.interceptors.request.use((config) => {

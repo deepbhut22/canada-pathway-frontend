@@ -321,9 +321,28 @@ const useAuthStore = create<AuthState & {
   loginWithGoogle: async () => {
     set({ isLoading: true, error: null });
     try {
-      // Implement Google login
+      const response = await api.post('/auth/google');
+      
+      if (response.status === 200) {
+        set({ user: response.data, isAuthenticated: true, isLoading: false });
+        localStorage.setItem('canda-pathway-auth-token', response.data.token);
+
+        const profileResponse = await api.get('/auth/profile');
+
+        useUserStore.getState().resetUserProfile();
+
+        // Check if profile is complete and set the isComplete flag
+        const userProfile = profileResponse.data.userProfile;
+        const profileComplete = isProfileComplete(userProfile);
+        userProfile.isComplete = profileComplete;
+
+        useUserStore.setState({ userProfile });
+      } else {
+        throw new Error('Google login failed');
+      }
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false });
+      throw error;
     }
   },
 
