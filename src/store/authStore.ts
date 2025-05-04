@@ -144,11 +144,13 @@ const isProfileComplete = (profile: UserProfile): boolean => {
     (typeof languageInfo.hasTakenTest === 'boolean') &&
     (!languageInfo.hasTakenTest ||
       (languageInfo.hasTakenTest &&
-        languageInfo.primaryLanguageTest.type)) &&
+        languageInfo.primaryLanguageTest.type &&
+        languageInfo.primaryLanguageTest.clbScore)) &&
     (typeof languageInfo.hasSecondLanguage === 'boolean') &&
     (!languageInfo.hasSecondLanguage ||
       (languageInfo.hasSecondLanguage &&
-        languageInfo.secondLanguageTest.type))
+        languageInfo.secondLanguageTest.type &&
+        languageInfo.secondLanguageTest.clbScore))
   );
 
   // Spouse checks

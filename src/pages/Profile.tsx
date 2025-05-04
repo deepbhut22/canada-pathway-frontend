@@ -1,13 +1,11 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Edit, FileText, Star, Award, CheckCircle2, CheckCircle } from 'lucide-react';
+import { Edit, FileText, Star, Award, CheckCircle2 } from 'lucide-react';
 import { navigationSteps } from '../utils/helpers';
-import useAuthStore from '../store/authStore';
-import { MessagePopup } from '../components/ui/MessagePopup';
 
 export default function Profile() {
   const navigate = useNavigate();

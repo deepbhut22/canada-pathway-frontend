@@ -94,7 +94,6 @@ const useExpressEntryStore = create<ExpressEntryState>((set) => ({
       // console.log(response);
       if (response.status === 200) {
         set({ profile: response.data, isLoading: false });
-        console.log(useExpressEntryStore.getState().profile);
         
       } else {
         set({ error: 'Failed to fetch report data', isLoading: false });
