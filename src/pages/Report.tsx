@@ -294,7 +294,7 @@ export default function Report() {
                           )}                          
                       </div>
                         <span className="text-sm font-medium whitespace-nowrap">
-                          {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
+                          {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
                         </span>
                       </div>
 
@@ -319,7 +319,7 @@ export default function Report() {
                               <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
                             )}                        
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}</span>
                       </div>
 
                       <hr className="my-2" />
@@ -331,7 +331,7 @@ export default function Report() {
                             <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
                           )}
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}</span>
                         
                       </div>
                     </div>
