@@ -294,9 +294,9 @@ export function RadioGroup({
  */
 
 interface SearchSelectProps {
-  items: { title: string; tier: string; noc: string }[];
-  value: { title: string; tier: string; noc: string } | null;
-  onChange: (item: { title: string; tier: string; noc: string } | null) => void;
+  items: { title: string; teer: string; noc: string }[];
+  value: { title: string; teer: string; noc: string } | null;
+  onChange: (item: { title: string; teer: string; noc: string } | null) => void;
   label: string;
   placeholder?: string;
   required?: boolean;
@@ -352,7 +352,7 @@ export function SearchSelect({
   }, []);
 
   // Handle item selection
-  const handleSelectItem = (item: { title: string; tier: string; noc: string }) => {
+  const handleSelectItem = (item: { title: string; teer: string; noc: string }) => {
     onChange(item);
     setIsOpen(false);
     setSearchTerm('');
@@ -431,7 +431,7 @@ export function SearchSelect({
                     >
                       <span className="font-medium">{item.title}</span>
                       <span className="text-xs text-secondary-500">
-                        Tier: {item.tier} | NOC: {item.noc}
+                        Teer: {item.teer} | NOC: {item.noc}
                       </span>
                     </li>
                   ))

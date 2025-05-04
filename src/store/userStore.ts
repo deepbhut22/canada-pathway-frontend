@@ -20,20 +20,12 @@ const defaultLanguageInfo: LanguageInfo = {
   hasTakenTest: false,
   primaryLanguageTest: {
     type: '',
-    testDate: '',
-    readingScore: null,
-    writingScore: null,
-    speakingScore: null,
-    listeningScore: null
+    clbScore: 0
   },
   hasSecondLanguage: false,
   secondLanguageTest: {
     type: '',
-    testDate: '',
-    readingScore: null,
-    writingScore: null,
-    speakingScore: null,
-    listeningScore: null
+    clbScore: 0
   }
 };
 

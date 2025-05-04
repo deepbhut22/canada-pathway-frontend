@@ -127,9 +127,8 @@ const isProfileComplete = (profile: UserProfile): boolean => {
   // Education checks
   const educationComplete: boolean = !!(
     (typeof educationInfo.hasHighSchool === 'boolean') &&
-    (typeof educationInfo.hasPostSecondary === 'boolean') &&
-    (!educationInfo.hasPostSecondary ||
-      (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0))
+    (typeof educationInfo.hasPostSecondary === 'boolean') && 
+    (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0)
   );
 
   // Work experience checks
@@ -145,13 +144,11 @@ const isProfileComplete = (profile: UserProfile): boolean => {
     (typeof languageInfo.hasTakenTest === 'boolean') &&
     (!languageInfo.hasTakenTest ||
       (languageInfo.hasTakenTest &&
-        languageInfo.primaryLanguageTest.type &&
-        languageInfo.primaryLanguageTest.testDate)) &&
+        languageInfo.primaryLanguageTest.type)) &&
     (typeof languageInfo.hasSecondLanguage === 'boolean') &&
     (!languageInfo.hasSecondLanguage ||
       (languageInfo.hasSecondLanguage &&
-        languageInfo.secondLanguageTest.type &&
-        languageInfo.secondLanguageTest.testDate))
+        languageInfo.secondLanguageTest.type))
   );
 
   // Spouse checks
@@ -239,7 +236,8 @@ const useAuthStore = create<AuthState & {
           // Check if profile is complete and set the isComplete flag
           const userProfile = response.data.userProfile;
           const profileComplete = isProfileComplete(userProfile);
-          userProfile.isComplete = profileComplete;
+          // userProfile.isComplete = profileComplete;
+          userProfile.isComplete = true;
 
           useUserStore.setState({ userProfile });
           set({ isLoading: false });

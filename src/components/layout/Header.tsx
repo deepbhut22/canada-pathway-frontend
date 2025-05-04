@@ -92,7 +92,7 @@ export default function Header() {
               }
             </Link>
             <nav className="hidden md:ml-6 lg:ml-10 xl:ml-20 md:flex md:space-x-4 lg:space-x-8">
-              {navigationItems.map((item, idx) => ( (!isAuthPage || item.path === '/') &&
+              {navigationItems.map((item, idx) => ( (!isAuthPage ) &&
                 <p
                   key={item.path + " " + idx}
                   // to={item.path}

@@ -20,13 +20,17 @@ export default function Profile() {
   const completedSteps = useMemo(() => {
     return {
       basic: !!basicInfo.fullName && !!basicInfo.email && !!basicInfo.citizenCountry && !!basicInfo.residenceCountry,
-      education: educationInfo && educationInfo.educationList && educationInfo.educationList.length > 0,
-      work: workInfo && workInfo.workExperienceList && workInfo.workExperienceList.length > 0,
+      // education: educationInfo && (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0),
+      education: true,
+      work: workInfo && (typeof workInfo.hasWorkExperience === 'boolean') && (!workInfo.hasWorkExperience || (workInfo.hasWorkExperience && workInfo.workExperienceList.length > 0)),
       language: languageInfo && (languageInfo.primaryLanguage || (languageInfo.hasSecondLanguage && languageInfo.secondLanguageTest.type)),
       spouse: spouseInfo.maritalStatus && spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada),
-      dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
-      connection: connectionInfo && connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident,
-      joboffer: jobOfferInfo && jobOfferInfo.jobOffer && jobOfferInfo.jobOffer.jobTitle,
+      // dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
+      dependent: true,
+      // connection: connectionInfo && connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident,
+      connection: true,
+      // joboffer: jobOfferInfo && jobOfferInfo.jobOffer && jobOfferInfo.jobOffer.jobTitle,
+      joboffer: true,
       // Add more steps as needed
     };
   }, [basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo]);

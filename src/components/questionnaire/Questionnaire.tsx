@@ -60,7 +60,7 @@ export default function Questionnaire() {
   };
 
   const handleSave = async () => {
-    console.log(useUserStore.getState().userProfile.languageInfo);
+    console.log(useUserStore.getState().userProfile.workInfo);
     
     try {
       const currentStepData = getCurrentStepName(currentStep);

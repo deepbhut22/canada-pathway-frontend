@@ -5,30 +5,32 @@ import api from '../../utils/axios';
 interface CategoryEligibility {
   program: string;
   isEligible: boolean;
-  details: string;
+  reason: string;
 }
 
 interface EligibilityStatus {
   program: string;
   isEligible: boolean;
-  details: string;
+  reason: [string];
 }
 
 interface ScoreBreakdown {
   score: number;
   maximum: number;
-  reason: string;
+  reason: string[];
 }
 
 interface ExpressEntryProfile {
   categoryBasedEligibility: CategoryEligibility[];
-  crsScore: number;
   eligibilityStatus: EligibilityStatus[];
-  scoreBreakdown: {
-    additionalPoints: ScoreBreakdown;
-    coreHumanCapital: ScoreBreakdown;
-    skillTransferability: ScoreBreakdown;
-    spouseFactors: ScoreBreakdown;
+  expressEntryProfile: {
+    crsScore: number;
+    scoreBreakdown: {
+      additionalPoints: ScoreBreakdown;
+      coreHumanCapital: ScoreBreakdown;
+      skillTransferability: ScoreBreakdown;
+      spouseFactors: ScoreBreakdown;
+    };
   };
 }
 
@@ -40,7 +42,7 @@ interface ExpressEntryState {
   updateProfile: (profile: ExpressEntryProfile) => void;
   updateCategoryEligibility: (eligibility: CategoryEligibility[]) => void;
   updateEligibilityStatus: (status: EligibilityStatus[]) => void;
-  updateScoreBreakdown: (breakdown: ExpressEntryProfile['scoreBreakdown']) => void;
+  updateScoreBreakdown: (breakdown: ExpressEntryProfile['expressEntryProfile']['scoreBreakdown']) => void;
   updateCRSScore: (score: number) => void;
   fetchReportData: (userId: string) => Promise<void>;
   fetchRecommendations: (userId: string) => Promise<void>;
@@ -92,6 +94,8 @@ const useExpressEntryStore = create<ExpressEntryState>((set) => ({
       // console.log(response);
       if (response.status === 200) {
         set({ profile: response.data, isLoading: false });
+        console.log(useExpressEntryStore.getState().profile);
+        
       } else {
         set({ error: 'Failed to fetch report data', isLoading: false });
       }

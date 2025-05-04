@@ -277,7 +277,8 @@ export default function Report() {
                       <p className="text-secondary-600 text-sm">Based on your profile information</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-secondary-950">{expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.crsScore! - 10 : 0} - {expressEntryProfile?.crsScore! + 10}</div>
+                        <div className="text-2xl font-bold text-secondary-950">{expressEntryProfile?.expressEntryProfile?.crsScore}</div>
+                        {/* <div className="text-2xl font-bold text-secondary-950">{expressEntryProfile?.expressEntryProfile?.crsScore !== 0 ? expressEntryProfile?.expressEntryProfile?.crsScore! - 10 : 0} - {expressEntryProfile?.expressEntryProfile?.crsScore! + 10}</div> */}
                       <div className="text-xs text-secondary-500">points</div>
                     </div>
                   </div>
@@ -285,41 +286,57 @@ export default function Report() {
                   <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-3 underline">Score Breakdown</h4>
                     <div className="space-y-2">
-                        <div className="flex justify-between items-start flex-wrap gap-2">
-                          <div className="flex-[1_1_0%] min-w-0 pr-2">
-                            <h4 className="text-sm font-medium">Core/Human Capital Factors:</h4>
-                            <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.reason}</p>
-                          </div>
-                          <span className="text-sm font-medium whitespace-nowrap">
-                            {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
-                          </span>
-                        </div>
+                      <div className="flex justify-between items-start flex-wrap gap-2">
+                        <div className="flex-[1_1_0%] min-w-0 pr-2">
+                          <h4 className="text-sm font-medium">Core/Human Capital Factors:</h4>
+                          {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.coreHumanCapital?.reason?.map((bd, idx) =>
+                            <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                          )}                          
+                      </div>
+                        <span className="text-sm font-medium whitespace-nowrap">
+                          {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! - 5 : 0} - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
+                        </span>
+                      </div>
+
+                      <hr className="my-2" />
 
                       <div className="flex justify-between items-center flex-wrap">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Spouse Factors : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.spouseFactors?.reason}</p>
-                        </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.spouseFactors?.score} / {expressEntryProfile?.scoreBreakdown?.spouseFactors?.maximum}</span>
+                            {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.spouseFactors?.reason?.map((bd, idx) =>
+                              <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                            )}                       
+                         </div>
+                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.spouseFactors?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.spouseFactors?.maximum}</span>
                       </div>
+
+                      <hr className="my-2" />
+
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Skill Transferability : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.skillTransferability?.reason}</p>
+                            {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.skillTransferability?.reason?.map((bd, idx) =>
+                              <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                            )}                        
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.skillTransferability?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}</span>
-                        
+                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! - 5 : 0} - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}</span>
                       </div>
+
+                      <hr className="my-2" />
+
                       <div className="flex justify-between items-center">
                         <div className="flex-[1_1_0%] min-w-0 pr-2">
                           <h4 className="text-sm font-medium">Additional Points : </h4>
-                          <p className="text-sm text-secondary-600">{expressEntryProfile?.scoreBreakdown?.additionalPoints?.reason}</p>
+                          {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.additionalPoints?.reason?.map((bd, idx) => 
+                            <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                          )}
                         </div>
-                        <span className="text-sm font-medium">{expressEntryProfile?.scoreBreakdown?.additionalPoints?.score !== 0 ? expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! + 5} / {expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}</span>
+                        <span className="text-sm font-medium">{expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score !== 0 ? expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! - 5 : 0 } - {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score! + 5} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}</span>
                         
                       </div>
                     </div>
                   </div>
+
                   
                   <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-2 underline">Eligibility Status</h4>
@@ -331,44 +348,67 @@ export default function Report() {
                         <h5 className="text-sm font-medium text-secondary-900">
                           {expressEntryProfile?.eligibilityStatus[0]?.program}
                         </h5>
-                        <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[0]?.details}
-                        </p>
+                        {expressEntryProfile?.eligibilityStatus[0]?.reason?.map((bd, idx) =>
+                          <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                        )}
+                        {/* <p className="text-sm text-secondary-600">
+                          {expressEntryProfile?.eligibilityStatus[0]?.reason}
+                        </p> */}
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {expressEntryProfile?.eligibilityStatus[1].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[1]?.isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
                           {expressEntryProfile?.eligibilityStatus[1]?.program}
                         </h5>
-                        <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[1]?.details}
-                        </p>
+                          {expressEntryProfile?.eligibilityStatus[1]?.reason?.map((bd, idx) =>
+                            <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                          )}
                       </div>
                     </div>
                     
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {expressEntryProfile?.eligibilityStatus[2].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        {expressEntryProfile?.eligibilityStatus[2]?.isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
                           {expressEntryProfile?.eligibilityStatus[2]?.program}
                         </h5>
-                        <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.eligibilityStatus[2]?.details}
-                        </p>
+                          {expressEntryProfile?.eligibilityStatus[2]?.reason?.map((bd, idx) =>
+                            <p key={`additional-point-${idx}`} className="text-sm text-secondary-600">{bd}</p>
+                          )}
                       </div>
                     </div>
                   </div>
 
                   <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-2 underline">Category-Based Eligibility</h4>
-                    <div className="flex items-start mt-2">
+
+                    {expressEntryProfile?.categoryBasedEligibility.map((eligibility, index) => (
+                      <div
+                        key={`eligibility-${index}`}
+                        className="flex items-start mt-2"
+                      >
+                        <div className="flex-shrink-0">
+                          {eligibility.isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                        </div>
+                        <div className="ml-3">
+                          <h5 className="text-sm font-medium text-secondary-900">
+                            {eligibility.program}
+                          </h5>
+                          <p className="text-sm text-secondary-600">
+                            {eligibility.reason}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* <div className="flex items-start mt-2">
                       <div className="flex-shrink-0">
                         {expressEntryProfile?.categoryBasedEligibility[0].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
@@ -426,14 +466,14 @@ export default function Report() {
 
                     <div className="flex items-start mt-4">
                       <div className="flex-shrink-0">
-                        {expressEntryProfile?.categoryBasedEligibility[4].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
+                          {expressEntryProfile?.categoryBasedEligibility[4].isEligible ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertTriangle className="h-5 w-5 text-yellow-500" />}
                       </div>
                       <div className="ml-3">
                         <h5 className="text-sm font-medium text-secondary-900">
-                          {expressEntryProfile?.categoryBasedEligibility[4]?.program}
+                            {expressEntryProfile?.categoryBasedEligibility[4]?.program}
                         </h5>
                         <p className="text-sm text-secondary-600">
-                          {expressEntryProfile?.categoryBasedEligibility[4]?.details}
+                            {expressEntryProfile?.categoryBasedEligibility[4]?.details}
                         </p>
                       </div>
                     </div>
@@ -451,7 +491,7 @@ export default function Report() {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   
                   {/* <div className="border-t border-secondary-200 pt-4">
                     <h4 className="font-medium text-secondary-900 mb-3">Recent Draw Information</h4>
@@ -469,8 +509,8 @@ export default function Report() {
                           </p>
                         </div>
                       </div>
-                    </div>
-                  </div> */}
+                    </div> */}
+                  </div> 
                 </div>
               </CardContent>
               <CardFooter className="bg-primary-50">
@@ -501,6 +541,22 @@ export default function Report() {
                 </CardHeader>
                     <CardContent >
                   <div className="space-y-4">
+                    {eligiblePrograms?.length === 0 && 
+                      <div>
+                        <h4 className="text-sm font-medium text-yellow-500 mb-2">Since you are not eligible for any PNP, here are some suggestions:</h4>
+                        {usePNPStore.getState().report?.suggestions?.slice(0, 3).map((suggestion, index) => (
+                          <div key={`pnp-suggestion-${index}`} className="flex items-start">
+                            <div key={`pnp-suggestion-${index}`} className="flex items-start">
+                              <div className="flex-shrink-0 w-full">
+                                <h3 className="text-sm font-medium text-secondary-900">{suggestion.action}</h3>
+                                <p className="text-sm text-secondary-600">{suggestion.reason}</p>
+                                {index !== 2 && <hr className="my-2" />}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    }
                     {eligiblePrograms?.map((program, index) => (
                       <div key={`pnp-${index}`} className="flex items-start">
                         <div className="flex-shrink-0">

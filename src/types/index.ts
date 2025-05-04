@@ -23,16 +23,10 @@ export interface BasicInfo {
   province?: string;
 }
 
-// export interface LanguageTest {
-//   type: 'IELTS' | 'CELPIP' | 'PTE' | 'TEF' | 'TCF' | '';
-//   testDate: string;
-//   readingScore: number | null;
-//   writingScore: number | null;
-//   speakingScore: number | null;
-//   listeningScore: number | null;
-// }
-
-export type LanguageTest = any;
+export interface LanguageTest {
+  type: 'IELTS' | 'CELPIP' | 'PTE' | 'TEF' | 'TCF' | '';
+  clbScore: number | null;
+}
 
 export interface LanguageInfo {
   primaryLanguage: 'english' | 'french' | '';
@@ -109,7 +103,7 @@ export interface WorkExperience {
   isCurrentJob: boolean;
   // endDate: string;
   numberOfMonths: number;
-  tier: Number
+  teer: Number
 }
 
 export interface WorkInfo {

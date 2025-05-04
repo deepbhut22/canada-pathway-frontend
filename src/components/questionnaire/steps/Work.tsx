@@ -90,15 +90,15 @@ export default function Work({
 
   const handleNewWorkChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    console.log(value);
+    // console.log(newWork);
 
     if (typeof value === 'object' && value !== null) {
-      const { noc, title, tier } = value;
+      const { noc, title, teer } = value;
       setNewWork(prev => ({
         ...prev,
         nocCode: noc,
         jobTitle: title,
-        tier: tier
+        teer: teer
       }));
     }    
     if (name === 'isSelfEmployed') {
@@ -154,7 +154,7 @@ export default function Work({
         isCurrentJob: newWork.isCurrentJob || false,
         // endDate: newWork.endDate || ''
         numberOfMonths: newWork.numberOfMonths || 0,
-        tier: newWork.tier || 0
+        teer: newWork.teer || 0
       });
       // console.log("added");
       
@@ -172,7 +172,7 @@ export default function Work({
         isCurrentJob: false,
         // endDate: ''
         numberOfMonths: 0,
-        tier: 0
+        teer: 0
       });
     }
   };
@@ -224,12 +224,12 @@ export default function Work({
                 <SearchSelect
                   items={getNocOptions().map(item => ({
                     ...item,
-                    tier: String(item.tier),
+                    teer: item.tier,
                     noc: String(item.noc)
                   }))}
                   value={{
                     title: newWork.jobTitle || '',
-                    tier: newWork.nocCode || '',
+                    teer: newWork.nocCode || '',  
                     noc: newWork.nocCode || ''
                   }}
                   onChange={(value) => handleNewWorkChange({
