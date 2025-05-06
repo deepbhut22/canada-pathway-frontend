@@ -251,7 +251,7 @@ export default function Work({
                       name="nocCode"
                       value={newWork.nocCode}
                       disabled={true}
-                      className='bg-gray-100 text-gray-500 cursor-not-allowed'
+                      className='bg-gray-100 text-gray-500 curs or-not-allowed'
                       placeholder="NOC Code"
                     />
                   </FormControl>

@@ -19,6 +19,7 @@ import { AlternativePathwaysDialog } from '../components/AlternativePathwaysDial
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import ChatBox from '../components/ui/ChatBox';
 
 interface PNPAssessment {
   id?: string;
@@ -48,6 +49,7 @@ export default function Report() {
   const [showAlternativePathwaysDialog, setShowAlternativePathwaysDialog] = useState(false);  
   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showChatBox, setShowChatBox] = useState(false);
 
   // const pnpReport = usePNPStore.getState().report;
   const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
@@ -261,7 +263,7 @@ export default function Report() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div> : <div className="lg:col-span-2 space-y-8">
             <Card className="pdf-section" data-title="Express Entry Profile">
-              <CardHeader className="bg-primary-50">
+              <CardHeader className="bg-secondary-100">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl">Express Entry Profile</CardTitle>
                   <div className="bg-primary-100 text-secondary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -520,7 +522,7 @@ export default function Report() {
                     rel="noopener noreferrer"
                     href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp
 "
-                    className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center"
+                    className="text-secondary-900 hover:text-secondary-950 text-sm font-medium flex items-center"
                   >
                     Learn more about Express Entry
                     <ExternalLink className="ml-1 h-3 w-3" />
@@ -834,21 +836,18 @@ export default function Report() {
               </CardHeader>
               <CardContent>
                   <div className="relative">
-                    {/* Overlay Text */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <span className="text-xl font-bold text-secondary-900 bg-white/80 px-4 py-2 rounded">
-                        Coming Soon
-                      </span>
-                    </div>
-
                     {/* Blurred Card Content */}
-                    <div className="bg-primary-50 rounded-lg p-4 mb-4 blur-sm pointer-events-none select-none">
-                      <MessageCircle className="h-8 w-8 text-primary-600 mb-2" />
+                    <div className="bg-secondary-100 rounded-lg p-4 mb-4">
+                      <MessageCircle className="h-8 w-8 text-secondary-900 mb-2" />
                       <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
                       <p className="text-secondary-600 text-sm mb-3">
                         Our AI assistant can answer common questions about your immigration options.
                       </p>
-                      <Button size="sm" className="w-full" disabled>Chat with Immigration AI</Button>
+                      <Button 
+                        onClick={() => setShowChatBox(true)}
+                        size="sm" 
+                        className="w-full bg-secondary-900 text-white hover:bg-secondary-950"
+                      >Chat with Immigration AI</Button>
                     </div>
                   </div>
 
@@ -890,7 +889,7 @@ export default function Report() {
               </CardHeader>
               <CardContent>
                   <div className="h-full flex flex-col shadow-xl border border-secondary-100">
-                    <div className="flex-grow bg-secondary-50 rounded-lg p-6 border border-secondary-100 h-full">
+                    <div className="flex-grow bg-secondary-100 rounded-lg p-6 border border-secondary-100 h-full">
                       {/* <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draws</h3> */}
                       <p className="text-secondary-700 mb-4">
                         Latest invitation rounds for Canada's immigration programs.
@@ -962,6 +961,10 @@ export default function Report() {
         onClose={() => setShowAlternativePathwaysDialog(false)}
         options={alternativePrograms}
         onOptionSelect={() => {}}
+      />
+      <ChatBox
+        isOpen={showChatBox}
+        onClose={() => setShowChatBox(false)}
       />
     </Layout>
   );
