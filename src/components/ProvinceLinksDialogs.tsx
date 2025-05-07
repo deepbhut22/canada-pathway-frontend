@@ -40,10 +40,16 @@ export function ProvinceLinksDialog({
                         )}
                     >
                         <div className="flex items-center justify-arround gap-2">
-                            <div>
-                                <h3 className="font-medium text-secondary-900">{option.title}</h3>
-                                <a href={option.link as string} className="text-primary-500 underline" target="_blank" rel="noopener noreferrer">{option.link}</a>
-
+                            <div className="w-full">
+                                <h3 className="font-medium text-secondary-900 break-words">{option.title}</h3>
+                                <a
+                                    href={option.link as string}
+                                    className="text-primary-500 underline break-all"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {option.link}
+                                </a>
                             </div>
                             {/* {option.selected && (
                 <div className="ml-4 flex-shrink-0">

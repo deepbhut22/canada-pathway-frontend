@@ -1,4 +1,3 @@
-import React from 'react';
 import { Calendar, ExternalLink } from 'lucide-react';
 import { NewsItem } from '../../types';
 import { formatDate } from '../../utils/helpers';
@@ -38,7 +37,7 @@ export default function NewsCard({ news }: NewsCardProps) {
       
       <CardFooter className="flex justify-between items-center bg-secondary-50">
         <span className="text-xs text-secondary-500">Source: {source}</span>
-        <a href={news.content} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-secondary-800 hover:text-secondary-950 hover:underline">
+        <a href={news.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-secondary-800 hover:text-secondary-950 hover:underline">
           Read more
           <ExternalLink className="ml-1 h-3 w-3" />
         </a>

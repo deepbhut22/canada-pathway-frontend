@@ -72,14 +72,13 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
             <Card key={province.code} className="flex flex-col justify-between items-center text-center hover:shadow-md transition-shadow mx-2 my-1 max-h-40 min-h-40"
               onClick={() => {
                 setShowLinksDialog(true);
-                // console.log(provinceLink[province.code as keyof typeof provinceLink]);
                 setOptions(provinceLink[province.code as keyof typeof provinceLink]);
               }}
               interactive
             >
               <img src={province.flag} alt={province.name} className="w-full h-24 min-h-16 max-h-16  object-cover mt-2 rounded-t-md transition-transform duration-300 hover:scale-105" />
               <CardContent className="py-6 flex flex-col items-center">
-                <h2 className="text-sm mt-2 sm:text-bold sm:text-lg text-secondary-900">{province.name}</h2>
+                <h2 className="text-sm mt-2 sm:text-bold sm:text-lg text-secondary-900 text-wrap">{province.name}</h2>
                 <p className="text-xs text-secondary-500 mt-1">PNP Program</p>
               </CardContent>
             </Card>
@@ -107,10 +106,10 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
                       </span>
                       <span className="text-xs text-secondary-500">{news.date}</span>
                     </div>
-                    <CardTitle className="text-lg w-full h-max">{news.title}</CardTitle>
+                    <CardTitle className="text-lg w-full h-max">{news.title.length > 70 ? news.title.substring(0, 70) + '...' : news.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="py-2 flex-grow">
-                    <p className="text-sm text-secondary-600 line-clamp-2">{news.summary}</p>
+                    <p className="text-sm text-secondary-600 line-clamp-2">{news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary}</p>
                   </CardContent>
                   <CardFooter className="pt-2">
                     <button className="text-sm font-medium text-secondary-700 hover:underline flex items-center">
@@ -143,10 +142,10 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
                       </span>
                       <span className="text-xs text-secondary-500">{news.date}</span>
                     </div>
-                    <CardTitle className="text-lg w-full h-max">{news.title}</CardTitle>
+                    <CardTitle className="text-lg w-full h-min">{news.title.length > 70 ? news.title.substring(0, 70) + '...' : news.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="py-2 flex-grow">
-                    <p className="text-sm text-secondary-600 line-clamp-2">{news.summary}</p>
+                    <p className="text-sm text-secondary-600 line-clamp-2">{news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary}</p>
                   </CardContent>
                   <CardFooter className="pt-2">
                     <button className="text-sm font-medium text-secondary-700 hover:underline flex items-center">

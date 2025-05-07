@@ -118,7 +118,7 @@ export default function HeroSection() {
                   onClick={handleRedirect}
                   className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center justify-center hover:border-secondary-950">
                   <TextSelectionIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  <span className="text-sm sm:text-base text-center">Get My All In One AI-Powered PR Report</span>
+                  <span className="text-sm sm:text-base text-center">Get My Free All In One AI-Powered PR Report</span>
                 </button>
               </div>
             </FadeIn>
