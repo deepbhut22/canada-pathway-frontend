@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import { ChevronRight, MessageCircle } from 'lucide-react';
+import useAuthStore from '../../store/authStore';
 
 interface PathwayCardProps {
   isAuthenticated: boolean;
@@ -12,6 +13,16 @@ interface PathwayCardProps {
 
 const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileComplete, showChatBox, setShowChatBox }) => {
   const navigate = useNavigate();
+
+  const handleChatWithAI = () => {
+    if (isAuthenticated && isProfileComplete) {
+      setShowChatBox(true);
+    } else if (isAuthenticated && !isProfileComplete) {
+      useAuthStore.getState().setIsPopupOpen(true);
+    } else {
+      navigate('/login', { state: { redirectAfterLogin: '/questionnaire/basic' } });
+    }
+  };
 
   const handleFindPathway = () => {
     if (isAuthenticated) {
@@ -36,13 +47,11 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
           Our AI assistant can answer common questions about your immigration options.
         </p>
         <Button
-          onClick={() => setShowChatBox(true)}
-          // size="sm"
+          onClick={handleChatWithAI}
           rightIcon={<ChevronRight className="h-5 w-5" />}
-
           className="w-full bg-secondary-800 text-white justify-between hover:bg-white/90 hover:text-secondary-800 hover:border hover:border-secondary-800"
         >
-          Chat with Immigration AI
+          {isAuthenticated && isProfileComplete ? 'Chat with Immigration AI' : 'Login to Chat with AI Assistant'}
         </Button>
       </div>
 

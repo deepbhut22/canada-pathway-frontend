@@ -67,7 +67,7 @@ const Register = () => {
         </div>
 
         {/* Right Side - Registration Form */}
-        <div className="w-full md:w-2/5 flex items-center justify-center p-6 lg:p-12 bg-white">
+        <div className="w-full md:w-2/5 flex items-center justify-center p-6 lg:p-12 bg-white my-auto">
           <div className="w-full max-w-md">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-secondary-950 tracking-tight">
