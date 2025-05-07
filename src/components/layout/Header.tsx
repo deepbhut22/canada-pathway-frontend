@@ -234,7 +234,7 @@ export default function Header() {
                     variant="outline"
                     className={`w-full ${isHome ? isScrolled ? 'bg-secondary-950 border border-white text-white hover:bg-white hover:text-secondary-950' : 'bg-transparent text-white border border-white hover:bg-white hover:text-secondary-950' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
                   >
-                    Sign In
+                    Sign In hahahah
                   </Button>
                   <Button
                     onClick={() => {
