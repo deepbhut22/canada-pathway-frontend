@@ -59,9 +59,7 @@ export default function Questionnaire() {
     navigate(prevUrl);
   };
 
-  const handleSave = async () => {
-    console.log(useUserStore.getState().userProfile.workInfo);
-    
+  const handleSave = async () => {    
     try {
       const currentStepData = getCurrentStepName(currentStep);
       const response = await api.put(`/profile/${currentStep}`, currentStepData);
