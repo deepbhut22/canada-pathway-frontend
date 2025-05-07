@@ -101,7 +101,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         className={cn(
           'block w-full rounded-md border border-secondary-300 bg-white py-2 px-3 shadow-sm',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+          'focus:outline-none focus:ring-1 focus:ring-secondary-900 focus:border-secondary-900',
           'placeholder:text-secondary-400 sm:text-sm',
           error && 'border-red-300 focus:ring-red-500 focus:border-red-500',
           className
@@ -127,8 +127,8 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <select
         ref={ref}
         className={cn(
-          'block w-full rounded-md border border-secondary-300 bg-white py-2 px-3 shadow-sm',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+          'block w-full rounded-md border border-secondary-300 bg-white bg-secondary-100 py-2 px-3 shadow-sm',
+          'focus:outline-none focus:ring-1 focus:ring-secondary-900 focus:border-secondary-900',
           'placeholder:text-secondary-400 sm:text-sm',
           error && 'border-red-300 focus:ring-red-500 focus:border-red-500',
           className
@@ -164,7 +164,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         ref={ref}
         className={cn(
           'block w-full rounded-md border border-secondary-300 bg-white py-2 px-3 shadow-sm',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+          'focus:outline-none focus:ring-1 focus:ring-secondary-900 focus:border-secondary-900',
           'placeholder:text-secondary-400 sm:text-sm',
           error && 'border-red-300 focus:ring-red-500 focus:border-red-500',
           className
@@ -209,8 +209,9 @@ export function Radio({ label, className, ...props }: RadioProps) {
       <input
         type="radio"
         className={cn(
-          'h-4 w-4 border-secondary-300 text-primary-600',
-          'focus:ring-2 focus:ring-primary-500 focus:ring-offset-0'
+          'h-4 w-4 text-secondary-900',
+          'accent-secondary-900',
+          'focus:ring-secondary-400 focus:ring-offset-0'
         )}
         {...props}
       />

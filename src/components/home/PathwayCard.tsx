@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
-import { ChevronRight, MessageCircle } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
 interface PathwayCardProps {
@@ -47,14 +47,14 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
         {/* <MessageCircle className="h-6 w-6 text-secondary-900 mb-2" /> */}
         <h3 className="text-xl font-semibold text-secondary-900 mb-1">Have questions?</h3>
         <p className="text-secondary-700 mb-3">
-          Get instant and personalized answers for all your immigration needs from our MapleAI.
+          Get instant, personalized answers to all your immigration questions with MapleAI.
         </p>
         <Button
           onClick={handleChatWithAI}
           rightIcon={<ChevronRight className="h-5 w-5" />}
           className="w-full bg-secondary-800 text-white justify-between hover:bg-white/90 hover:text-secondary-800 hover:border hover:border-secondary-800"
         >
-          Chat with AI-Immigration Assistant
+          Chat with MapleAI
         </Button>
       </div>
       <hr className="my-4" />

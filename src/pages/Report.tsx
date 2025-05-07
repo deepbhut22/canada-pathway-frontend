@@ -876,13 +876,13 @@ export default function Report() {
                   <MessageCircle className="h-8 w-8 text-secondary-900 mb-2" />
                   <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
                   <p className="text-secondary-600 text-sm mb-3">
-                    Our AI assistant can answer common questions about your immigration options.
+                    Get instant, personalized answers to all your immigration questions with MapleAI.
                   </p>
                   <Button 
                     onClick={() => setShowChatBox(true)}
                     size="sm" 
                     className="w-full bg-secondary-900 text-white hover:bg-secondary-950"
-                  >Chat with Immigration AI</Button>
+                  >Chat with MapleAI</Button>
                 </div>
 
                 
@@ -1012,7 +1012,7 @@ export default function Report() {
         onAction={() => {
           handleConsultationRequest();
         }}
-        cancelText="Not now"
+        cancelText="Close"
         maxWidth="2xl"
       />  
     </Layout>

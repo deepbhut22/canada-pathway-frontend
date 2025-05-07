@@ -4,15 +4,18 @@ import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Edit, FileText, Star, Award, CheckCircle2 } from 'lucide-react';
+import { Edit, FileText, Star, Award, CheckCircle2, ChevronRight, CheckCircle } from 'lucide-react';
 import { navigationSteps } from '../utils/helpers';
-
+import useAuthStore from '../store/authStore';
+import {MessagePopup} from '../components/ui/MessagePopup';
 export default function Profile() {
   const navigate = useNavigate();
   const { userProfile, resetUserProfile } = useUserStore();
   const { basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo, isComplete } = userProfile;
 
   const hasStartedProfile = !!basicInfo.fullName;
+
+  const isPopupOpen = useAuthStore(state => state.isPopupOpen);
 
   // Determine which steps are completed
   const completedSteps = useMemo(() => {
@@ -37,6 +40,8 @@ export default function Profile() {
     const total = Object.keys(completedSteps).length;
     return Math.round((completed / total) * 100);
   }, [completedSteps]);
+
+  const isProfileComplete = useUserStore(state => state.userProfile.isComplete);
 
   const renderProfileStatus = () => {
     if (isComplete) {
@@ -78,6 +83,14 @@ export default function Profile() {
     } else {
       // Start from the beginning
       navigate('/questionnaire/basic');
+    }
+  };
+
+  const handleFindPathway = () => {
+    if (isProfileComplete) {
+      navigate('/report');
+    } else {
+      useAuthStore.getState().setIsPopupOpen(true);
     }
   };
 
@@ -158,7 +171,7 @@ export default function Profile() {
                           return (
                             <div key={step.id} className="flex items-center">
                               <div className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full mr-3 ${isStepCompleted
-                                  ? 'bg-primary-100 text-primary-600'
+                                  ? 'bg-secondary-100 text-secondary-900'
                                   : 'bg-secondary-100 text-secondary-500'
                                 }`}>
                                 {isStepCompleted ? (
@@ -176,6 +189,7 @@ export default function Profile() {
                               <Button
                                 variant="outline"
                                 size="sm"
+                                className="border border-secondary-600 text-secondary-900 hover:bg-secondary-900 hover:text-white"
                                 onClick={() => navigate(`/questionnaire/${step.id}`)}
                               >
                                 {isStepCompleted ? 'Edit' : 'Complete'}
@@ -190,6 +204,7 @@ export default function Profile() {
                 <CardFooter className="flex justify-end space-x-3">
                   <Button
                     variant="outline"
+                    className="border border-secondary-600 text-secondary-900 hover:bg-secondary-900 hover:text-white"
                     onClick={() => {
                       if (confirm('Are you sure you want to reset your profile? This cannot be undone.')) {
                         resetUserProfile();
@@ -199,6 +214,8 @@ export default function Profile() {
                     Reset Profile
                   </Button>
                   <Button
+                    variant="outline"
+                    className="border border-secondary-600 text-white bg-secondary-900 hover:bg-white hover:text-secondary-900 hover:border-secondary-900"
                     onClick={handleStartOrContinue}
                     leftIcon={<Edit className="h-4 w-4" />}
                   >
@@ -216,7 +233,7 @@ export default function Profile() {
                 <CardContent>
                   {isComplete ? (
                     <div className="text-center py-6">
-                      <Award className="h-12 w-12 text-primary-600 mx-auto mb-4" />
+                      <Award className="h-12 w-12 text-secondary-900 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-secondary-900 mb-2">
                         Profile Complete!
                       </h3>
@@ -224,6 +241,7 @@ export default function Profile() {
                         You've completed all the required information for your profile.
                       </p>
                       <Button
+                        className="bg-secondary-900 text-white hover:bg-secondary-950"
                         onClick={() => navigate('/report')}
                         leftIcon={<FileText className="h-4 w-4" />}
                       >
@@ -239,7 +257,9 @@ export default function Profile() {
                       <p className="text-secondary-600 mb-4">
                         Complete your profile to receive a personalized immigration pathway report.
                       </p>
-                      <Button onClick={handleStartOrContinue}>
+                      <Button 
+                        className="bg-secondary-800 text-white hover:bg-secondary-950"
+                        onClick={handleStartOrContinue}>
                         Continue Profile
                       </Button>
                     </div>
@@ -248,31 +268,54 @@ export default function Profile() {
               </Card>
 
               <Card>
+                <CardContent>
+                  <div>
+                    {/* <MessageCircle className="h-6 w-6 text-secondary-900 mb-2" /> */}
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
+                    <p className="text-secondary-700 text-sm mb-3">
+                      Get instant, personalized answers to all your immigration questions with MapleAI.
+                    </p>
+                    <Button
+                      onClick={handleFindPathway}
+                      variant='outline'
+                      rightIcon={<ChevronRight className="h-5 w-5" />}
+                      className="w-full bg-secondary-800 text-white justify-between hover:text-white hover:border hover:bg-secondary-950 hover:border-secondary-950"
+                    >
+                      Chat with MapleAI
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+
+              <Card>
                 <CardHeader>
                   <CardTitle>Quick Links</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3">
                     <li>
-                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a 
+                        className="text-secondary-900 hover:text-secondary-950 font-medium flex items-center"
+                        href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations.html" target="_blank">
                         <FileText className="h-4 w-4 mr-2" />
                         Latest Draw Results
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/provincial-nominees.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/provincial-nominees.html" target="_blank" className="text-secondary-900 hover:text-secondary-950 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         Provincial Nominee Programs
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score.html" target="_blank" className="text-secondary-900 hover:text-secondary-950 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         CRS Score Calculator
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html" target="_blank" className="text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                      <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html" target="_blank" className="text-secondary-900 hover:text-secondary-950 font-medium flex items-center">
                         <FileText className="h-4 w-4 mr-2" />
                         Processing Times
                       </a>
@@ -299,7 +342,49 @@ export default function Profile() {
           </div>
         )}
       </div>
+      <MessagePopup
+        isOpen={isPopupOpen}
+        onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
+        title="Profile Incomplete"
+        message="Please complete your profile to access this page."
+        type="warning"
+        actionText="Complete My Profile (2 Mins)"
+        onAction={() => {
+          useAuthStore.getState().setIsPopupOpen(false);
+          navigate('/profile');
+        }}
+        cancelText="Not now"
+        maxWidth="2xl"
+        benefits={benefits}
+      />  
       
     </Layout>
   );
 }
+const benefits = [
+  {
+    text: (
+      <p className="text-secondary-600">
+        <span className="glow-text-secondary text-secondary-950 font-bold">Free</span> Personalized immigration pathways tailored to your qualifications
+      </p>
+    ),
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: (
+      <p className="text-secondary-600">
+        <span className="text-secondary-800 font-bold">Complementary</span> eligibility assessment for all Canadian immigration programs
+      </p>
+    ),
+    icon: <CheckCircle className="h-5 w-5" />
+  },
+  {
+    text: (
+      <p className="text-secondary-600">
+        <span className="text-secondary-800 font-bold">Real-time</span> updates when your eligibility changes for any program
+      </p>
+    ),
+    icon: <CheckCircle className="h-5 w-5" />
+  }
+];
+

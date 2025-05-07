@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Save } from 'lucide-react';
-import { Step, NavigationStep } from '../../types';
+import { Step } from '../../types';
 import { navigationSteps, getStepIndex, getNextStep, getPreviousStep } from '../../utils/helpers';
 import Button from '../ui/Button';
 
@@ -53,7 +53,7 @@ export default function QuestionnaireLayout({
           </div>
           <div className="w-full bg-secondary-200 rounded-full h-2">
             <div
-              className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+              className="bg-secondary-900 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -117,7 +117,7 @@ export default function QuestionnaireLayout({
               disabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
               rightIcon={<ChevronRight className="h-4 w-4" />}
-              className={`w-full sm:w-auto ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full sm:w-auto bg-secondary-900 text-white hover:bg-secondary-950 hover:border hover:border-secondary-950 ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Continue
             </Button>
@@ -126,7 +126,7 @@ export default function QuestionnaireLayout({
               onClick={onNext}
               disabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto bg-secondary-900 text-white hover:bg-secondary-950 hover:border hover:border-secondary-950"
             >
               Submit
             </Button>
