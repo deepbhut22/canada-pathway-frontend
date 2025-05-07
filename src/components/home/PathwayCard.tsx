@@ -41,13 +41,12 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
   };
 
   return (
-    <div className="bg-secondary-50 rounded-lg p-6 border border-secondary-100">
-
+    <div className="bg-secondary-50 rounded-lg p-6 flex flex-col justify-between">
       {/* AI Assistant Section - Unified Styling */}
-      <div className="mb-5">
-        <MessageCircle className="h-6 w-6 text-secondary-900 mb-2" />
-        <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
-        <p className="text-secondary-700 text-sm mb-3">
+      <div>
+        {/* <MessageCircle className="h-6 w-6 text-secondary-900 mb-2" /> */}
+        <h3 className="text-xl font-semibold text-secondary-900 mb-1">Have questions?</h3>
+        <p className="text-secondary-700 mb-3">
           Our AI assistant can answer common questions about your immigration options.
         </p>
         <Button
@@ -58,11 +57,12 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
           Chat with AI-Immigration Assistant
         </Button>
       </div>
-
+      <hr className="my-4" />
       {/* Main Pathway Section */}
-      <h3 className="text-xl font-semibold text-secondary-900 mb-3">
-        Find Your Immigration Pathway And Begin Your Canadian Journey.
-      </h3>
+      <div>
+        <h3 className="text-xl font-semibold text-secondary-900 mb-3">
+          Find Your Immigration Pathway And Begin Your Canadian Journey.
+        </h3>
       <p className="text-secondary-700 mb-4">
         Answer a few questions about yourself and get personalized immigration recommendations.
       </p>
@@ -75,6 +75,8 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
           ? (isProfileComplete ? 'View My Pathways' : 'Complete My Profile')
           : 'Start Assessment'}
       </Button>
+
+      </div>
     </div>
   );
 };

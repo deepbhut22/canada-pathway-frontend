@@ -212,6 +212,7 @@ const useAuthStore = create<AuthState & {
   initializeAuth: () => Promise<void>;
   setIsPopupOpen: (isPopupOpen: boolean) => void;
   setIsLoginRequiredPopupOpen: (isLoginRequiredPopupOpen: boolean) => void;
+  setIsConsultationDialogOpen: (isConsultationDialogOpen: boolean) => void;
 }>((set) => ({
   user: null,
   isAuthenticated: false,
@@ -219,8 +220,9 @@ const useAuthStore = create<AuthState & {
   error: null,
   isPopupOpen: false,
   isLoginRequiredPopupOpen: false,
+  isConsultationDialogOpen: false,
   setIsPopupOpen: (isPopupOpen: boolean) => set({ isPopupOpen: isPopupOpen }),
-
+  setIsConsultationDialogOpen: (isConsultationDialogOpen: boolean) => set({ isConsultationDialogOpen: isConsultationDialogOpen }),
   setIsLoginRequiredPopupOpen: (isLoginRequiredPopupOpen: boolean) => set({ isLoginRequiredPopupOpen: isLoginRequiredPopupOpen }),  
   initializeAuth: async () => {
     set({ isLoading: true });

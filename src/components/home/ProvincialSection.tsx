@@ -112,10 +112,13 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
                     <p className="text-sm text-secondary-600 line-clamp-2">{news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary}</p>
                   </CardContent>
                   <CardFooter className="pt-2">
-                    <button className="text-sm font-medium text-secondary-700 hover:underline flex items-center">
+                    <a
+                      href={news.content}
+                      target='_blank'
+                      className="text-sm font-medium text-secondary-700 hover:underline flex items-center">
                       Read more
                       <ArrowRight className="ml-1 h-3 w-3" />
-                    </button>
+                    </a>
                   </CardFooter>
                 </div>
               </Card>
@@ -148,10 +151,13 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
                     <p className="text-sm text-secondary-600 line-clamp-2">{news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary}</p>
                   </CardContent>
                   <CardFooter className="pt-2">
-                    <button className="text-sm font-medium text-secondary-700 hover:underline flex items-center">
+                    <a 
+                      href={news.content}
+                      target='_blank'
+                      className="text-sm font-medium text-secondary-700 hover:underline flex items-center">
                       Read more
                       <ArrowRight className="ml-1 h-3 w-3" />
-                    </button>
+                    </a>
                   </CardFooter>
                 </div>
               </Card>

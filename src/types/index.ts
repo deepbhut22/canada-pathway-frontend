@@ -165,4 +165,5 @@ export interface AuthState {
   error: string | null;
   isPopupOpen: boolean;
   isLoginRequiredPopupOpen: boolean;
+  isConsultationDialogOpen: boolean;
 }

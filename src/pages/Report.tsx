@@ -20,6 +20,7 @@ import { AlternativePathwaysDialog } from '../components/AlternativePathwaysDial
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import ChatBox from '../components/ui/ChatBox';
+import { MessagePopup } from '../components/ui/MessagePopup';
 
 interface PNPAssessment {
   id?: string;
@@ -58,6 +59,8 @@ export default function Report() {
   const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
   const { isLoading } = useReportData();
+
+  const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
   React.useEffect(() => {
     if (!isComplete || !basicInfo.fullName) {
@@ -210,6 +213,14 @@ export default function Report() {
     }
   };
 
+
+  function handleConsultationRequest() {
+    try {
+      console.log(useAuthStore.getState().user);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  }
 
   return (
     <Layout>
@@ -858,15 +869,10 @@ export default function Report() {
                   </p>
 
                     <div className="relative">
-                      {/* Overlay Text */}
-                      <div className="absolute inset-0 flex items-center justify-center z-10">
-                        <span className="text-xl font-bold text-secondary-900 bg-white/80 px-4 py-2 rounded">
-                          Coming Soon
-                        </span>
-                      </div>
-
-                      <div className="space-y-3 blur-sm pointer-events-none select-none">
-                        <Button variant="outline" size="sm" className="w-full">
+                      <div className="space-y-3">
+                        <Button 
+                          onClick={() => useAuthStore.getState().setIsConsultationDialogOpen(true)}
+                          variant="outline" size="sm" className="w-full">
                           Book a Consultation
                         </Button>
                         <Button variant="secondary" size="sm" className="w-full">
@@ -963,6 +969,20 @@ export default function Report() {
         isOpen={showChatBox}
         onClose={() => setShowChatBox(false)}
       />
+      <MessagePopup
+        isOpen={isConsultationDialogOpen}
+        onClose={() => useAuthStore.getState().setIsConsultationDialogOpen(false)}
+        title="Consultation Request"
+        message="This feature is currently under development. Raise your request and we will get back to you soon."
+        type="info"
+        actionText="Raise Request"
+        onAction={() => {
+          useAuthStore.getState().setIsConsultationDialogOpen(false);
+          handleConsultationRequest();
+        }}
+        cancelText="Not now"
+        maxWidth="2xl"
+      />  
     </Layout>
   );
 }

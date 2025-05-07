@@ -51,12 +51,12 @@ export default function Home() {
       </div>
 
       {/* Recent Draws and Pathway Card side by side with equal height */}
-      <div className="py-12 bg-white">
+      <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Find Your Pathway */}
             <div className="h-full flex flex-col justify-center">
-              <div className="flex bg-white rounded-lg items-center justify-center shadow-xl border border-secondary-100 p-6 h-full">
+              <div className="flex bg-secondary-50 rounded-lg shadow-xl border border-secondary-100 h-full">
                 <PathwayCard
                   isAuthenticated={isAuthenticated}
                   isProfileComplete={userProfile?.isComplete || false}
