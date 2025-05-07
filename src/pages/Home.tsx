@@ -23,6 +23,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   const [showChatBox, setShowChatBox] = useState(false);
+  const isPopupOpen = useAuthStore((state) => state.isPopupOpen);
+  const isLoginRequiredPopupOpen = useAuthStore((state) => state.isLoginRequiredPopupOpen);
 
   // If still loading auth state, you could show a loading spinner here
   if (isLoading) {
@@ -130,19 +132,13 @@ export default function Home() {
         </div>
       </div>
 
-      <button onClick={() => {
-        useAuthStore.getState().setIsPopupOpen(true);
-      }}>
-        Open Popup
-      </button>
-
       {/* Testimonial Section */}
       <TestimonialSection />
 
       {/* Call to action remains at the bottom to drive conversion */}
       {/* <CtaSection isAuthenticated={isAuthenticated} isProfileComplete={userProfile?.isComplete || false} /> */}
       <MessagePopup
-        isOpen={useAuthStore.getState().isPopupOpen}
+        isOpen={isPopupOpen}
         onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
         title="Profile Incomplete"
         message="Please complete your profile to access this page."
@@ -159,6 +155,19 @@ export default function Home() {
       <ChatBox
         isOpen={showChatBox}
         onClose={() => setShowChatBox(false)}
+      />
+      <MessagePopup
+        isOpen={isLoginRequiredPopupOpen}
+        onClose={() => useAuthStore.getState().setIsLoginRequiredPopupOpen(false)}
+        title="Login Required"
+        message="Please login to access this feature"
+        type="warning"
+        actionText="Redirect to Login"
+        onAction={() => {
+          useAuthStore.getState().setIsLoginRequiredPopupOpen(false);
+          navigate('/login');
+        }}
+        cancelText="Not now"
       />
     </Layout>
   );  

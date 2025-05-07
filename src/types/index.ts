@@ -164,4 +164,5 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   isPopupOpen: boolean;
+  isLoginRequiredPopupOpen: boolean;
 }

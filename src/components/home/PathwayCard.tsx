@@ -15,12 +15,15 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
   const navigate = useNavigate();
 
   const handleChatWithAI = () => {
-    if (isAuthenticated && isProfileComplete) {
-      setShowChatBox(true);
-    } else if (isAuthenticated && !isProfileComplete) {
-      useAuthStore.getState().setIsPopupOpen(true);
+
+    if (isAuthenticated) {
+      if (isProfileComplete) {
+        setShowChatBox(true);
+      } else {
+        useAuthStore.getState().setIsPopupOpen(true);
+      }
     } else {
-      navigate('/login', { state: { redirectAfterLogin: '/questionnaire/basic' } });
+      useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
     }
   };
 
@@ -29,10 +32,11 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
       if (isProfileComplete) {
         navigate('/report');
       } else {
-        navigate('/profile');
+        useAuthStore.getState().setIsPopupOpen(true);
       }
     } else {
-      navigate('/login', { state: { redirectAfterLogin: '/questionnaire/basic' } });
+      useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
+      // navigate('/login', { state: { redirectAfterLogin: '/questionnaire/basic' } });
     }
   };
 
@@ -51,7 +55,7 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
           rightIcon={<ChevronRight className="h-5 w-5" />}
           className="w-full bg-secondary-800 text-white justify-between hover:bg-white/90 hover:text-secondary-800 hover:border hover:border-secondary-800"
         >
-          {isAuthenticated && isProfileComplete ? 'Chat with Immigration AI' : 'Login to Chat with AI Assistant'}
+          Chat with AI-Immigration Assistant
         </Button>
       </div>
 

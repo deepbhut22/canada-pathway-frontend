@@ -64,10 +64,13 @@ export default function Header() {
 
   const handleRedirect = (path: string) => {
     // console.log(isAuth, isProfileComplete, path);
-    if (!isAuth && path !== '/') {
-      navigate('/login');
+    console.log(path);
+    
+    if (path === '/news') {
+      navigate(path);
+    } else if (!isAuth && path !== '/') {
+      useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
     } else if (isAuth && !isProfileComplete && path === '/report') {
-      // console.log("done");
       useAuthStore.getState().setIsPopupOpen(true);
     } else {
       navigate(path);
@@ -142,7 +145,7 @@ export default function Header() {
                   <Button
                     onClick={() => navigate('/login')}
                     size="sm" variant="outline"
-                    className={`${isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-transparent'}`}>Sign In</Button>
+                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-transparent' : 'text-white bg-secondary-950 border border-secondary-950'}`}>Sign In</Button>
                   <Button
                     onClick={() => navigate('/register')}
                     size="sm" variant="outline"
@@ -260,21 +263,3 @@ export default function Header() {
   );
 }
 
-const benefits = [
-  {
-    text: "Personalized immigration pathways tailored to your qualifications",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Detailed eligibility assessment for all Canadian immigration programs",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Step-by-step guidance on document requirements and application process",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Real-time updates when your eligibility changes for any program",
-    icon: <CheckCircle className="h-5 w-5" />
-  }
-];

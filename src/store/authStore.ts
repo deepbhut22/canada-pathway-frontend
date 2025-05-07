@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { User, AuthState, UserProfile } from '../types';
+import type { AuthState, UserProfile } from '../types';
 import { useUserStore } from './userStore';
 
 import api from '../utils/axios';
@@ -211,15 +211,17 @@ const useAuthStore = create<AuthState & {
   logout: () => void;
   initializeAuth: () => Promise<void>;
   setIsPopupOpen: (isPopupOpen: boolean) => void;
+  setIsLoginRequiredPopupOpen: (isLoginRequiredPopupOpen: boolean) => void;
 }>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: true,
   error: null,
   isPopupOpen: false,
-
+  isLoginRequiredPopupOpen: false,
   setIsPopupOpen: (isPopupOpen: boolean) => set({ isPopupOpen: isPopupOpen }),
 
+  setIsLoginRequiredPopupOpen: (isLoginRequiredPopupOpen: boolean) => set({ isLoginRequiredPopupOpen: isLoginRequiredPopupOpen }),  
   initializeAuth: async () => {
     set({ isLoading: true });
 

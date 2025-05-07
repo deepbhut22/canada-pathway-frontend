@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Calendar, Tag, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Calendar, Tag, ChevronDown, CheckCircle } from 'lucide-react';
 import { NewsItem } from '../types';
-import { formatDate } from '../utils/helpers';
 import NewsCard from '../components/home/NewsCard';
 import Layout from '../components/layout/Layout';
+import { MessagePopup } from '../components/ui/MessagePopup';
+import useAuthStore from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 // Sample categories for filter - replace with your actual categories
 const CATEGORIES = [
@@ -30,6 +32,10 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
     const [filteredNews, setFilteredNews] = useState<NewsItem[]>(allNews);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
+
+    const navigate = useNavigate();
+    const isPopupOpen = useAuthStore((state) => state.isPopupOpen);
+    const isLoginRequiredPopupOpen = useAuthStore((state) => state.isLoginRequiredPopupOpen);
 
     // Filter and sort news whenever the filters change
     useEffect(() => {
@@ -234,6 +240,61 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
                     )}
                 </div>
             </div>
+            <MessagePopup
+                isOpen={isLoginRequiredPopupOpen}
+                onClose={() => useAuthStore.getState().setIsLoginRequiredPopupOpen(false)}
+                title="Login Required"
+                message="Please login to access this feature"
+                type="warning"
+                actionText="Redirect to Login"
+                onAction={() => {
+                    useAuthStore.getState().setIsLoginRequiredPopupOpen(false);
+                    navigate('/login');
+                }}
+                cancelText="Not now"
+            />  
+            <MessagePopup
+                isOpen={isPopupOpen}
+                onClose={() => useAuthStore.getState().setIsPopupOpen(false)}
+                title="Profile Incomplete"
+                message="Please complete your profile to access this page."
+                type="warning"
+                actionText="Complete My Profile (2 Mins)"
+                onAction={() => {
+                    useAuthStore.getState().setIsPopupOpen(false);
+                    navigate('/profile');
+                }}
+                cancelText="Not now"
+                maxWidth="2xl"
+                benefits={benefits}
+            />  
         </Layout>
     );
 }
+
+const benefits = [
+    {
+        text: (
+            <p className="text-secondary-600">
+                <span className="glow-text-secondary text-secondary-950 font-bold">Free</span> Personalized immigration pathways tailored to your qualifications
+            </p>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    },
+    {
+        text: (
+            <p className="text-secondary-600">
+                <span className="text-secondary-800 font-bold">Complementary</span> eligibility assessment for all Canadian immigration programs
+            </p>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    },
+    {
+        text: (
+            <p className="text-secondary-600">
+                <span className="text-secondary-800 font-bold">Real-time</span> updates when your eligibility changes for any program
+            </p>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    }
+];

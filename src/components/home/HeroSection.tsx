@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle, TextSelectionIcon } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import BackgroundAnimation from './BackgroundAnimation';
 // Text animation with typewriter effect
 const TypewriterText = ({ text }: { text: string }) => {
   const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0); 
 
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -50,14 +50,18 @@ const FadeIn = ({ children, delay = 0, duration = 1000 }: { children: React.Reac
 
 export default function HeroSection() {
   const navigate = useNavigate();
+  const isAuth = useAuthStore((state) => state.isAuthenticated);
+  const isProfileComplete = useUserStore((state) => state.userProfile.isComplete); 
 
   function handleRedirect(): void {
-    if (!useAuthStore.getState().isAuthenticated) {
-      navigate('/login');
-    } else if (useAuthStore.getState().isAuthenticated && !useUserStore.getState().userProfile.isComplete) {
-      useAuthStore.getState().setIsPopupOpen(true);
+    if (isAuth) {
+      if (!isProfileComplete) {
+        useAuthStore.getState().setIsPopupOpen(true);
+      } else {
+        navigate('/report');
+      }
     } else {
-      navigate('/report');
+      useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
     }
   }
 
