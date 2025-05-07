@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 // Create instance
-const api = axios.create({
-    baseURL: 'http://3.98.13.227:5000/api',
-});
-
 // const api = axios.create({
-//     baseURL: 'https://api.pathpr.ca/api',
+//     baseURL: 'http://3.98.13.227:5000/api',
 // });
+
+const api = axios.create({
+    baseURL: 'https://api.pathpr.ca/api',
+});
 
 // const api = axios.create({
 //     baseURL: 'http://localhost:5000/api',
