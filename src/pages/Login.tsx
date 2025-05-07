@@ -32,7 +32,6 @@ const LoginPage = () => {
 
   return (
     <Layout>
-      
         <div className="flex flex-col md:flex-row min-h-screen">
           {/* Left Side - Animation with Text Overlay - Hidden on mobile */}
           <div className="relative hidden md:flex md:w-3/5 bg-gray-900 items-center justify-center overflow-hidden">
