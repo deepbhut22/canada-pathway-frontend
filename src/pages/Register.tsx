@@ -22,7 +22,7 @@ const Register = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = 'https://api.pathpr.ca/api/auth/google';
   };
 
   return (
