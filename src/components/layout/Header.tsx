@@ -242,6 +242,7 @@ export default function Header() {
                       closeMenu();
                     }}
                     size="sm"
+                    variant="outline"
                     className={`w-full ${isHome ? isScrolled ? 'bg-white border border-secondary-950 text-black' : 'bg-white text-black border border-secondary-950 ' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
                   >
                     Sign Up

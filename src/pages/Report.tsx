@@ -835,21 +835,18 @@ export default function Report() {
                 <CardTitle>Expert Assistance</CardTitle>
               </CardHeader>
               <CardContent>
-                  <div className="relative">
-                    {/* Blurred Card Content */}
-                    <div className="bg-secondary-100 rounded-lg p-4 mb-4">
-                      <MessageCircle className="h-8 w-8 text-secondary-900 mb-2" />
-                      <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
-                      <p className="text-secondary-600 text-sm mb-3">
-                        Our AI assistant can answer common questions about your immigration options.
-                      </p>
-                      <Button 
-                        onClick={() => setShowChatBox(true)}
-                        size="sm" 
-                        className="w-full bg-secondary-900 text-white hover:bg-secondary-950"
-                      >Chat with Immigration AI</Button>
-                    </div>
-                  </div>
+                <div className="bg-secondary-100 rounded-lg p-4 mb-4">
+                  <MessageCircle className="h-8 w-8 text-secondary-900 mb-2" />
+                  <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
+                  <p className="text-secondary-600 text-sm mb-3">
+                    Our AI assistant can answer common questions about your immigration options.
+                  </p>
+                  <Button 
+                    onClick={() => setShowChatBox(true)}
+                    size="sm" 
+                    className="w-full bg-secondary-900 text-white hover:bg-secondary-950"
+                  >Chat with Immigration AI</Button>
+                </div>
 
                 
                 <div className="border-t border-secondary-200 pt-4 mt-4">

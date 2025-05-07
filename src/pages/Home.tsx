@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Layout from '../components/layout/Layout';
 import HeroSection from '../components/home/HeroSection';
 import NewsSection from '../components/home/NewsSection';
@@ -6,7 +6,7 @@ import PathwayCard from '../components/home/PathwayCard';
 import FeaturesSection from '../components/home/FeaturesSection';
 import ProvincialSection from '../components/home/ProvincialSection';
 import TestimonialSection from '../components/home/TestimonialSection';
-import CtaSection from '../components/home/CtaSection';
+// import CtaSection from '../components/home/CtaSection';
 import { getGeneralNews, getProvincialNews } from '../data/dummyNews';
 import useAuthStore from '../store/authStore';
 import { useUserStore } from '../store/userStore';
@@ -14,12 +14,16 @@ import { MessagePopup } from '../components/ui/MessagePopup';
 import { CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/ui/LoadinSpinner';
+import ChatBox from '../components/ui/ChatBox';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
   const generalNews = getGeneralNews();
   const provincialNews = getProvincialNews();
   const navigate = useNavigate();
+
+  const [showChatBox, setShowChatBox] = useState(false);
+
   // If still loading auth state, you could show a loading spinner here
   if (isLoading) {
     return (
@@ -54,6 +58,8 @@ export default function Home() {
                 <PathwayCard
                   isAuthenticated={isAuthenticated}
                   isProfileComplete={userProfile?.isComplete || false}
+                  showChatBox={showChatBox}
+                  setShowChatBox={setShowChatBox}
                 />
               </div>
             </div>
@@ -155,6 +161,10 @@ export default function Home() {
           </div>
         }
       />  
+      <ChatBox
+        isOpen={showChatBox}
+        onClose={() => setShowChatBox(false)}
+      />
     </Layout>
   );  
 }
