@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { NewsItem } from '../../types';
-import { formatDate } from '../../utils/helpers';
 import NewsCard from './NewsCard';
 
 interface NewsSectionProps {
