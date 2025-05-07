@@ -47,7 +47,7 @@ const PathwayCard: React.FC<PathwayCardProps> = ({ isAuthenticated, isProfileCom
         {/* <MessageCircle className="h-6 w-6 text-secondary-900 mb-2" /> */}
         <h3 className="text-xl font-semibold text-secondary-900 mb-1">Have questions?</h3>
         <p className="text-secondary-700 mb-3">
-          Our AI assistant can answer common questions about your immigration options.
+          Get instant and personalized answers for all your immigration needs from our MapleAI.
         </p>
         <Button
           onClick={handleChatWithAI}

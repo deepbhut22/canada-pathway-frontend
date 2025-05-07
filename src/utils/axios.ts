@@ -9,6 +9,9 @@ const api = axios.create({
     baseURL: 'https://api.pathpr.ca/api',
 });
 
+// const api = axios.create({
+//     baseURL: 'http://localhost:5000/api',
+// });
 
 // Add JWT to headers
 api.interceptors.request.use((config) => {

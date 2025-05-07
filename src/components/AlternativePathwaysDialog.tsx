@@ -45,6 +45,9 @@ export function AlternativePathwaysDialog({
                         <div className="flex items-center justify-arround gap-2">
                             {option.status === 'Active' ? <CheckCircle className="h-5 w-5 text-green-500" /> : option.status === 'Temporarily Paused' ? <AlertTriangle className="h-5 w-5 text-yellow-500" /> : <AlertTriangle className="h-5 w-5 text-red-500" />}                            <div>
                                 <h3 className="font-medium text-secondary-900">{option.title}</h3>
+                                <p className={`text-sm text-secondary-600 ${option.status === 'Active' ? 'text-green-400' : option.status === 'Temporarily Paused' ? 'text-yellow-500' : 'text-red-900'}`}>
+                                    {option.status}
+                                </p>
                                 <h4 className="mt-1 text-sm text-secondary-600">{option.description}</h4>
                             </div>
                             {/* {option.selected && (

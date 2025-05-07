@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
@@ -51,6 +51,8 @@ export default function Report() {
   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [showChatBox, setShowChatBox] = useState(false);
+  // const [isConsultancyLoading, setIsConsultancyLoading] = useState(false);
+  const [msg, setMsg] = useState('');
 
   // const pnpReport = usePNPStore.getState().report;
   const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
@@ -214,13 +216,37 @@ export default function Report() {
   };
 
 
-  function handleConsultationRequest() {
+  async function handleConsultationRequest() {
     try {
-      console.log(useAuthStore.getState().user);
+      // setIsConsultancyLoading(true);
+      const response = await api.get(`/consultancy/${useAuthStore.getState().user?._id}`);
+
+      if (response.status === 200) {
+        setMsg('You have already requested a consultation. Please wait for our response.');
+      } else if (response.status === 201) {
+        setMsg('Consultation request sent successfully. Please wait for our response.');
+      }
+
+      // setIsConsultancyLoading(false);
+
+      // Wait 5 seconds before closing popup and clearing the message
+      // setTimeout(() => {
+      //   useAuthStore.getState().setIsConsultationDialogOpen(false);
+      //   setMsg('');
+      // }, 5000);
+
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      // setIsConsultancyLoading(false);
+      setMsg('Something went wrong. Please try again later.');
+      console.error(error);
+
+      setTimeout(() => {
+        useAuthStore.getState().setIsConsultationDialogOpen(false);
+        setMsg('');
+      }, 5000);
     }
   }
+
 
   return (
     <Layout>
@@ -862,7 +888,7 @@ export default function Report() {
                 
                 <div className="border-t border-secondary-200 pt-4 mt-4">
                   <h3 className="font-medium text-secondary-900 mb-2">
-                    Connect with Licensed Consultants For Free
+                    Connect with Licensed(RCIC) Consultants For Free
                   </h3>
                   <p className="text-sm text-secondary-600 mb-4">
                     Get personalized guidance from a regulated immigration consultant.
@@ -873,11 +899,11 @@ export default function Report() {
                         <Button 
                           onClick={() => useAuthStore.getState().setIsConsultationDialogOpen(true)}
                           variant="outline" size="sm" className="w-full">
-                          Book a Consultation
+                          Pre-Book Consultation
                         </Button>
-                        <Button variant="secondary" size="sm" className="w-full">
+                        {/* <Button variant="secondary" size="sm" className="w-full disabled:opacity-50">
                           View Consultant Profiles
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
 
@@ -898,7 +924,9 @@ export default function Report() {
                         Latest invitation rounds for Canada's immigration programs.
                       </p>
                       <div className="space-y-4">
-                        <div className="border-b border-secondary-200 pb-3">
+                        <div
+                          onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=345", "_blank", "noopener,noreferrer")}
+                          className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
                           <div className="flex justify-between items-center mb-1">
                             <div className="flex flex-col">
                               <div className="font-medium text-secondary-800">Express Entry</div>
@@ -912,7 +940,9 @@ export default function Report() {
                           </div>
                         </div>
 
-                        <div className="border-b border-secondary-200 pb-3">
+                        <div
+                          onClick={() => window.open("https://immigratemanitoba.com/2025/05/eoi-draw-244/", "_blank", "noopener,noreferrer")}
+                          className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
                           <div className="flex justify-between items-center mb-1">
                             <div className="flex flex-col">
                               <div className="font-medium text-secondary-800">Manitoba PNP</div>
@@ -926,7 +956,10 @@ export default function Report() {
                           </div>
                         </div>
 
-                        <div>
+                        <div
+                          onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=344", "_blank", "noopener,noreferrer")}
+                          className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1"
+                        >
                           <div className="flex justify-between items-center mb-1">
                             <div className="flex flex-col">
                               <div className="font-medium text-secondary-800">Express Entry</div>
@@ -973,11 +1006,10 @@ export default function Report() {
         isOpen={isConsultationDialogOpen}
         onClose={() => useAuthStore.getState().setIsConsultationDialogOpen(false)}
         title="Consultation Request"
-        message="This feature is currently under development. Raise your request and we will get back to you soon."
-        type="info"
+        message={msg === '' ? "This feature is currently under development. Raise your request and we will get back to you soon." : msg}
+        type={msg === '' ? 'info' : msg === 'You have already requested a consultation. Please wait for our response.' ? 'warning' : 'success'}
         actionText="Raise Request"
         onAction={() => {
-          useAuthStore.getState().setIsConsultationDialogOpen(false);
           handleConsultationRequest();
         }}
         cancelText="Not now"
