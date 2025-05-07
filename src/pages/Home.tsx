@@ -65,7 +65,7 @@ export default function Home() {
             </div>
 
             {/* Recent Draw Results */}
-            <div className="h-full flex flex-col shadow-xl">
+            <div className="h-full flex flex-col shadow-xl rounded-lg">
               <div className="flex-grow bg-secondary-50 rounded-lg p-6 border border-secondary-100 h-full">
                 <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draws</h3>
                 <p className="text-secondary-700 mb-4">
@@ -130,6 +130,12 @@ export default function Home() {
         </div>
       </div>
 
+      <button onClick={() => {
+        useAuthStore.getState().setIsPopupOpen(true);
+      }}>
+        Open Popup
+      </button>
+
       {/* Testimonial Section */}
       <TestimonialSection />
 
@@ -141,25 +147,14 @@ export default function Home() {
         title="Profile Incomplete"
         message="Please complete your profile to access this page."
         type="warning"
-        actionText="Go to Profile"
+        actionText="Complete My Profile (2 Mins)"
         onAction={() => {
           useAuthStore.getState().setIsPopupOpen(false);
           navigate('/profile');
         }}
-        cancelText="Close"
+        cancelText="Not now"
         maxWidth="2xl"
         benefits={benefits}
-        illustration={
-          <div className="flex items-center justify-center flex flex-col gap-4">
-            <h2 className="text-2xl font-bold">Steps to complete your profile</h2>
-            <ul className="list-disc list-inside">
-              <li>Go to Profile</li>
-              <li>Complete each section of the questionnaire</li>
-              <li>DO not forget to save your progress</li>
-              <li>Get your report</li>
-            </ul>
-          </div>
-        }
       />  
       <ChatBox
         isOpen={showChatBox}
@@ -170,19 +165,27 @@ export default function Home() {
 }
 const benefits = [
   {
-    text: "Personalized immigration pathways tailored to your qualifications",
+    text: (
+      <p className="text-secondary-600">
+        <span className="glow-text-secondary text-secondary-950 font-bold">Free</span> Personalized immigration pathways tailored to your qualifications
+      </p>
+    ),
     icon: <CheckCircle className="h-5 w-5" />
   },
   {
-    text: "Detailed eligibility assessment for all Canadian immigration programs",
+    text: (
+      <p className="text-secondary-600">
+        <span className="text-secondary-800 font-bold">Complementary</span> eligibility assessment for all Canadian immigration programs
+      </p>
+    ),
     icon: <CheckCircle className="h-5 w-5" />
   },
   {
-    text: "Step-by-step guidance on document requirements and application process",
-    icon: <CheckCircle className="h-5 w-5" />
-  },
-  {
-    text: "Real-time updates when your eligibility changes for any program",
+    text: (
+      <p className="text-secondary-600">
+        <span className="text-secondary-800 font-bold">Real-time</span> updates when your eligibility changes for any program
+      </p>
+    ),
     icon: <CheckCircle className="h-5 w-5" />
   }
 ];

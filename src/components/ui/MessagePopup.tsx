@@ -9,7 +9,7 @@ export type MessageType = 'success' | 'warning' | 'info' | 'error';
 
 // Benefits can be passed as an array of strings
 interface Benefit {
-    text: string;
+    text: React.ReactNode;
     icon?: React.ReactNode; // Optional custom icon for each benefit
 }
 
@@ -104,7 +104,7 @@ export function MessagePopup({
                                         transition={{ delay: 0.1 * index }}
                                         className="flex items-start"
                                     >
-                                        <div className="mr-3 text-primary-500">
+                                        <div className="mr-3 text-secondary-900">
                                             {benefit.icon || <CheckCircle className="h-5 w-5" />}
                                         </div>
                                         <p className="text-secondary-600">{benefit.text}</p>
@@ -151,75 +151,29 @@ export function MessagePopup({
         </Dialog>
     );
 }
-
-// Example of how to use this component for profile completion
-export function ProfileCompletionPopup({
-    isOpen,
-    onClose,
-    onRedirectToProfile
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    onRedirectToProfile: () => void;
-}) {
-    const benefits = [
-        {
-            text: "Personalized immigration pathways tailored to your qualifications",
-            icon: <CheckCircle className="h-5 w-5" />
-        },
-        {
-            text: "Detailed eligibility assessment for all Canadian immigration programs",
-            icon: <CheckCircle className="h-5 w-5" />
-        },
-        {
-            text: "Step-by-step guidance on document requirements and application process",
-            icon: <CheckCircle className="h-5 w-5" />
-        },
-        {
-            text: "Real-time updates when your eligibility changes for any program",
-            icon: <CheckCircle className="h-5 w-5" />
-        }
-    ];
-
-    // Example illustration - replace with your own SVG or image component
-    const illustration = (
-        <div className="text-center">
-            <svg
-                className="w-full max-w-[200px] mx-auto text-primary-500"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-            >
-                <path
-                    d="M12 15v3m0 0v3m0-3h3m-3 0H9m1-13a3 3 0 100 6 3 3 0 000-6z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <circle cx="12" cy="7" r="4" fill="currentColor" fillOpacity="0.2" />
-            </svg>
-            <p className="mt-4 text-secondary-600 font-medium">Complete your profile to unlock your personalized report</p>
-        </div>
-    );
-
-    return (
-        <MessagePopup
-            isOpen={isOpen}
-            onClose={onClose}
-            onAction={onRedirectToProfile}
-            title="Complete Your Profile"
-            message="To generate your personalized immigration report, we need additional information about your qualifications and background."
-            type="info"
-            actionText="Complete My Profile"
-            cancelText="Not Now"
-            benefits={benefits}
-            illustration={illustration}
-            maxWidth="xl"
-        />
-    );
-}
+const benefits = [
+    {
+        text: (
+            <>
+                <span className="glow-text font-bold text-white">Free</span> Personalized immigration pathways tailored to your qualifications
+            </>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    },
+    {
+        text: (
+            <>
+                <span className="glow-text font-bold text-white">Complementary</span> eligibility assessment for all Canadian immigration programs
+            </>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    },
+    {
+        text: (
+            <>
+                <span className="glow-text font-bold text-white">Real-time</span> updates when your eligibility changes for any program
+            </>
+        ),
+        icon: <CheckCircle className="h-5 w-5" />
+    }
+];

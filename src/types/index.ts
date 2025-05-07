@@ -7,7 +7,7 @@ export interface NewsItem {
   date: string;
   imageUrl: string;
   source: string;
-  category: 'general' | 'provincial' | 'regional';
+  category: 'general' | 'provincial' | 'regional' | 'immigration policy' | 'Express Entry' | 'Family Sponsorship' | 'Study' | 'Work';
   province?: string;
   url?: string;
 }
