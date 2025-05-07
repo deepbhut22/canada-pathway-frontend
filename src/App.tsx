@@ -31,6 +31,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/privacy-policy" element={<LegalInfoComponent />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
+          <Route path="/auth/google/:token" element={<GoogleCallback />} />
           <Route
             path="/news"
             element={
