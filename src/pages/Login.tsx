@@ -22,7 +22,7 @@ const LoginPage = () => {
 
     if (isDone) {
       navigate(from);
-      updateBasicInfo({ "email": email });
+      updateBasicInfo({ "email": email })
     }
   };
 
