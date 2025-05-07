@@ -121,7 +121,7 @@ export interface JobOffer {
   startDate: string;
   // hasEndDate: boolean;
   // endDate: string;
-  tier: Number;
+  teer: Number;
 }
 
 export interface JobOfferInfo {

@@ -18,17 +18,15 @@ export default function Profile() {
   const completedSteps = useMemo(() => {
     return {
       basic: !!basicInfo.fullName && !!basicInfo.email && !!basicInfo.citizenCountry && !!basicInfo.residenceCountry,
-      // education: educationInfo && (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0),
-      education: true,
+      education: educationInfo && educationInfo.hasHighSchool && (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0),
       work: workInfo && (typeof workInfo.hasWorkExperience === 'boolean') && (!workInfo.hasWorkExperience || (workInfo.hasWorkExperience && workInfo.workExperienceList.length > 0)),
-      language: languageInfo && (languageInfo.primaryLanguage || (languageInfo.hasSecondLanguage && languageInfo.secondLanguageTest.type)),
-      spouse: spouseInfo.maritalStatus && spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada),
-      // dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
-      dependent: true,
-      // connection: connectionInfo && connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident,
-      connection: true,
-      // joboffer: jobOfferInfo && jobOfferInfo.jobOffer && jobOfferInfo.jobOffer.jobTitle,
-      joboffer: true,
+      language: languageInfo && languageInfo.primaryLanguage && 
+        (!languageInfo.hasTakenTest || (languageInfo.primaryLanguageTest.type && languageInfo.primaryLanguageTest.clbScore))
+        && (!languageInfo.hasSecondLanguage || (languageInfo.secondLanguageTest.type && languageInfo.secondLanguageTest.clbScore)),
+      spouse: spouseInfo.maritalStatus && (spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada)),
+      dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
+      connection: connectionInfo && typeof connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident === "boolean",
+      joboffer: jobOfferInfo && (!jobOfferInfo.hasJobOffer && (jobOfferInfo.jobOffer.jobTitle && jobOfferInfo.jobOffer.nocCode && jobOfferInfo.jobOffer.province && jobOfferInfo.jobOffer.startDate && jobOfferInfo.jobOffer.teer)),
       // Add more steps as needed
     };
   }, [basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo]);

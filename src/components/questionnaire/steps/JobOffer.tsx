@@ -97,7 +97,7 @@ export default function JobOffer({
         startDate: '',
         // hasEndDate: false,
         // endDate: '',
-        tier: 0
+        teer: 0
       }
     });
   };
@@ -117,7 +117,7 @@ export default function JobOffer({
             ...jobOffer,
             nocCode: value.noc,
             jobTitle: value.title,
-            tier: value.tier
+            teer: value.teer
           }
         });
       }
@@ -129,7 +129,7 @@ export default function JobOffer({
             ...jobOffer,
             nocCode: '',
             jobTitle: '',
-            tier: 0
+            teer: 0
           }
         });
       }
@@ -196,10 +196,14 @@ export default function JobOffer({
           <div className="mt-6 space-y-4">
 
             <SearchSelect
-              items={getNocOptions()}
+              items={getNocOptions().map(item => ({
+                ...item,
+                noc: String(item.noc),
+                teer: item.tier
+              }))}
               value={jobOffer.nocCode ? {
                 title: jobOffer.jobTitle || '',
-                tier: (jobOffer.tier || 0).toString(),
+                teer: (jobOffer.teer || 0).toString(),
                 noc: jobOffer.nocCode || ''
               } : null}
               onChange={(value) => handleJobOfferChange({

@@ -238,8 +238,8 @@ const useAuthStore = create<AuthState & {
           // Check if profile is complete and set the isComplete flag
           const userProfile = response.data.userProfile;
           const profileComplete = isProfileComplete(userProfile);
-          // userProfile.isComplete = profileComplete;
-          userProfile.isComplete = true;
+          userProfile.isComplete = profileComplete;
+          // userProfile.isComplete = true;
 
           useUserStore.setState({ userProfile });
           set({ isLoading: false });

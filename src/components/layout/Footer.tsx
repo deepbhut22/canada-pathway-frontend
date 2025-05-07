@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Mail, Phone, Globe } from 'lucide-react';
+import { Mail, Globe } from 'lucide-react';
+import canadaLogoLight from '../../../assets/canada-logo-light.png';
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link to="/" className="flex items-center">
-              <img src="../../../../assets/canada-logo-light.png" alt="PathPR Logo" className="w-40 sm:w-48" />
+              <img src={canadaLogoLight} alt="PathPR Logo" className="w-40 sm:w-48" />
               {/* <MapPin className="h-6 w-6 text-primary-400" />
               <span className="ml-2 text-xl font-bold">PathPR</span> */}
             </Link>
