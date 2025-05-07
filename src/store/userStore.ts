@@ -51,11 +51,11 @@ const defaultDependentInfo: DependentInfo = {
 const defaultConnectionInfo: ConnectionInfo = {
   // hasConnections: false,
   // connectionList: []
-  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: false
+  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: ''
 };
 
 const defaultWorkInfo: WorkInfo = {
-  hasWorkExperience: false,
+  hasWorkExperience: '',
   workExperienceList: []
 };
 
@@ -71,7 +71,7 @@ const defaultJobOfferInfo: JobOfferInfo = {
     startDate: '',
     // hasEndDate: false,
     // endDate: '',
-    tier: 0
+    teer: 0
   }
 };
 

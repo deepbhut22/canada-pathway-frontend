@@ -85,7 +85,7 @@ export interface DependentInfo {
 // }
 
 export interface ConnectionInfo {
-  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: boolean;
+  doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident: boolean | '';
 }
 
 export interface WorkExperience {
@@ -107,7 +107,7 @@ export interface WorkExperience {
 }
 
 export interface WorkInfo {
-  hasWorkExperience: boolean;
+  hasWorkExperience: boolean | '';
   workExperienceList: WorkExperience[];
 }
 

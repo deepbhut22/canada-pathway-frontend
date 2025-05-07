@@ -173,7 +173,7 @@ export default function Header() {
 
       {/* Mobile menu - with improved transitions and styling */}
       {isMenuOpen && (
-        <div className={`md:hidden transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-md' : 'bg-transparent shadow-md backdrop-blur-sm' : 'bg-white/95 backdrop-blur-sm shadow-md'}`}>
+        <div className={`md:hidden transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent shadow-md backdrop-blur-md' : 'bg-white/95 backdrop-blur-md shadow-md'}`}>
           <div className="pt-2 pb-3 space-y-1">
             {navigationItems.map((item) => (
               <Link

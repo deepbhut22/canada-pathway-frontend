@@ -65,7 +65,7 @@ export default function Home() {
             </div>
 
             {/* Recent Draw Results */}
-            <div className="h-full flex flex-col shadow-xl border border-secondary-100">
+            <div className="h-full flex flex-col shadow-xl">
               <div className="flex-grow bg-secondary-50 rounded-lg p-6 border border-secondary-100 h-full">
                 <h3 className="text-xl font-semibold text-secondary-900 mb-3">Recent Draws</h3>
                 <p className="text-secondary-700 mb-4">
