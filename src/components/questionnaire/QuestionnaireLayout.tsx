@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { ArrowLeft, BaggageClaim, ChevronLeft, ChevronRight, Save } from 'lucide-react';
 import { Step } from '../../types';
 import { navigationSteps, getStepIndex, getNextStep, getPreviousStep } from '../../utils/helpers';
 import Button from '../ui/Button';
@@ -34,10 +34,28 @@ export default function QuestionnaireLayout({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14">
-      <div className="mb-8">
+      <div className="mb-5">
         <h1 className="text-2xl font-bold text-secondary-900 mb-2">Find Your Canadian Immigration Pathway</h1>
         <p className="text-secondary-600">
           Complete your profile to get personalized immigration recommendations.
+        </p>
+      </div>
+
+      {/* <div className="mb-6 flex flex-wrap gap-2 justify-start p-1">
+        {navigationSteps.map((step, idx) => (
+          <div key={step.id} className="bg-white border border-secondary-200 shadow-sm p-2 rounded-md cursor-pointer hover:shadow-md transition-all duration-">
+            <p className="text-sm text-secondary-950">
+              <span className="text-secondary-500 rounded-full bg-secondary-50 px-2 py-1 border border-secondary-200">{idx + 1}</span> {step.title}
+            </p>
+          </div>
+        ))}
+      </div> */}
+      <div 
+        onClick={() => navigate('/profile')}
+        className="mb-2 flex justify-between cursor-pointer items-center p-1 w-min gap-2">
+        <ArrowLeft className="text-secondary-950" />
+        <p className="text-md text-secondary-950 font-semibold">
+          back
         </p>
       </div>
 
@@ -47,9 +65,9 @@ export default function QuestionnaireLayout({
             <span className="text-sm font-medium text-secondary-700">
               Step {currentStepIndex + 1} of {navigationSteps.length}
             </span>
-            <span className="text-sm text-secondary-500">
+            {/* <span className="text-sm text-secondary-500">
               {Math.round(progress)}% Complete
-            </span>
+            </span> */}
           </div>
           <div className="w-full bg-secondary-200 rounded-full h-2">
             <div

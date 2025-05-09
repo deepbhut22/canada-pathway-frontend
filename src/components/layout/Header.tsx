@@ -128,7 +128,7 @@ export default function Header() {
                   <span className={`text-sm md:text-base lg:text-lg ${isHome ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
                     Welcome,
                     <span className={`md:text-lg lg:text-2xl font-bold ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
-                      {useAuthStore.getState().user!.firstName}
+                      {useAuthStore.getState().user?.firstName}
                     </span>
                   </span>
                   <Button

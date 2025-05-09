@@ -129,8 +129,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
                         >
                             <div
                                 className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.role === 'user'
-                                        ? 'bg-secondary-900 text-white'
-                                        : 'bg-white border border-secondary-300 text-secondary-900'
+                                        ? 'bg-secondary-900 text-white shadow-md'
+                                        : 'bg-white border border-secondary-100 border border-secondary-400 shadow-md text-secondary-900'
                                     }`}
                             >
                                 <p className="whitespace-pre-wrap text-sm">{msg.content}</p>

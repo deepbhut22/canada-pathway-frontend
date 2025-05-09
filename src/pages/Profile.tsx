@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
@@ -8,12 +8,15 @@ import { Edit, FileText, Star, Award, CheckCircle2, ChevronRight, CheckCircle } 
 import { navigationSteps } from '../utils/helpers';
 import useAuthStore from '../store/authStore';
 import {MessagePopup} from '../components/ui/MessagePopup';
+import ChatBox from '../components/ui/ChatBox';
+
 export default function Profile() {
   const navigate = useNavigate();
   const { userProfile, resetUserProfile } = useUserStore();
   const { basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo, isComplete } = userProfile;
 
   const hasStartedProfile = !!basicInfo.fullName;
+  const [chatOpen, setChatOpen] = useState(false);
 
   const isPopupOpen = useAuthStore(state => state.isPopupOpen);
 
@@ -21,15 +24,15 @@ export default function Profile() {
   const completedSteps = useMemo(() => {
     return {
       basic: !!basicInfo.fullName && !!basicInfo.email && !!basicInfo.citizenCountry && !!basicInfo.residenceCountry,
-      education: educationInfo && educationInfo.hasHighSchool && (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0),
+      education: educationInfo && (typeof educationInfo.hasHighSchool === 'boolean') && (typeof educationInfo.hasPostSecondary === 'boolean') && (!educationInfo.hasPostSecondary || (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0)),
       work: workInfo && (typeof workInfo.hasWorkExperience === 'boolean') && (!workInfo.hasWorkExperience || (workInfo.hasWorkExperience && workInfo.workExperienceList.length > 0)),
       language: languageInfo && languageInfo.primaryLanguage && 
         (!languageInfo.hasTakenTest || (languageInfo.primaryLanguageTest.type && languageInfo.primaryLanguageTest.clbScore))
         && (!languageInfo.hasSecondLanguage || (languageInfo.secondLanguageTest.type && languageInfo.secondLanguageTest.clbScore)),
       spouse: spouseInfo.maritalStatus && (spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada)),
-      dependent: dependentInfo && dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0,
+      dependent: dependentInfo && (typeof dependentInfo.hasDependents === 'boolean') && (!dependentInfo.hasDependents || (dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0)),
       connection: connectionInfo && typeof connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident === "boolean",
-      joboffer: jobOfferInfo && (!jobOfferInfo.hasJobOffer && (jobOfferInfo.jobOffer.jobTitle && jobOfferInfo.jobOffer.nocCode && jobOfferInfo.jobOffer.province && jobOfferInfo.jobOffer.startDate && jobOfferInfo.jobOffer.teer)),
+      joboffer: jobOfferInfo && (typeof jobOfferInfo.hasJobOffer === 'boolean') && (!jobOfferInfo.hasJobOffer || (jobOfferInfo.hasJobOffer && jobOfferInfo.jobOffer.jobTitle && jobOfferInfo.jobOffer.nocCode && jobOfferInfo.jobOffer.province && jobOfferInfo.jobOffer.startDate && jobOfferInfo.jobOffer.teer)),
       // Add more steps as needed
     };
   }, [basicInfo, educationInfo, workInfo, languageInfo, spouseInfo, dependentInfo, connectionInfo, jobOfferInfo]);
@@ -88,7 +91,7 @@ export default function Profile() {
 
   const handleFindPathway = () => {
     if (isProfileComplete) {
-      navigate('/report');
+      setChatOpen(true);
     } else {
       useAuthStore.getState().setIsPopupOpen(true);
     }
@@ -96,7 +99,7 @@ export default function Profile() {
 
   return (
     <Layout>
-      <div className="py-12 bg-white mt-12 border-b border-secondary-200">
+      <div className={`py-12 bg-white mt-12 border-b border-secondary-200 ${chatOpen ? 'blur' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex-1 min-w-0">
@@ -116,7 +119,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${chatOpen ? 'blur-sm' : ''}`}>
         {hasStartedProfile ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
@@ -171,11 +174,11 @@ export default function Profile() {
                           return (
                             <div key={step.id} className="flex items-center">
                               <div className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full mr-3 ${isStepCompleted
-                                  ? 'bg-secondary-100 text-secondary-900'
+                                  ? 'bg-secondary-100 text-secondary-900 border border-secondary-200'
                                   : 'bg-secondary-100 text-secondary-500'
                                 }`}>
                                 {isStepCompleted ? (
-                                  <CheckCircle2 className="h-5 w-5" />
+                                  <CheckCircle2 className="h-5 w-5 text-green-500" />
                                 ) : (
                                   <span className="text-xs font-medium">{navigationSteps.findIndex(s => s.id === step.id) + 1}</span>
                                 )}
@@ -192,7 +195,8 @@ export default function Profile() {
                                 className="border border-secondary-600 text-secondary-900 hover:bg-secondary-900 hover:text-white"
                                 onClick={() => navigate(`/questionnaire/${step.id}`)}
                               >
-                                {isStepCompleted ? 'Edit' : 'Complete'}
+                                
+                                {isStepCompleted ? 'Update Info' : 'Complete now'}
                               </Button>
                             </div>
                           );
@@ -201,7 +205,7 @@ export default function Profile() {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex justify-end space-x-3">
+                {/* <CardFooter className="flex justify-end space-x-3">
                   <Button
                     variant="outline"
                     className="border border-secondary-600 text-secondary-900 hover:bg-secondary-900 hover:text-white"
@@ -221,7 +225,7 @@ export default function Profile() {
                   >
                     Edit Profile
                   </Button>
-                </CardFooter>
+                </CardFooter> */}
               </Card>
             </div>
 
@@ -357,7 +361,10 @@ export default function Profile() {
         maxWidth="2xl"
         benefits={benefits}
       />  
-      
+      <ChatBox
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+      />
     </Layout>
   );
 }

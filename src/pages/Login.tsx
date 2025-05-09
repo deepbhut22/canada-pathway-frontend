@@ -5,6 +5,8 @@ import { useState } from 'react';
 import BackgroundAnimation from '../components/home/BackgroundAnimation';
 import { CheckCircle } from 'lucide-react';
 import Layout from '../components/layout/Layout';
+import { MessagePopup } from '../components/ui/MessagePopup';
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,15 +16,23 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const isDone = await login(email, password);
-    const from = location.state?.from?.pathname || '/';
+    try {
+      const isDone = await login(email, password);
+      const from = location.state?.from?.pathname || '/';
 
-    if (isDone) {
-      navigate(from);
-      updateBasicInfo({ "email": email })
+      if (isDone) {
+        navigate(from);
+        updateBasicInfo({ email });
+      }
+    } catch (err: any) {
+      console.log(err);
+      setLoginError(err.toString());
+      setIsMessageOpen(true);
     }
   };
 
@@ -32,9 +42,9 @@ const LoginPage = () => {
 
   return (
     <Layout>
-        <div className="flex flex-col md:flex-row min-h-screen">
-          {/* Left Side - Animation with Text Overlay - Hidden on mobile */}
-          <div className="relative hidden md:flex md:w-3/5 bg-gray-900 items-center justify-center overflow-hidden">
+      <div className="flex flex-col md:flex-row min-h-screen">
+        {/* Left Side - Animation with Text Overlay - Hidden on mobile */}
+        <div className="relative hidden md:flex md:w-3/5 bg-gray-900 items-center justify-center overflow-hidden">
           {/* Background Animation */}
           <div className="absolute inset-0 w-full h-full">
             <BackgroundAnimation />
@@ -80,7 +90,7 @@ const LoginPage = () => {
               </h2>
               <p className="mt-2 text-sm text-secondary-800">
                 Don't have an account?{' '}
-                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                <Link to="/register" className="font-medium text-secondary-950 font-semibold hover:underline transition-colors">
                   Sign up now
                 </Link>
               </p>
@@ -101,7 +111,7 @@ const LoginPage = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                   />
                 </div>
               </div>
@@ -120,7 +130,7 @@ const LoginPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                   />
                   <button
                     type="button"
@@ -141,7 +151,7 @@ const LoginPage = () => {
                   </button>
                 </div>
                 <div className="text-right mt-2">
-                  <a href="#" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                  <a href="#" className="text-sm text-gray-600 hover:underline transition-colors">
                     Forgot password?
                   </a>
                 </div>
@@ -156,7 +166,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-secondary-950 hover:bg-transparent hover:text-secondary-950 hover:border-secondary-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-700 transition-colors"
               >
                 {isLoading ? (
                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -200,6 +210,18 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <MessagePopup
+        isOpen={isMessageOpen}
+        onClose={() => {
+          setPassword('');
+          setIsMessageOpen(false);
+          setLoginError('');
+        }}
+        title="Error"
+        message={loginError || "Invalid email or password"}
+        type="error"
+        cancelText="Close"
+      />
     </Layout>
   );
 };

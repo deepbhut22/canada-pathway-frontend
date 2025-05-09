@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore';
 import BackgroundAnimation from '../components/home/BackgroundAnimation';
 import { CheckCircle } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-
+import {MessagePopup} from '../components/ui/MessagePopup';
 const Register = () => {
   const navigate = useNavigate();
   const { register, isLoading, error } = useAuthStore();
@@ -14,11 +14,23 @@ const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [localError, setLocalError] = useState('');
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await register(email, password, firstName, lastName);
-    navigate('/');
+    e.preventDefault(); 
+    if (email === '' || password === '' || firstName === '' || lastName === '' || password.length < 6) {
+      setLocalError('Please fill in all fields and ensure password is at least 6 characters long');
+      setIsMessageOpen(true);
+      return;
+    }
+    const success = await register(email, password, firstName, lastName);
+    if (success) {
+      navigate('/');
+    } else {
+      setIsMessageOpen(true);
+    }
+
   };
 
   const handleGoogleLogin = () => {
@@ -75,7 +87,7 @@ const Register = () => {
               </h2>
               <p className="mt-2 text-sm text-secondary-800">
                 Already have an account?{' '}
-                <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                <Link to="/login" className="font-medium text-secondary-950 font-semibold hover:underline transition-colors">
                   Sign in
                 </Link>
               </p>
@@ -97,7 +109,7 @@ const Register = () => {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="First name"
-                      className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                     />
                   </div>
                 </div>
@@ -116,7 +128,7 @@ const Register = () => {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Last name"
-                      className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                     />
                   </div>
                 </div>
@@ -136,7 +148,7 @@ const Register = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                   />
                 </div>
                 <label htmlFor="email" className="block text-sm text-gray-500">
@@ -158,7 +170,7 @@ const Register = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Create a password"
-                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-secondary-950 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary-700 transition-all"
                   />
                   <button
                     type="button"
@@ -179,7 +191,7 @@ const Register = () => {
                   </button>
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                  Password must be at least 8 characters long
+                  Password must be at least 6 characters long
                 </p>
               </div>
 
@@ -192,7 +204,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-secondary-950 hover:bg-transparent hover:text-secondary-950 hover:border-secondary-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-700 transition-colors"
               >
                 {isLoading ? (
                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -236,6 +248,14 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <MessagePopup
+        isOpen={isMessageOpen}
+        onClose={() => setIsMessageOpen(false)}
+        title="Error"
+        message={localError === '' ? error! : localError! || "Enter valid details"}
+        type="error"
+        cancelText="Close"
+      />
     </Layout>
   );
 };

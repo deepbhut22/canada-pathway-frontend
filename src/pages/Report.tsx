@@ -250,7 +250,7 @@ export default function Report() {
 
   return (
     <Layout>
-      <div className="py-8 bg-white mt-16 border-b border-secondary-200">
+      <div className={`py-8 bg-white mt-16 border-b border-secondary-200 ${showChatBox ? 'blur' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex flex-col w-full">
@@ -296,7 +296,7 @@ export default function Report() {
       
       {isLoading ? <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50 h-[70vh] flex items-center justify-center"><LoadingSpinner  size='large' message='Loading Report...'/></div>
        : 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" ref={reportContentRef}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${showChatBox ? 'blur-sm' : ''}`} ref={reportContentRef}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {isLoading ? <div className="w-96 mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50"><LoadingSpinner /></div> : <div className="lg:col-span-2 space-y-8">
             <Card className="pdf-section" data-title="Express Entry Profile">
@@ -839,7 +839,7 @@ export default function Report() {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-secondary-500">Country of Citizenship</h4>
-                    <p className="text-secondary-900">{basicInfo.citizenCountry || 'India'}</p>
+                    <p className="text-secondary-900">{basicInfo.citizenCountry.charAt(0).toUpperCase() + basicInfo.citizenCountry.slice(1) || 'India'}</p>
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-secondary-500">Education</h4>

@@ -23,7 +23,7 @@ export default function StepNavigation({ currentStep, userProfile }: StepNavigat
       case 'dependent':
         return userProfile.dependentInfo.hasDependents !== null;
       case 'connection':
-        return userProfile.connectionInfo.hasConnections !== null;
+        return userProfile.connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident !== null;
       case 'work':
         return userProfile.workInfo.hasWorkExperience !== null;
       case 'joboffer':

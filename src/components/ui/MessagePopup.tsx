@@ -151,29 +151,3 @@ export function MessagePopup({
         </Dialog>
     );
 }
-const benefits = [
-    {
-        text: (
-            <>
-                <span className="glow-text font-bold text-white">Free</span> Personalized immigration pathways tailored to your qualifications
-            </>
-        ),
-        icon: <CheckCircle className="h-5 w-5" />
-    },
-    {
-        text: (
-            <>
-                <span className="glow-text font-bold text-white">Complementary</span> eligibility assessment for all Canadian immigration programs
-            </>
-        ),
-        icon: <CheckCircle className="h-5 w-5" />
-    },
-    {
-        text: (
-            <>
-                <span className="glow-text font-bold text-white">Real-time</span> updates when your eligibility changes for any program
-            </>
-        ),
-        icon: <CheckCircle className="h-5 w-5" />
-    }
-];

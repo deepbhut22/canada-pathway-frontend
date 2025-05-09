@@ -128,7 +128,7 @@ const isProfileComplete = (profile: UserProfile): boolean => {
   const educationComplete: boolean = !!(
     (typeof educationInfo.hasHighSchool === 'boolean') &&
     (typeof educationInfo.hasPostSecondary === 'boolean') && 
-    (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0)
+    (!educationInfo.hasPostSecondary || (educationInfo.hasPostSecondary && educationInfo.educationList.length > 0))
   );
 
   // Work experience checks
@@ -206,7 +206,7 @@ const isProfileComplete = (profile: UserProfile): boolean => {
 
 const useAuthStore = create<AuthState & {
   login: (email: string, password: string) => Promise<boolean>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>;
   loginWithGoogle: () => Promise<void>;
   logout: () => void;
   initializeAuth: () => Promise<void>;
@@ -271,37 +271,39 @@ const useAuthStore = create<AuthState & {
   login: async (email: string, password: string): Promise<boolean> => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/auth/login', {
-        email,
-        password,
-      });
+      const response = await api.post('/auth/login', { email, password });
 
       if (response.status === 200) {
         set({ user: response.data, isAuthenticated: true, isLoading: false });
         localStorage.setItem('canda-pathway-auth-token', response.data.token);
 
         const profileResponse = await api.get('/auth/profile');
-
         useUserStore.getState().resetUserProfile();
 
-        // Check if profile is complete and set the isComplete flag
         const userProfile = profileResponse.data.userProfile;
         const profileComplete = isProfileComplete(userProfile);
         userProfile.isComplete = profileComplete;
-
+        set({ user: profileResponse.data.user, isAuthenticated: true });
         useUserStore.setState({ userProfile });
-
-        return true;
-      } else {
-        return false;
+        return true;  
       }
-    } catch (error) {
-      set({ error: (error as Error).message, isLoading: false });
+      // If response status is not 200
+      set({ isLoading: false });
       return false;
+
+    } catch (error: any) {
+      console.log("Login error:", error);
+      set({ isLoading: false });
+
+      // Return the error message to be handled by the component
+      if (error.response) {
+        return Promise.reject(error.response.data.message || "Login failed");
+      }
+      return Promise.reject(error.message || "Login failed");
     }
   },
 
-  register: async (email: string, password: string, firstName: string, lastName: string) => {
+  register: async (email: string, password: string, firstName: string, lastName: string): Promise<boolean> => {
     set({ isLoading: true, error: null });
     try {
       const response = await api.post('/auth/register', {
@@ -312,13 +314,30 @@ const useAuthStore = create<AuthState & {
       });
 
       if (response.status === 201) {
-        set({ user: response.data, isAuthenticated: true, isLoading: false });
+        set({ isAuthenticated: true, isLoading: false });
         localStorage.setItem('canda-pathway-auth-token', response.data.token);
+
+        const profileResponse = await api.get('/auth/profile');
+        useUserStore.getState().resetUserProfile();
+
+        const userProfile = profileResponse.data.userProfile;
+        const profileComplete = isProfileComplete(userProfile);
+        userProfile.isComplete = profileComplete;
+        set({ user: profileResponse.data.user, isAuthenticated: true });
+        useUserStore.setState({ userProfile });
+        return true;
+      } else if (response.status === 400) {
+        set({ isLoading: false, error: "Email already exists" });
+        return false;
       } else {
-        throw new Error('Registration failed');
+        set({ isLoading: false });
+        return false;
       }
+
     } catch (error) {
+      console.log("Register error:", error);
       set({ error: (error as Error).message, isLoading: false });
+      return false;
     }
   },
 

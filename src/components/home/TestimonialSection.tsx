@@ -5,23 +5,23 @@ export default function TestimonialSection() {
   const testimonials = [
     {
       id: 1,
-      content: "CanadaPath made my immigration journey so much easier! Their pathway recommendation was spot on, and I successfully got my PR through the Express Entry program.",
-      author: "Maria Rodriguez",
-      origin: "Mexico",
+      content: "I was completely overwhelmed by conflicting IRCC guides, provincial websites, and forum advice—until PathPR’s all‑in‑one AI dashboard gave me instant clarity. It pinpointed Ontario’s tech‑stream for me,  and mapped out every next step.",
+      author: "Raj",
+      origin: "Toronto",
       rating: 5,
-      avatar: "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150"
+      avatar: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150"
     },
     {
       id: 2,
-      content: "I was overwhelmed by all the different immigration options until I found CanadaPath. Their assessment tool identified the Alberta PNP as my best option, which I wouldn't have considered otherwise.",
-      author: "Raj Patel",
-      origin: "India",
+      content: "“The detailed profile assessment saved me time and money. Instead of applying for programs where I had little chance, PathPR.ca directed me straight to the Atlantic Immigration Pilot—where I qualified easily.”",
+      author: "Raj",
+      origin: "Toronto",
       rating: 5,
       avatar: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150"
     },
     {
       id: 3,
-      content: "The detailed profile assessment saved me time and money. Instead of applying for programs where I had little chance, CanadaPath directed me to the Atlantic Immigration Program where I qualified easily.",
+      content: "We were frustrated by conflicting IRCC info and didn’t know if our IT role qualified.PathPR instantly showed that updating to ‘Software Engineer(2173)’ made us STEM- eligible—exactly the clarity we’d been searching for.",
       author: "Sarah Kim",
       origin: "South Korea",
       rating: 4,

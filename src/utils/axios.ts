@@ -14,25 +14,51 @@ const api = axios.create({
 // });
 
 // Add JWT to headers
+// api.interceptors.request.use((config) => {
+//     const token = localStorage.getItem('canda-pathway-auth-token');
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+// });
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('canda-pathway-auth-token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    const publicRoutes = ['/auth/login', '/auth/register'];
+
+    if (!publicRoutes.some(route => config.url?.includes(route))) {
+        const token = localStorage.getItem('canda-pathway-auth-token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
     }
+
     return config;
 });
 
+
 // Global error handler
+// api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         if (error.response?.status === 401) {
+//             // Handle logout or token refresh
+//             localStorage.removeItem('canda-pathway-auth-token');
+//             window.location.href = '/login';
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Handle logout or token refresh
+        const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
+
+        if (error.response?.status === 401 && !isAuthRoute) {
             localStorage.removeItem('canda-pathway-auth-token');
             window.location.href = '/login';
         }
         return Promise.reject(error);
     }
 );
+
 
 export default api;
