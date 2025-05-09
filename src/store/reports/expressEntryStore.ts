@@ -46,6 +46,7 @@ interface ExpressEntryState {
   updateCRSScore: (score: number) => void;
   fetchReportData: (userId: string) => Promise<void>;
   fetchRecommendations: (userId: string) => Promise<void>;
+  setExpressEntryData: (data: ExpressEntryProfile) => void;
   reset: () => void;
 }
 
@@ -102,6 +103,8 @@ const useExpressEntryStore = create<ExpressEntryState>((set) => ({
       set({ error: (error as Error).message, isLoading: false });
     }
   },
+
+  setExpressEntryData: (data: ExpressEntryProfile) => set({ profile: data }),
 
   fetchRecommendations: async (userId: string) => {
     set({ isLoading: true, error: null });

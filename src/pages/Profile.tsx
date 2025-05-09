@@ -150,13 +150,13 @@ export default function Profile() {
                           <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt className="text-sm font-medium text-secondary-500">Country of citizenship</dt>
                             <dd className="mt-1 text-sm text-secondary-900 sm:mt-0 sm:col-span-2">
-                              {basicInfo.citizenCountry}
+                              {basicInfo.citizenCountry.charAt(0).toUpperCase()}
                             </dd>
                           </div>
                           <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt className="text-sm font-medium text-secondary-500">Current residence</dt>
                             <dd className="mt-1 text-sm text-secondary-900 sm:mt-0 sm:col-span-2">
-                              {basicInfo.residenceCountry}
+                              {basicInfo.residenceCountry.charAt(0).toUpperCase()}
                             </dd>
                           </div>
                         </dl>

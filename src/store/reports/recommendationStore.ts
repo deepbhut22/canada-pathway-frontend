@@ -12,6 +12,7 @@ interface RecommendationState {
     isLoading: boolean;
     error: string | null;
     fetchRecommendations: (userId: string) => Promise<void>;
+    setRecommendations: (recommendations: ExpressEntryRecommendation[]) => void;
 }
 
 const useRecommendationStore = create<RecommendationState>((set) => ({
@@ -32,7 +33,8 @@ const useRecommendationStore = create<RecommendationState>((set) => ({
         } catch (error) {
             set({ error: (error as Error).message, isLoading: false });
         }
-    }
+    },
+    setRecommendations: (recommendations: ExpressEntryRecommendation[]) => set({ recommendations })
 }));
 
 export default useRecommendationStore;

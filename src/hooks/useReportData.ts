@@ -1,46 +1,38 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserStore } from '../store/userStore';
 import { useExpressEntryStore, usePNPStore, useRecommendationStore } from '../store/reports';
 import useAuthStore from '../store/authStore';
+import api from '../utils/axios';
 
-export const useReportData = () => {
+export const useReportData = (regenerateReport: boolean, setRegenerateReport: (value: boolean) => void) => {
   const { userProfile } = useUserStore();
   const { user } = useAuthStore();
   
-  const { 
-    fetchReportData: fetchExpressEntryData, 
-    isLoading: isExpressEntryLoading, 
-    error: expressEntryError 
-  } = useExpressEntryStore();
-  
-  const { 
-    fetchReportData: fetchPNPData, 
-    isLoading: isPNPLoading, 
-    error: pnpError 
-  } = usePNPStore();
-
-  const {
-    fetchRecommendations: fetchExpressEntryRecommendations,
-    isLoading: isExpressEntryRecommendationsLoading,
-    error: expressEntryRecommendationsError
-  } = useRecommendationStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('fetching data');
+      setIsLoading(true);
       if (userProfile.isComplete && user?._id) {
-        await Promise.all([
-          fetchExpressEntryData(user._id),
-          fetchPNPData(user._id),
-          fetchExpressEntryRecommendations(user._id)
-        ]);
+        const response = await api.get(`/report/${regenerateReport ? 'regenerate' : 'generate'}/${user._id}`);
+
+        useExpressEntryStore.getState().setExpressEntryData(response.data.expressEntry || []);
+        usePNPStore.getState().setPNPData(response.data.pnp || []);
+        useRecommendationStore.getState().setRecommendations(response.data.expressEntryRecommendations || []);
+
+        if (regenerateReport) {
+          setRegenerateReport(false);
+        }
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [userProfile.isComplete, user?._id, fetchExpressEntryData, fetchPNPData, fetchExpressEntryRecommendations]);
+  }, [userProfile.isComplete, user?._id, regenerateReport]);
 
   return { 
-    isLoading: isExpressEntryLoading || isPNPLoading || isExpressEntryRecommendationsLoading,
-    error: expressEntryError || pnpError || expressEntryRecommendationsError
+    isLoading: isLoading
+    // error: expressEntryError || pnpError || expressEntryRecommendationsError
   };
 }; 

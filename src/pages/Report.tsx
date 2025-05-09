@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
@@ -51,6 +51,7 @@ export default function Report() {
   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [showChatBox, setShowChatBox] = useState(false);
+  const [regenerateReport, setRegenerateReport] = useState(false);
   // const [isConsultancyLoading, setIsConsultancyLoading] = useState(false);
   const [msg, setMsg] = useState('');
 
@@ -60,7 +61,7 @@ export default function Report() {
   const expressEntryProfile = useExpressEntryStore((state) => state.profile);
   const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
-  const { isLoading } = useReportData();
+  const { isLoading } = useReportData(regenerateReport, setRegenerateReport);
 
   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
@@ -87,14 +88,14 @@ export default function Report() {
     }));
   };
 
-  async function generateReport(): Promise<void> {
-    try {
-      const response = await api.get(`/report/recommendation/${useAuthStore.getState().user?._id}`);
-      console.log(response);
-    } catch (error) {
-      console.error('Error generating report:', error);
-    }
-  }
+  // async function generateReport(): Promise<void> {
+  //   try {
+  //     const response = await api.get(`/report/regenerate/${useAuthStore.getState().user?._id}`);
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Error generating report:', error);
+  //   }
+  // }
 
   const downloadReport = async () => {
     setIsDownloading(true);
@@ -282,7 +283,7 @@ export default function Report() {
 
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
-                // onClick={generateReport}
+                onClick={() => setRegenerateReport(true)}
                 variant="outline"
                 className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
               >
@@ -1018,3 +1019,644 @@ export default function Report() {
     </Layout>
   );
 }
+
+
+// import React, { useEffect, useRef, useState } from 'react';
+
+// import { useNavigate } from 'react-router-dom';
+// import { useUserStore } from '../store/userStore';
+// import Layout from '../components/layout/Layout';
+// import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
+// import Button from '../components/ui/Button';
+// import {
+//   Download,
+//   MessageCircle,
+//   Edit,
+//   ExternalLink,
+//   Clipboard,
+//   CheckCircle,
+//   AlertTriangle,
+//   ChevronRight,
+//   Loader2,
+//   RefreshCw
+// } from 'lucide-react';
+// import useAuthStore from '../store/authStore';
+// import api from '../utils/axios';
+// import { useExpressEntryStore, useRecommendationStore } from '../store/reports';
+// import { usePNPStore } from '../store/reports';
+
+// import { useReportData } from '../hooks/useReportData';
+// import LoadingSpinner from '../components/ui/LoadinSpinner';
+// import { PNPOptionsDialog } from '../components/PNPOptionsDialog';
+// import { SuggestionsDialog } from '../components/SuggestionsDialog';
+// import { alternativePrograms } from '../utils/dummyData';
+// import { AlternativePathwaysDialog } from '../components/AlternativePathwaysDialog';
+
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import ChatBox from '../components/ui/ChatBox';
+// import { MessagePopup } from '../components/ui/MessagePopup';
+
+// interface PNPAssessment {
+//   id?: string;
+//   province: string;
+//   stream_name: string;
+//   status: string;
+//   reason: string;
+// }
+
+// interface PNPOption {
+//   id: string;
+//   province: string;
+//   stream_name: string;
+//   status: string;
+//   reason: string;
+//   selected: boolean;
+// }
+
+// export default function Report() {
+//   const navigate = useNavigate();
+//   const { userProfile } = useUserStore();
+//   const { isComplete, basicInfo } = userProfile;
+//   const reportContentRef = useRef(null);
+
+//   const [showPNPOptionsDialog, setShowPNPOptionsDialog] = useState(false);
+//   const [showSuggestions, setShowSuggestions] = useState(false);
+//   const [showAlternativePathwaysDialog, setShowAlternativePathwaysDialog] = useState(false);
+//   const [selectedPNPOption, setSelectedPNPOption] = useState<string | null>(null);
+//   const [isDownloading, setIsDownloading] = useState(false);
+//   const [showChatBox, setShowChatBox] = useState(false);
+//   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+//   const [msg, setMsg] = useState('');
+
+//   const eligiblePrograms = usePNPStore.getState().eligiblePrograms;
+//   const expressEntryProfile = useExpressEntryStore((state) => state.profile);
+//   const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
+
+//   // Use the useReportData hook to handle fetching both Express Entry and PNP data
+//   const { isLoading, refetch } = useReportData();
+
+//   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
+
+//   useEffect(() => {
+//     if (!isComplete || !basicInfo.fullName) {
+//       navigate('/profile');
+//     }
+//   }, [isComplete, basicInfo.fullName, navigate]);
+
+//   const handlePNPOptionSelect = (optionId: string) => {
+//     setSelectedPNPOption(optionId);
+//     // You can add additional logic here when an option is selected
+//   };
+
+//   const transformPNPOptions = (assessments: PNPAssessment[]): PNPOption[] => {
+//     return assessments.map((assessment, index) => ({
+//       id: assessment.id || `pnp-${index}`,
+//       province: assessment.province,
+//       stream_name: assessment.stream_name,
+//       status: assessment.status,
+//       reason: assessment.reason,
+//       selected: selectedPNPOption === (assessment.id || `pnp-${index}`)
+//     }));
+//   };
+
+//   async function generateReport() {
+//     setIsGeneratingReport(true);
+//     try {
+//       const response = await api.get(`/report/recommendation/${useAuthStore.getState().user?._id}`);
+//       if (response.status === 200) {
+//         await refetch();
+//         setMsg('Report generated successfully!');
+//         useAuthStore.getState().setIsConsultationDialogOpen(true);
+//         setTimeout(() => {
+//           useAuthStore.getState().setIsConsultationDialogOpen(false);
+//           setMsg('');
+//         }, 3000);
+//       }
+//     } catch (error) {
+//       console.error('Error generating report:', error);
+//       setMsg('Error generating report. Please try again.');
+//       useAuthStore.getState().setIsConsultationDialogOpen(true);
+//       setTimeout(() => {
+//         useAuthStore.getState().setIsConsultationDialogOpen(false);
+//         setMsg('');
+//       }, 3000);
+//     } finally {
+//       setIsGeneratingReport(false);
+//     }
+//   }
+
+//   const downloadReport = async () => {
+//     setIsDownloading(true);
+
+//     try {
+//       // Get the report content using the ref
+//       const reportContent = reportContentRef.current;
+
+//       if (!reportContent) {
+//         console.error('Report content not found');
+//         setIsDownloading(false);
+//         return;
+//       }
+
+//       // Create a new PDF document
+//       const pdf = new jsPDF('p', 'mm', 'a4');
+
+//       // Add title page
+//       pdf.setFontSize(24);
+//       pdf.setTextColor(33, 33, 33);
+//       pdf.text('Immigration Pathway Report', 105, 50, { align: 'center' });
+//       pdf.setFontSize(14);
+//       pdf.text(`For: ${basicInfo.fullName || 'User'}`, 105, 65, { align: 'center' });
+//       pdf.setFontSize(12);
+//       pdf.text(`Generated on: ${new Date().toLocaleDateString('en-CA')}`, 105, 75, { align: 'center' });
+
+//       // Add logo placeholder
+//       pdf.setFillColor(230, 244, 255);
+//       pdf.rect(65, 100, 80, 30, 'F');
+//       pdf.setTextColor(30, 64, 175);
+//       pdf.setFontSize(16);
+//       pdf.text('PATHWAY FINDER', 105, 115, { align: 'center' });
+//       pdf.setFontSize(10);
+//       pdf.text('Your Immigration Journey Simplified', 105, 122, { align: 'center' });
+
+//       pdf.addPage();
+
+//       // Get each section of the report that we want to include
+//       const reportSections = (reportContent as HTMLElement).querySelectorAll('.pdf-section') || [];
+
+//       if (reportSections.length === 0) {
+//         // Convert entire report content if no pdf-section classes found
+//         const canvas = await html2canvas(reportContent, {
+//           scale: 2,
+//           useCORS: true,
+//           logging: false,
+//           allowTaint: true
+//         });
+
+//         // Calculate dimensions to fit on PDF
+//         const imgWidth = 190;
+//         const imgHeight = canvas.height * imgWidth / canvas.width;
+
+//         // Add content
+//         const imgData = canvas.toDataURL('image/png');
+//         pdf.addImage(imgData, 'PNG', 10, 15, imgWidth, imgHeight);
+//       } else {
+//         // Process each section individually
+//         let yOffset = 15;
+
+//         for (let i = 0; i < reportSections.length; i++) {
+//           const section = reportSections[i];
+
+//           if (i > 0 && yOffset > 250) {
+//             // Add a new page if running out of space
+//             pdf.addPage();
+//             yOffset = 15;
+//           }
+
+//           // Convert section to canvas
+//           const canvas = await html2canvas(section as HTMLElement, {
+//             scale: 2,
+//             useCORS: true,
+//             logging: false,
+//             allowTaint: true
+//           });
+
+//           // Calculate dimensions to fit on PDF
+//           const imgWidth = 190;
+//           const imgHeight = canvas.height * imgWidth / canvas.width;
+
+//           // Add section title
+//           const sectionTitle = section.getAttribute('data-title');
+//           if (sectionTitle) {
+//             pdf.setFontSize(14);
+//             pdf.setTextColor(30, 64, 175);
+//             pdf.text(sectionTitle, 10, yOffset);
+//             yOffset += 8;
+//           }
+
+//           // Add section content
+//           const imgData = canvas.toDataURL('image/png');
+//           pdf.addImage(imgData, 'PNG', 10, yOffset, imgWidth, imgHeight);
+
+//           yOffset += imgHeight + 15;
+
+//           // Add page break if not the last section
+//           if (i < reportSections.length - 1 && yOffset > 250) {
+//             pdf.addPage();
+//             yOffset = 15;
+//           }
+//         }
+//       }
+
+//       // Save the PDF with formatted filename
+//       pdf.save(`Immigration_Pathway_Report_${basicInfo.fullName || 'User'}_${new Date().toLocaleDateString('en-CA')}.pdf`);
+
+//       // Show success message
+//       setMsg('Report downloaded successfully!');
+//       useAuthStore.getState().setIsConsultationDialogOpen(true);
+//       setTimeout(() => {
+//         useAuthStore.getState().setIsConsultationDialogOpen(false);
+//         setMsg('');
+//       }, 3000);
+
+//     } catch (error) {
+//       console.error('Error generating PDF:', error);
+//       setMsg('Error downloading report. Please try again later.');
+//       useAuthStore.getState().setIsConsultationDialogOpen(true);
+//       setTimeout(() => {
+//         useAuthStore.getState().setIsConsultationDialogOpen(false);
+//         setMsg('');
+//       }, 3000);
+//     } finally {
+//       setIsDownloading(false);
+//     }
+//   };
+
+//   async function handleConsultationRequest() {
+//     try {
+//       const response = await api.get(`/consultancy/${useAuthStore.getState().user?._id}`);
+
+//       if (response.status === 200) {
+//         setMsg('You have already requested a consultation. Please wait for our response.');
+//       } else if (response.status === 201) {
+//         setMsg('Consultation request sent successfully. Please wait for our response.');
+//       }
+
+//       // Leave the message visible until user closes it
+//     } catch (error) {
+//       setMsg('Something went wrong. Please try again later.');
+//       console.error(error);
+
+//       setTimeout(() => {
+//         useAuthStore.getState().setIsConsultationDialogOpen(false);
+//         setMsg('');
+//       }, 5000);
+//     }
+//   }
+
+//   // Helper function to show status icon based on eligibility
+//   const StatusIcon = ({ status }) => {
+//     if (status === 'Eligible' || status === 'Active' || status === true) {
+//       return <CheckCircle className="h-5 w-5 text-green-500" />;
+//     } else if (status === 'Temporarily Paused' || status === 'Partially Eligible') {
+//       return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
+//     } else {
+//       return <AlertTriangle className="h-5 w-5 text-red-500" />;
+//     }
+//   };
+
+//   return (
+//     <Layout>
+//       {/* Header Section */}
+//       <div className={`py-8 bg-white mt-16 border-b border-secondary-200 ${showChatBox ? 'blur' : ''}`}>
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="md:flex md:items-center md:justify-between">
+//             <div className="flex flex-col w-full">
+//               <h1 className="text-2xl font-bold text-secondary-900 sm:text-3xl">
+//                 Your Immigration Pathway Report
+//               </h1>
+//               <p className="mt-2 text-sm text-secondary-500">
+//                 Last updated: {new Date().toLocaleDateString('en-CA')}
+//               </p>
+//             </div>
+//             <div className="mt-5 flex flex-col md:flex-row md:mt-0 md:ml-4 space-y-3 md:space-y-0 md:space-x-3 w-full">
+//               <Button
+//                 variant="outline"
+//                 onClick={downloadReport}
+//                 leftIcon={isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+//                 className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
+//                 disabled={isDownloading || isLoading}
+//               >
+//                 {isDownloading ? 'Downloading...' : 'Download Report'}
+//               </Button>
+
+//               <Button
+//                 leftIcon={<Edit className="h-4 w-4" />}
+//                 onClick={() => navigate('/profile')}
+//                 variant="outline"
+//                 className="w-full md:w-auto bg-secondary-950 text-white hover:bg-secondary-950 hover:text-white"
+//               >
+//                 Update Profile
+//               </Button>
+
+//               <Button
+//                 leftIcon={isGeneratingReport ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+//                 onClick={generateReport}
+//                 variant="outline"
+//                 className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
+//                 disabled={isGeneratingReport}
+//               >
+//                 {isGeneratingReport ? 'Generating...' : 'Re-Generate Report'}
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Main Content */}
+//       {isLoading ? (
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-primary-50 h-[70vh] flex items-center justify-center">
+//           <LoadingSpinner size='large' message='Loading Report...' />
+//         </div>
+//       ) : (
+//         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${showChatBox ? 'blur-sm' : ''}`} ref={reportContentRef}>
+//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//             <div className="lg:col-span-2 space-y-8">
+//               {/* Express Entry Profile */}
+//               <Card className="pdf-section shadow-md" data-title="Express Entry Profile">
+//                 <CardHeader className="bg-secondary-100">
+//                   <div className="flex justify-between items-center">
+//                     <CardTitle className="text-xl">Express Entry Profile</CardTitle>
+//                     <div className="bg-primary-100 text-secondary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+//                       Primary Recommendation
+//                     </div>
+//                   </div>
+//                 </CardHeader>
+
+//                 <CardContent className="pt-6">
+//                   <div className="space-y-6">
+//                     {/* CRS Score */}
+//                     <div className="flex items-center justify-between p-4 bg-secondary-50 rounded-lg">
+//                       <div>
+//                         <h3 className="text-lg font-semibold text-secondary-900">Comprehensive Ranking System (CRS) Score</h3>
+//                         <p className="text-secondary-600 text-sm">Based on your profile information</p>
+//                       </div>
+//                       <div className="text-center">
+//                         <div className="text-3xl font-bold text-secondary-950">{expressEntryProfile?.expressEntryProfile?.crsScore}</div>
+//                         <div className="text-xs text-secondary-500">points</div>
+//                       </div>
+//                     </div>
+
+//                     {/* Score Breakdown */}
+//                     <div className="border-t border-secondary-200 pt-4">
+//                       <h4 className="font-medium text-secondary-900 mb-3 text-lg">Score Breakdown</h4>
+//                       <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm">
+//                         {/* Core/Human Capital Factors */}
+//                         <div className="flex justify-between items-start flex-wrap gap-2">
+//                           <div className="flex-[1_1_0%] min-w-0 pr-2">
+//                             <h4 className="text-sm font-medium text-secondary-800">Core/Human Capital Factors:</h4>
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.coreHumanCapital?.reason?.map((bd, idx) => (
+//                               <p key={`core-human-capital-${idx}`} className="text-sm text-secondary-600 ml-4 mt-1">• {bd}</p>
+//                             ))}
+//                           </div>
+//                           <span className="text-sm font-medium whitespace-nowrap bg-secondary-50 px-3 py-1 rounded-full">
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.coreHumanCapital?.maximum}
+//                           </span>
+//                         </div>
+
+//                         <hr className="my-3 border-secondary-100" />
+
+//                         {/* Spouse Factors */}
+//                         <div className="flex justify-between items-start flex-wrap">
+//                           <div className="flex-[1_1_0%] min-w-0 pr-2">
+//                             <h4 className="text-sm font-medium text-secondary-800">Spouse Factors:</h4>
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.spouseFactors?.reason?.map((bd, idx) => (
+//                               <p key={`spouse-factor-${idx}`} className="text-sm text-secondary-600 ml-4 mt-1">• {bd}</p>
+//                             ))}
+//                           </div>
+//                           <span className="text-sm font-medium whitespace-nowrap bg-secondary-50 px-3 py-1 rounded-full">
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.spouseFactors?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.spouseFactors?.maximum}
+//                           </span>
+//                         </div>
+
+//                         <hr className="my-3 border-secondary-100" />
+
+//                         {/* Skill Transferability */}
+//                         <div className="flex justify-between items-start flex-wrap">
+//                           <div className="flex-[1_1_0%] min-w-0 pr-2">
+//                             <h4 className="text-sm font-medium text-secondary-800">Skill Transferability:</h4>
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.skillTransferability?.reason?.map((bd, idx) => (
+//                               <p key={`skill-transfer-${idx}`} className="text-sm text-secondary-600 ml-4 mt-1">• {bd}</p>
+//                             ))}
+//                           </div>
+//                           <span className="text-sm font-medium whitespace-nowrap bg-secondary-50 px-3 py-1 rounded-full">
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.skillTransferability?.maximum}
+//                           </span>
+//                         </div>
+
+//                         <hr className="my-3 border-secondary-100" />
+
+//                         {/* Additional Points */}
+//                         <div className="flex justify-between items-start flex-wrap">
+//                           <div className="flex-[1_1_0%] min-w-0 pr-2">
+//                             <h4 className="text-sm font-medium text-secondary-800">Additional Points:</h4>
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown.additionalPoints?.reason?.map((bd, idx) => (
+//                               <p key={`additional-point-${idx}`} className="text-sm text-secondary-600 ml-4 mt-1">• {bd}</p>
+//                             ))}
+//                           </div>
+//                           <span className="text-sm font-medium whitespace-nowrap bg-secondary-50 px-3 py-1 rounded-full">
+//                             {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.score} / {expressEntryProfile?.expressEntryProfile?.scoreBreakdown?.additionalPoints?.maximum}
+//                           </span>
+//                         </div>
+//                       </div>
+//                     </div>
+
+//                     {/* Eligibility Status */}
+//                     <div className="border-t border-secondary-200 pt-4">
+//                       <h4 className="font-medium text-secondary-900 mb-4 text-lg">Eligibility Status</h4>
+//                       <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm">
+//                         {expressEntryProfile?.eligibilityStatus.map((status, index) => (
+//                           <div key={`eligibility-status-${index}`} className="flex items-start border-b last:border-0 pb-3 last:pb-0">
+//                             <div className="flex-shrink-0">
+//                               <StatusIcon status={status.isEligible} />
+//                             </div>
+//                             <div className="ml-3">
+//                               <h5 className="text-sm font-medium text-secondary-900">
+//                                 {status.program}
+//                               </h5>
+//                               {status.reason?.map((reason, idx) => (
+//                                 <p key={`status-reason-${index}-${idx}`} className="text-sm text-secondary-600 mt-1">
+//                                   {reason}
+//                                 </p>
+//                               ))}
+//                             </div>
+//                           </div>
+//                         ))}
+//                       </div>
+//                     </div>
+
+//                     {/* Category-Based Eligibility */}
+//                     <div className="border-t border-secondary-200 pt-4">
+//                       <h4 className="font-medium text-secondary-900 mb-4 text-lg">Category-Based Eligibility</h4>
+//                       <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm">
+//                         {expressEntryProfile?.categoryBasedEligibility.map((eligibility, index) => (
+//                           <div key={`category-eligibility-${index}`} className="flex items-start border-b last:border-0 pb-3 last:pb-0">
+//                             <div className="flex-shrink-0">
+//                               <StatusIcon status={eligibility.isEligible} />
+//                             </div>
+//                             <div className="ml-3">
+//                               <h5 className="text-sm font-medium text-secondary-900">
+//                                 {eligibility.program}
+//                               </h5>
+//                               <p className="text-sm text-secondary-600 mt-1">
+//                                 {eligibility.reason}
+//                               </p>
+//                             </div>
+//                           </div>
+//                         ))}
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </CardContent>
+
+//                 <CardFooter className="bg-primary-50">
+//                   <div className="w-full flex justify-between items-center">
+//                     <a
+//                       target="_blank"
+//                       rel="noopener noreferrer"
+//                       href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
+//                       className="text-secondary-900 hover:text-secondary-950 text-sm font-medium flex items-center"
+//                     >
+//                       Learn more about Express Entry
+//                       <ExternalLink className="ml-1 h-3 w-3" />
+//                     </a>
+//                   </div>
+//                 </CardFooter>
+//               </Card>
+
+//               {/* PNP and Alternative Pathways */}
+//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                 {/* Provincial Nominee Program */}
+//                 <Card className='flex flex-col gap-2 justify-between pdf-section shadow-md' data-title="Provincial Nominee Program">
+//                   <CardHeader className="bg-secondary-50">
+//                     <CardTitle>Provincial Nominee Program</CardTitle>
+//                   </CardHeader>
+
+//                   <CardContent>
+//                     <div className="space-y-4">
+//                       {eligiblePrograms?.length === 0 ? (
+//                         <div>
+//                           <h4 className="text-sm font-medium text-yellow-500 mb-2">Since you are not eligible for any PNP, here are some suggestions:</h4>
+//                           {usePNPStore.getState().report?.suggestions?.slice(0, 3).map((suggestion, index) => (
+//                             <div key={`pnp-suggestion-${index}`} className="flex items-start mt-3">
+//                               <div className="flex-shrink-0 w-full">
+//                                 <h3 className="text-sm font-medium text-secondary-900">{suggestion.action}</h3>
+//                                 <p className="text-sm text-secondary-600 mt-1">{suggestion.reason}</p>
+//                                 {index !== 2 && <hr className="my-2" />}
+//                               </div>
+//                             </div>
+//                           ))}
+//                         </div>
+//                       ) : (
+//                         eligiblePrograms?.map((program, index) => (
+//                           <div key={`pnp-${index}`} className="flex items-start border-b last:border-0 pb-3 last:pb-0">
+//                             <div className="flex-shrink-0">
+//                               <StatusIcon status={program.status} />
+//                             </div>
+//                             <div className="ml-3">
+//                               <h3 className="text-sm font-semibold">{program.province}</h3>
+//                               <h5 className="text-sm font-medium text-secondary-900 mt-1">
+//                                 {program.stream_name}
+//                               </h5>
+//                               <p className="text-sm text-secondary-600 mt-1">
+//                                 {program.reason}
+//                               </p>
+//                             </div>
+//                           </div>
+//                         ))
+//                       )}
+//                     </div>
+//                   </CardContent>
+
+//                   <CardFooter className="bg-secondary-50 flex flex-col gap-2">
+//                     <Button
+//                       onClick={() => setShowPNPOptionsDialog(true)}
+//                       variant="outline"
+//                       size="sm"
+//                       className="w-full"
+//                     >
+//                       View All PNP Options
+//                     </Button>
+//                     <Button
+//                       onClick={() => setShowSuggestions(true)}
+//                       variant="outline"
+//                       size="sm"
+//                       className="w-full"
+//                     >
+//                       Show PNP Suggestions
+//                     </Button>
+//                   </CardFooter>
+//                 </Card>
+
+//                 {/* Alternative Pathways */}
+//                 <Card className='pdf-section shadow-md' data-title="Alternative Pathways">
+//                   <CardHeader className="bg-secondary-50">
+//                     <CardTitle>Alternative Pathways</CardTitle>
+//                   </CardHeader>
+
+//                   <CardContent>
+//                     <div className="space-y-4">
+//                       {alternativePrograms.slice(0, 3).map((program, idx) => (
+//                         <div
+//                           key={`alternative-${idx}`}
+//                           className="flex items-start border-b last:border-0 pb-3 last:pb-0"
+//                         >
+//                           <div className="flex-shrink-0">
+//                             <StatusIcon status={program.status} />
+//                           </div>
+//                           <div className="ml-3">
+//                             <h5 className="text-sm font-medium text-secondary-900">
+//                               {program.title}
+//                             </h5>
+//                             <p className={`text-sm ${program.status === 'Active' ? 'text-green-600' :
+//                                 program.status === 'Temporarily Paused' ? 'text-yellow-600' :
+//                                   'text-red-600'
+//                               } font-medium`}>
+//                               {program.status}
+//                             </p>
+//                             <p className="text-sm text-secondary-600 mt-1">
+//                               {program.description}
+//                             </p>
+//                           </div>
+//                         </div>
+//                       ))}
+//                     </div>
+//                   </CardContent>
+
+//                   <CardFooter className="bg-secondary-50">
+//                     <Button
+//                       onClick={() => setShowAlternativePathwaysDialog(true)}
+//                       variant="outline"
+//                       size="sm"
+//                       className="w-full"
+//                     >
+//                       Explore All Alternative Pathways
+//                     </Button>
+//                   </CardFooter>
+//                 </Card>
+//               </div>
+
+//               {/* Next Steps and Recommendations */}
+//               <Card className='pdf-section shadow-md' data-title="Next Steps and Recommendations">
+//                 <CardHeader className="bg-secondary-50">
+//                   <CardTitle>Next Steps and Recommendations</CardTitle>
+//                 </CardHeader>
+
+//                 <CardContent>
+//                   <div className="space-y-6">
+//                     {/* Improve CRS Score */}
+//                     <div>
+//                       <h4 className="font-medium text-secondary-900 mb-4 text-lg">Improve Your CRS Score</h4>
+//                       <ul className="space-y-4 bg-white p-4 rounded-lg shadow-sm">
+//                         {expressEntryRecommendations?.map((recommendation, index) => (
+//                           <li
+//                             key={`recommendation-${index}`}
+//                             className="flex items-start"
+//                           >
+//                             <div className="flex-shrink-0 h-6 w-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs mr-3 mt-0.5">
+//                               {index + 1}
+//                             </div>
+//                             <div>
+//                               <p className="font-medium text-secondary-900">{recommendation.question}</p>
+//                               <p className="text-secondary-600 mt-1">{recommendation.answer}</p>
+//                             </div>
+//                           </li>
+//                         ))}
+//                       </ul>
+//                     </div>
+
+//                     {/* Required Documents - Completing this section that was cut off */}
+//                     <div className="border-t border-secondary-200 pt-4">
+//                       <h4 className="font-medium text-secondary-900 mb-4 text-lg">Required Documents Checklist</h4>
+//                       <div className="space-y-4 bg-white p-4

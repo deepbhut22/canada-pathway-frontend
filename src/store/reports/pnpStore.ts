@@ -28,6 +28,7 @@ interface PNPState {
   updateAssessment: (assessment: PNPAssessment[]) => void;
   updateSuggestions: (suggestions: Suggestion[]) => void;
   fetchReportData: (userId: string) => Promise<void>;
+  setPNPData: (data: PNPReport) => void;
   reset: () => void;
 }
 
@@ -50,6 +51,8 @@ const usePNPStore = create<PNPState>((set) => ({
       ? { ...state.report, suggestions }
       : null
   })),
+
+  setPNPData: (data: PNPReport) => set({ report: data }),
 
   fetchReportData: async (userId: string) => {
     set({ isLoading: true, error: null });

@@ -98,7 +98,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-y-0 right-0 w-full sm:w-[36%] bg-white shadow-xl z-50 flex flex-col border-l border-secondary-200 animate-slide-in-right">
+        <div className="fixed inset-y-0 right-0 w-full sm:w-[36%] bg-white z-50 flex flex-col border-l border-secondary-200 animate-slide-in-right sm:mt-20">
             <div className="p-4 border-b border-secondary-200 bg-secondary-100 flex justify-between items-center">
                 <div className="flex items-center">
                     <MessageCircle className="h-5 w-5 text-secondary-900 mr-2" />

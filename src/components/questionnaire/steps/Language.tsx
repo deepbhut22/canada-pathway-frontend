@@ -257,7 +257,7 @@ export default function Language({
               </FormControl>
               {errors.primaryClbScore && <div className="text-red-500 text-xs mt-1">{errors.primaryClbScore}</div>}
               <FormHelperText>
-                Enter your CLB score (0-12). This is a standardized score based on your test results.
+                Enter your CLB score (0-10). This is a standardized score based on your test results.
               </FormHelperText>
             </FormGroup>
           </div>
@@ -328,7 +328,7 @@ export default function Language({
               </FormControl>
               {errors.secondClbScore && <div className="text-red-500 text-xs mt-1">{errors.secondClbScore}</div>}
               <FormHelperText>
-                Enter your CLB score (0-12) for your second language.
+                Enter your CLB score (0-10) for your second language.
               </FormHelperText>
             </FormGroup>
           </div>
