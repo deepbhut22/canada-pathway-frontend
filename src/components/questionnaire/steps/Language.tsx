@@ -11,6 +11,8 @@ import {
   Select,
   RadioGroup
 } from '../../ui/Form';
+import { InfoIcon } from 'lucide-react';
+import { CLBConversionTablesDialog } from '../../CLBscoreCheckerDialog';
 
 const LANGUAGE_OPTIONS = [
   { value: 'english', label: 'English' },
@@ -42,6 +44,7 @@ export default function Language({
   const { languageInfo } = userProfile;
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showCLBScorePopup, setShowCLBScorePopup] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -69,6 +72,19 @@ export default function Language({
         newErrors.secondClbScore = 'Please enter your CLB score';
       }
     }
+
+    if (languageInfo.primaryLanguageTest.clbScore !== null) {
+      if (languageInfo.primaryLanguageTest.clbScore > 10) {
+        newErrors.primaryClbScore = 'Your CLB score must be at most 10';
+      }
+    }
+
+    if (languageInfo.secondLanguageTest.clbScore !== null) {
+      if (languageInfo.secondLanguageTest.clbScore > 10) {
+        newErrors.secondClbScore = 'Your CLB score must be at most 10';
+      }
+    }
+    
 
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
@@ -243,6 +259,7 @@ export default function Language({
 
             <FormGroup>
               <FormLabel htmlFor="clbScore" required>Canadian Language Benchmark (CLB) Score</FormLabel>
+              <p className="text-sm font-semibold text-gray-500 cursor-pointer" onClick={() => setShowCLBScorePopup(true)}>  Don't know your CLB score? Click here to Check your CLB score <InfoIcon className="w-4 h-4 inline-block text-black" /></p>
               <FormControl>
                 <Input
                   id="clbScore"
@@ -314,6 +331,8 @@ export default function Language({
 
             <FormGroup>
               <FormLabel htmlFor="secondClbScore" required>Canadian Language Benchmark (CLB) Score</FormLabel>
+              <p className="text-sm font-semibold text-gray-500 cursor-pointer" onClick={() => setShowCLBScorePopup(true)}>  Don't know your CLB score? Click here to Check your CLB score <InfoIcon className="w-4 h-4 inline-block text-black" /></p>
+
               <FormControl>
                 <Input
                   id="secondClbScore"
@@ -334,6 +353,10 @@ export default function Language({
           </div>
         )}
       </FormSection>
+      <CLBConversionTablesDialog
+        isOpen={showCLBScorePopup}
+        onClose={() => setShowCLBScorePopup(false)}
+      />
     </Form>
   );
 }

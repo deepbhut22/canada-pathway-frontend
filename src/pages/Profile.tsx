@@ -29,7 +29,7 @@ export default function Profile() {
       language: languageInfo && languageInfo.primaryLanguage && 
         (!languageInfo.hasTakenTest || (languageInfo.primaryLanguageTest.type && languageInfo.primaryLanguageTest.clbScore))
         && (!languageInfo.hasSecondLanguage || (languageInfo.secondLanguageTest.type && languageInfo.secondLanguageTest.clbScore)),
-      spouse: spouseInfo.maritalStatus && (spouseInfo.maritalStatus === 'single' || (spouseInfo.educationLevel && spouseInfo.hasCanadianWorkExp && spouseInfo.hasCanadianStudyExp && spouseInfo.hasRelativeInCanada)),
+      spouse: spouseInfo.maritalStatus && (spouseInfo.maritalStatus === 'single' || (spouseInfo.maritalStatus !== 'married' || (typeof spouseInfo.hasCanadianWorkExp === 'boolean' && typeof spouseInfo.hasCanadianStudyExp === 'boolean' && typeof spouseInfo.hasRelativeInCanada === 'boolean'))),
       dependent: dependentInfo && (typeof dependentInfo.hasDependents === 'boolean') && (!dependentInfo.hasDependents || (dependentInfo.hasDependents && dependentInfo.dependentList && dependentInfo.dependentList.length > 0)),
       connection: connectionInfo && typeof connectionInfo.doesUserHaveFamilyInCanadaWhoIsCitizenOrPermanentResident === "boolean",
       joboffer: jobOfferInfo && (typeof jobOfferInfo.hasJobOffer === 'boolean') && (!jobOfferInfo.hasJobOffer || (jobOfferInfo.hasJobOffer && jobOfferInfo.jobOffer.jobTitle && jobOfferInfo.jobOffer.nocCode && jobOfferInfo.jobOffer.province && jobOfferInfo.jobOffer.startDate && jobOfferInfo.jobOffer.teer)),

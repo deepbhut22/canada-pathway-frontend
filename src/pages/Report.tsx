@@ -40,6 +40,7 @@ interface PNPOption {
 }
 
 export default function Report() {
+
   const navigate = useNavigate();
   const { userProfile } = useUserStore();
   const { isComplete, basicInfo } = userProfile;
@@ -61,16 +62,15 @@ export default function Report() {
   const expressEntryProfile = useExpressEntryStore((state) => state.profile);
   const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
-  const { isLoading } = useReportData(regenerateReport, setRegenerateReport);
+  const { isLoading, error, setError } = useReportData(regenerateReport, setRegenerateReport);
 
   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
   React.useEffect(() => {
-    if (!isComplete || !basicInfo.fullName) {
+    if (!isComplete) {
       navigate('/profile');
     }    
-  }, [isComplete, basicInfo.fullName, navigate]);
-    
+  }, [isComplete]);
 
   const handlePNPOptionSelect = (optionId: string) => {
     setSelectedPNPOption(optionId);
@@ -283,7 +283,7 @@ export default function Report() {
 
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}
-                onClick={() => setRegenerateReport(true)}
+                onClick={() => {console.log('clicked'); setRegenerateReport(true)}}
                 variant="outline"
                 className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
               >
@@ -1016,6 +1016,16 @@ export default function Report() {
         cancelText="Close"
         maxWidth="2xl"
       />  
+
+      <MessagePopup
+        isOpen={error !== null}
+        onClose={() => setError(null)}
+        title="Error"
+        message={error || 'An error occurred. Please try again.'}
+        type="error"
+        cancelText="Close"
+      />
+
     </Layout>
   );
 }
