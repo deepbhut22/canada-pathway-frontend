@@ -12,18 +12,19 @@ export const useReportData = (regenerateReport: boolean, setRegenerateReport: (v
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('fetching data');
       setIsLoading(true);
       if (userProfile.isComplete && user?._id) {
         const response = await api.get(`/report/${regenerateReport ? 'regenerate' : 'generate'}/${user._id}`);
 
-        useExpressEntryStore.getState().setExpressEntryData(response.data.expressEntry || []);
-        usePNPStore.getState().setPNPData(response.data.pnp || []);
-        useRecommendationStore.getState().setRecommendations(response.data.expressEntryRecommendations || []);
+        useExpressEntryStore.getState().setExpressEntryData(response.data.expressEntry);
+        usePNPStore.getState().setPNPData(response.data.pnp);
+        useRecommendationStore.getState().setRecommendations(response.data.recommendations.result);
+        usePNPStore.getState().setEligiblePrograms(response.data.pnp.pnpAssessment);
 
         if (regenerateReport) {
           setRegenerateReport(false);
         }
+        
         setIsLoading(false);
       }
     };

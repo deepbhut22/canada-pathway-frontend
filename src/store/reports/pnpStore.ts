@@ -28,6 +28,7 @@ interface PNPState {
   updateAssessment: (assessment: PNPAssessment[]) => void;
   updateSuggestions: (suggestions: Suggestion[]) => void;
   fetchReportData: (userId: string) => Promise<void>;
+  setEligiblePrograms: (programs: PNPAssessment[]) => void;
   setPNPData: (data: PNPReport) => void;
   reset: () => void;
 }
@@ -53,6 +54,8 @@ const usePNPStore = create<PNPState>((set) => ({
   })),
 
   setPNPData: (data: PNPReport) => set({ report: data }),
+
+  setEligiblePrograms: (programs: PNPAssessment[]) => set({ eligiblePrograms: programs.filter((program: PNPAssessment) => program.status === 'Eligible' || program.status === 'Partially Eligible') }),
 
   fetchReportData: async (userId: string) => {
     set({ isLoading: true, error: null });
