@@ -259,6 +259,57 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            <div className="border-b">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                  isActive(insightsItems.find(item => item.path === location.pathname)?.path || '')
+                    ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                    : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                  :
+                  isActive(insightsItems.find(item => item.path === location.pathname)?.path || '')
+                    ? 'bg-secondary-950 border-blue-400 text-white'
+                    : 'border-transparent text-blue-200 hover:bg-gray-800/40 hover:border-blue-300 hover:text-white'
+                  :
+                  isActive(insightsItems.find(item => item.path === location.pathname)?.path || '')
+                    ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                    : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                  }`}
+              >
+                Insights
+                <span className="ml-2">
+                  {isDropdownOpen ? '▲' : '▼'}
+                </span>
+              </button>
+              {isDropdownOpen && (
+                <div className="pl-6">
+                  {insightsItems.map((subItem) => (
+                    <p
+                      key={subItem.path}
+                      onClick={() => {
+                        handleRedirect(subItem.path);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                        isActive(subItem.path)
+                          ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                          : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                        :
+                        isActive(subItem.path)
+                          ? 'bg-secondary-950 border-blue-400 text-white'
+                          : 'border-transparent text-blue-200 hover:bg-gray-800/40 hover:border-blue-300 hover:text-white'
+                        :
+                        isActive(subItem.path)
+                          ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
+                          : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
+                        }`}
+                    >
+                      {subItem.label}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile authentication buttons */}
