@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CheckCircle, LogOutIcon, Menu, X } from 'lucide-react';
+import { CheckCircle, LogOutIcon, Menu, X, ChevronDownIcon } from 'lucide-react';
 import Button from '../ui/Button';
 import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,12 @@ export default function Header() {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    setIsDropdownOpen(false);  // Close dropdown when menu closes
+
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -27,6 +33,8 @@ export default function Header() {
   const isAuth = useAuthStore((state) => state.isAuthenticated);
   const isProfileComplete = useUserStore((state) => state.userProfile.isComplete);
   const isLoading = useAuthStore((state) => state.isLoading);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
 
   const isHome = location.pathname === '/';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
@@ -55,18 +63,36 @@ export default function Header() {
     return () => window.removeEventListener('resize', handleResize);
   }, [isMenuOpen]);
 
+  // Close mobile menu when screen size changes to prevent menu issues
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMenuOpen]);
+
+
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: '/profile', label: 'My Profile' },
     { path: "/report", label: 'My Report' },
+    // { path: '/news', label: 'News' },
+  ];
+
+  const insightsItems = [
+    { path: '/immigration-insights', label: 'Immigration Insights' },
+    { path: '#', label: 'MappleAI' },
     { path: '/news', label: 'News' },
   ];
 
   const handleRedirect = (path: string) => {
-    // console.log(isAuth, isProfileComplete, path);
-    console.log(path);
     
-    if (path === '/news') {
+    if (insightsItems.some(item => item.path === path)) {
+      setIsDropdownOpen(false);
       navigate(path);
     } else if (!isAuth && path !== '/') {
       useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
@@ -118,8 +144,41 @@ export default function Header() {
                   {item.label}
                 </p>
               ))}
+
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 cursor-pointer
+                    ${isHome ? isScrolled ?
+                      'border-transparent text-secondary-700 hover:border-secondary-950 hover:text-secondary-950'
+                      : 'border-transparent text-blue-200 hover:border-white hover:text-white'
+                      : 'border-transparent font-bold text-secondary-700 hover:border-secondary-900 hover:text-secondary-900'}`}
+                >
+                  Insights <ChevronDownIcon className="w-4 h-4" />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-10">
+                    <div className="flex justify-end mt-2 mr-2">
+                      <button onClick={toggleDropdown} className="text-secondary-700 hover:text-secondary-950">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    {insightsItems.map((item) => (
+                      <p
+                        key={item.path}
+                        onClick={() => handleRedirect(item.path)}
+                        className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50 hover:text-secondary-900 cursor-pointer"
+                      >
+                        {item.label}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
             </nav>
           </div>
+
+          
 
           <div className='flex items-center gap-2 sm:gap-4 hidden sm:flex'>
             {isLoading !== true ?

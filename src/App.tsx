@@ -12,6 +12,7 @@ import AllNewsPage from './pages/AllNews';
 import { getGeneralNews, getProvincialNews } from './data/dummyNews';
 import LegalInfoComponent from './pages/PrivacyPolicy';
 import GoogleCallback from './pages/GoogleCallback';  
+import Charts from './pages/Charts';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
   const isAuth = useAuthStore((state) => state.isAuthenticated);
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/legal-info/:tab" element={<LegalInfoComponent />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
           <Route path="/auth/google/:token" element={<GoogleCallback />} />
+          <Route path="/immigration-insights" element={<Charts />} />
           <Route
             path="/news"
             element={
