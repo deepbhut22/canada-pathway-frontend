@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
     Line, BarChart, Bar, PieChart, Pie, Cell,
-    XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area, 
-    AreaChart, Text, Sector
+    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ComposedChart, Area, 
+    AreaChart, Text
 } from 'recharts';
 // import { Papa } from 'papaparse';
 import _ from 'lodash';
@@ -99,7 +99,20 @@ const CanadaImmigrationDashboard = () => {
     const [loading, setLoading] = useState(true);
     
 
-    const COLORS = ['#003f5c', '#2f4b7c', '#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600'];
+    const COLORS = [
+        '#0f172a', // 900 - dark navy
+        '#1e293b', // 800 - charcoal blue
+        '#334155', // 700 - slate blue
+        '#475569', // 600 - gray blue
+        '#64748b', // 500 - muted steel
+        '#94a3b8', // 400 - light steel
+        '#cbd5e1', // 300 - pale blue-gray
+        '#a0aec0', // custom: add more distinguishable midtones
+        '#718096', // custom: another soft grayish blue
+        '#4a5568', // custom: dark gray-blue
+        '#2d3748', // custom: deep slate
+        '#1a202c'  // custom: near-black navy
+    ];
 
     useEffect(() => {
         setLoading(true);
@@ -255,8 +268,8 @@ const CanadaImmigrationDashboard = () => {
                                         />
                                         <defs>
                                             <linearGradient id="colorCRS" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
+                                                <stop offset="5%" stopColor="#0f172a" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#0f172a" stopOpacity={0.1} />
                                             </linearGradient>
                                         </defs>
                                         <Tooltip
@@ -286,9 +299,9 @@ const CanadaImmigrationDashboard = () => {
                                             type="monotone"
                                             dataKey="CRS Cut off"
                                             name="CRS Cut-off"
-                                            stroke="#8884d8"
+                                            stroke="#0f172a"
                                             strokeWidth={2}
-                                            dot={{ r: 3 }}
+                                            dot={{ r: 5 }}
                                             activeDot={{ r: 6 }}
                                         />
                                     </ComposedChart>
@@ -310,57 +323,56 @@ const CanadaImmigrationDashboard = () => {
                                                     dataKey="year"
                                                     tick={<CustomTick />}
                                                     interval={0}
-                                                />                                                <YAxis tickFormatter={(value) => new Intl.NumberFormat().format(value as number)} />
+                                                />                                                
+                                                <YAxis tickFormatter={(value) => new Intl.NumberFormat().format(value as number)} />
                                                 <Tooltip formatter={(value) => new Intl.NumberFormat().format(value as number)} />
-                                                <Bar dataKey="immigrants" fill="#8884d8" />
+                                                <Bar dataKey="immigrants" fill="#1e293b" />
                                             </BarChart>
                                         </ResponsiveContainer>
                                     </div>
                                 </div>
 
 
-
-
-                            {/* Study Permits */}
-                            <div className="bg-white rounded-lg shadow-lg p-6">
-                                <h2 className="text-xl font-semibold mb-4">Study Permit Holders (2000-2024)</h2>
-                                <div className="h-80">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart
-                                            data={studyPermitData}
-                                            margin={{ top: 10, right: 30, left: 30, bottom: 25 }}
-                                        >
-                                            <defs>
-                                                <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
-                                                </linearGradient>
-                                            </defs>
-                                            <XAxis
-                                                dataKey="year"
-                                                angle={-45}
-                                                textAnchor="end"
-                                                height={60}
-                                                label={{ value: 'Year', position: 'insideBottom', offset: 0, fontSize: 20, fontWeight: 'bold' }}
-                                                tick={{ fontSize: 12 }}
-                                            />
-                                            <YAxis
-                                                tickFormatter={(value) => new Intl.NumberFormat().format(value)}
-                                                tick={{ fontSize: 12 }}
-                                                label={
-                                                    <Text
-                                                        x={20} // adjust this to move it horizontally
-                                                        y={140} // adjust this to move it vertically
-                                                        angle={-90}
-                                                        textAnchor="middle"
-                                                        fontSize={20}
-                                                        fontWeight="bold"   
-                                                    >
-                                                        Number of People
-                                                    </Text>
-                                                }
-                                            />
-                                            <CartesianGrid strokeDasharray="3 3" />
+                                {/* Study Permits */}
+                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                    <h2 className="text-xl font-semibold mb-4">Study Permit Holders (2000-2024)</h2>
+                                    <div className="h-80">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <AreaChart
+                                                data={studyPermitData}
+                                                margin={{ top: 10, right: 30, left: 30, bottom: 25 }}
+                                            >
+                                                <defs>
+                                                    <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#0f172a" stopOpacity={0.8} />
+                                                        <stop offset="95%" stopColor="#0f172a" stopOpacity={0.1} />
+                                                    </linearGradient>
+                                                </defs>
+                                                <XAxis
+                                                    dataKey="year"
+                                                    angle={-45}
+                                                    textAnchor="end"
+                                                    height={60}
+                                                    label={{ value: 'Year', position: 'insideBottom', offset: 0, fontSize: 20, fontWeight: 'bold' }}
+                                                    tick={{ fontSize: 12 }}
+                                                />
+                                                <YAxis
+                                                    tickFormatter={(value) => new Intl.NumberFormat().format(value)}
+                                                    tick={{ fontSize: 12 }}
+                                                    label={
+                                                        <Text
+                                                            x={20} // adjust this to move it horizontally
+                                                            y={140} // adjust this to move it vertically
+                                                            angle={-90}
+                                                            textAnchor="middle"
+                                                            fontSize={20}
+                                                            fontWeight="bold"
+                                                        >
+                                                            Number of People
+                                                        </Text>
+                                                    }
+                                                />
+                                                <CartesianGrid strokeDasharray="3 3" />
                                                 <Tooltip
                                                     formatter={(value) => {
                                                         const numericValue = typeof value === 'number' ? value : Number(value);
@@ -368,75 +380,74 @@ const CanadaImmigrationDashboard = () => {
                                                     }}
                                                 />
 
-                                            <Area
-                                                type="monotone"
-                                                dataKey="totalStudents"
-                                                stroke="#8884d8"
-                                                fillOpacity={1}
-                                                fill="url(#colorStudents)"
-                                                name="Total Students"
-                                            />
-                                        </AreaChart>
-                                    </ResponsiveContainer>
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="totalStudents"
+                                                    stroke="#0f172a"
+                                                    fillOpacity={1}
+                                                    fill="url(#colorStudents)"
+                                                    name="Total Students"
+                                                />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
+                                    </div>
                                 </div>
-                            </div>
+
+                                {/* Provincial Distribution */}
+                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                    <h2 className="text-xl font-semibold mb-4">Provincial Immigration Distribution</h2>
+
+                                    <div className="mb-4">
+                                        <label className="mr-2 font-medium">Year:</label>
+                                        <select
+                                            value={provincialYear}
+                                            onChange={(e) => setProvincialYear(e.target.value)}
+                                            className="border rounded p-2"
+                                        >
+                                            <option value="2021-2022">2021-2022</option>
+                                            <option value="2022-2023">2022-2023</option>
+                                            <option value="2023-2024">2023-2024</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="h-80">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <PieChart>
+                                                <Pie
+                                                    data={pieData}
+                                                    dataKey="value"
+                                                    nameKey="province"
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    outerRadius={100}
+                                                    label={({ province, value, percent }) =>
+                                                        `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
+                                                    }
+                                                    labelLine={false}
+                                                >
+                                                    {pieData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip
+                                                    formatter={(value) => {
+                                                        const numericValue = typeof value === 'number' ? value : Number(value);
+                                                        return new Intl.NumberFormat().format(numericValue);
+                                                    }}
+                                                />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
 
                             {/* international students */}
-                            <StudyPermitChart />
-
-
-                            {/* Provincial Distribution */}
-                            <div className="bg-white rounded-lg shadow-lg p-6">
-                                <h2 className="text-xl font-semibold mb-4">Provincial Immigration Distribution</h2>
-
-                                <div className="mb-4">
-                                    <label className="mr-2 font-medium">Year:</label>
-                                    <select
-                                        value={provincialYear}
-                                        onChange={(e) => setProvincialYear(e.target.value)}
-                                        className="border rounded p-2"
-                                    >
-                                        <option value="2021-2022">2021-2022</option>
-                                        <option value="2022-2023">2022-2023</option>
-                                        <option value="2023-2024">2023-2024</option>
-                                    </select>
-                                </div>
-
-                                <div className="h-80">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                            <Pie
-                                                data={pieData}
-                                                dataKey="value"
-                                                nameKey="province"
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={100}
-                                                label={({ province, value, percent }) =>
-                                                    `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
-                                                }
-                                                labelLine={false}
-                                            >
-                                                {pieData.map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                                ))}
-                                            </Pie>
-                                                <Tooltip
-                                                    formatter={(value) => {
-                                                        const numericValue = typeof value === 'number' ? value : Number(value);
-                                                        return new Intl.NumberFormat().format(numericValue);
-                                                    }}
-                                                />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            </div>
+                            <StudyPermitChart />                           
                         </div>
                     </>
                 )}
             </div>
 
-            <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20">
+            <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20 md:hidden">
                 <h1 className="text-3xl font-bold text-center text-secondary-950">
                     You will need bigger screen to view the charts (desktop views)
                 </h1>
@@ -454,10 +465,21 @@ export default CanadaImmigrationDashboard;
 
 
 const COLORS = [
-    '#8884d8', '#8dd1e1', '#ffc658', '#82ca9d', '#a4de6c',
-    '#d0ed57', '#ff8042', '#d88884', '#84d888', '#84b6d8',
-    '#c994e3', '#e384b9', '#a0a0a0', '#4f9da6'
+    '#0f172a', // 900 - dark navy
+    '#1e293b', // 800 - charcoal blue
+    '#334155', // 700 - slate blue
+    '#475569', // 600 - gray blue
+    '#64748b', // 500 - muted steel
+    '#94a3b8', // 400 - light steel
+    '#cbd5e1', // 300 - pale blue-gray
+    '#a0aec0', // custom: add more distinguishable midtones
+    '#718096', // custom: another soft grayish blue
+    '#4a5568', // custom: dark gray-blue
+    '#2d3748', // custom: deep slate
+    '#1a202c'  // custom: near-black navy
 ];
+
+
 
 const StudyPermitChart: React.FC = () => {
     const allYears = internationalStudents.map(d => d.year).filter(y => y !== 2024); // Filter out 2024
@@ -469,7 +491,8 @@ const StudyPermitChart: React.FC = () => {
     ];
 
     const labelMap: Record<string, string> = {
-        Newfoundland: 'Newfoundland and Labrador',
+        Newfoundland: `Newfoundland & \n
+        Labrador`,
         PEI: 'Prince Edward Island',
         NovaScotia: 'Nova Scotia',
         NewBrunswick: 'New Brunswick',
@@ -489,14 +512,19 @@ const StudyPermitChart: React.FC = () => {
 
     const yearData = internationalStudents.find(d => d.year === selectedYear);
 
-    const chartData = provinceKeys.map(key => ({
+    const chartData = provinceKeys.map(key => {
+    const rawValue = yearData?.[key as keyof typeof yearData] ?? 0;
+    return {
         name: labelMap[key],
-        value: yearData?.[key as keyof typeof yearData] ?? 0
-    }));
+        value: rawValue  // avoid log(0)
+    };
+    });
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-2xl font-semibold mb-4">Study Permit Holders in {selectedYear}</h2>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-semibold mb-4">
+                International Students by Province in {selectedYear}
+            </h2>
             <select
                 className="border p-2 rounded mb-4"
                 value={selectedYear}
@@ -508,32 +536,37 @@ const StudyPermitChart: React.FC = () => {
             </select>
 
             <ResponsiveContainer width="100%" height={500}>
-                <PieChart>
-                    <Pie
-                        data={chartData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="45%"
-                        outerRadius={150}
-                        labelLine={false}
-                        // label={renderCustomizedLabel}
-                    >
-                        {chartData.map((_, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-
-                    <Tooltip />
-                    <Legend
-                        layout="vertical"
-                        verticalAlign="middle"
-                        align="right"
-                        wrapperStyle={{ width: '30%' }} // controls legend box size
+                <BarChart data={chartData} margin={{ top: 20, right: 0, left: 35, bottom: 60 }}>
+                    <XAxis 
+                        dataKey="name" 
+                        interval={0} 
+                        angle={-40} 
+                        textAnchor="end" 
+                        height={80}
+                        label={{
+                            value: "Province",
+                            position: "insideBottom",
+                            offset: -35,
+                            fontSize: 20,
+                            fontWeight: "bold",
+                        }}
+                        tick={{ fontSize: 12 }}
                     />
-                </PieChart>
-            </ResponsiveContainer>
+                    <YAxis 
+                        tickFormatter={(value) => new Intl.NumberFormat().format(value as number)}
+                        tick={{ fontSize: 12 }}
+                        label={<Text x={20} y={180} angle={-90} textAnchor="middle" fontSize={20} fontWeight="bold">Number of People</Text>}
+                    />
+                    <Tooltip />
+                    {/* <Legend />   */}
+                    <Bar dataKey="value" fill="#0f172a" label={{ position: 'top', fontSize: 10 }}>
+                        {chartData.map((_, index) => (
+                            <Cell key={`cell-${index}`} />
+                        ))}
+                    </Bar>
 
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     );
 };
