@@ -136,19 +136,6 @@ export default function HeroSection() {
             {/* Leave empty or include optional illustration */}
           </div>
         </div>
-        <div className="w-screen md:-ml-40 md:mt-20 h-24 overflow-hidden z-[-1]">
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0,0 C25,100 75,100 100,0 L100,100 L0,100 Z"
-              fill="white"
-            />
-          </svg>
-        </div>
       </div>
     </div>
     </>

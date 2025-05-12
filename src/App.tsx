@@ -33,8 +33,8 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/legal-info/:tab" element={<LegalInfoComponent />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
-          <Route path="/auth/google/:token" element={<GoogleCallback />} />
           <Route path="/immigration-statistics" element={<Charts />} />
+          <Route path="/auth/google/:token" element={<GoogleCallback />} />
           <Route
             path="/news"
             element={
@@ -55,9 +55,9 @@ export default function App() {
           <Route
             path='/mappleAi'
             element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <MappleAi />
-              // {/* </ProtectedRoute> */}
+              </ProtectedRoute>
             }
           />
 
