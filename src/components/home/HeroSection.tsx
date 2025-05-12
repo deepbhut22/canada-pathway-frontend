@@ -77,7 +77,7 @@ export default function HeroSection() {
 
       <div className="block sm:hidden absolute inset-0 pointer-events-none w-full">
         {/* <BackgroundAnimation /> */}
-        <VantaHaloBackground xOffset={0.0} yOffset={0.0} size={2.1} />
+        <VantaHaloBackground xOffset={0.0} yOffset={-0.22} size={0.5} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 w-full relative z-10">
