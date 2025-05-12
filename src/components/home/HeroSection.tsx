@@ -70,9 +70,14 @@ export default function HeroSection() {
     <>
     <div className="pt-10 bg-gray-950 text-white min-h-screen bg-white flex items-center relative overflow-hidden">
       {/* Background network effect for the entire page */}
-      <div className="absolute inset-0 pointer-events-none w-full">
+      <div className="hidden sm:block absolute inset-0 pointer-events-none w-full">
         {/* <BackgroundAnimation /> */}
-        <VantaHaloBackground xOffset={0.18} yOffset={0.0} />
+        <VantaHaloBackground xOffset={0.18} yOffset={0.0} size={1.5} />
+      </div>
+
+      <div className="block sm:hidden absolute inset-0 pointer-events-none w-full">
+        {/* <BackgroundAnimation /> */}
+        <VantaHaloBackground xOffset={0.0} yOffset={0.0} size={2.1} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 w-full relative z-10">
@@ -120,13 +125,43 @@ export default function HeroSection() {
             </FadeIn>
 
             <FadeIn delay={2750}>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
-                <button 
-                  onClick={handleRedirect}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-transparent border border-white text-white rounded-md font-medium transition-all duration-300 hover:bg-white hover:text-secondary-950 flex items-center justify-center hover:border-secondary-950">
-                  <TextSelectionIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  <span className="text-sm sm:text-base text-center">Get My Free All In One AI-Powered PR Report</span>
-                </button>
+              <div className="flex flex-col gap-3 w-full sm:w-1/2 sm:gap-4 mt-6">
+                  <button
+                    onClick={handleRedirect}
+                    className="p-[3px] relative sm:w-auto w-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                    <div className="px-8 py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                      Get My Free All In One AI-Powered PR Report
+                    </div>
+                  </button>
+                  <div className="flex flex-row gap-3 w-full">
+                    <button
+                      onClick={() => {
+                        if (isAuth) {
+                          if (isProfileComplete) {
+                            navigate('/mapple-ai')
+                          } else {
+                            useAuthStore.getState().setIsPopupOpen(true);
+                          }
+                        } else {
+                          useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
+                        }
+                      }}
+                      className="p-[3px] relative w-full">
+                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                      <div className="px-8 py-5 sm:py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                        Mapple AI
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate('/immigration-statistics')}
+                      className="p-[3px] relative w-full">
+                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                      <div className="px-8 py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                        Recent Trends
+                      </div>
+                    </button>
+                  </div>
               </div>
             </FadeIn>
           </div>
