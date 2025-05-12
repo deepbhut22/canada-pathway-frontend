@@ -32,18 +32,22 @@ export default function MappleAI() {
 
     return (
         <Layout>
-            <div className="absolute inset-0 pointer-events-none w-screen h-[50vh]">
-                <VantaHaloBackground />
+            <div className="hidden sm:block absolute inset-0 pointer-events-none w-screen h-[50vh]">
+                <VantaHaloBackground xOffset={0.18} yOffset={0.0} />
             </div>
 
-                <div className="flex flex-col justify-center pt-24 h-screen w-full z-10 isolate">
-                    <div className="flex flex-col rounded-lg h-min w-1/3 p-10">
+            <div className="block absolute sm:hidden pointer-events-none w-screen h-[50vh]">
+                <VantaHaloBackground xOffset={0.0} yOffset={0.0} />
+            </div>
+
+                <div className="flex flex-col justify-center md:pt-24 h-screen w-full z-10 isolate">
+                    <div className="flex flex-col rounded-lg h-min w-full md:w-1/3 p-10 md:ml-16">
                         <div className="w-full flex flex-col gap-5">
                             <div>
-                                <p className="text-white text-2xl font-bold">
+                                <p className="text-white text-md md:text-2xl font-bold">
                                     Try Our
                                 </p>
-                                <p className="text-7xl font-bold w-full text-white">
+                                <p className="text-4xl md:text-7xl font-bold w-full text-white">
                                     <TypewriterText text="Mapple AI" time={100} />
                                 </p>
                             </div>

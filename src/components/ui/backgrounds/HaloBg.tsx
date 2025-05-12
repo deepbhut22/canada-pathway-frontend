@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-const VantaHaloBackground = () => {
+const VantaHaloBackground = ({xOffset, yOffset}: {xOffset: number, yOffset: number}) => {
     const vantaRef = useRef<HTMLDivElement>(null)
     const [vantaEffect, setVantaEffect] = useState<any>(null)
 
@@ -37,8 +37,10 @@ const VantaHaloBackground = () => {
                     baseColor: 0x001a59, 
                     size: 1.5,
                     amplitudeFactor: 1.5,
-                    xOffset: 0.18,
-                    yOffset: 0.0
+                    xOffset: xOffset,
+                    // xOffset: 0.18,
+                    yOffset: yOffset
+                    // yOffset: 0.3
                 })
                 setVantaEffect(effect)
             }
