@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 import BackgroundAnimation from './BackgroundAnimation';
 // Text animation with typewriter effect
-export const TypewriterText = ({ text }: { text: string }) => {
+export const TypewriterText = ({ text, time = 20 }: { text: string, time?: number }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0); 
 
@@ -14,7 +14,7 @@ export const TypewriterText = ({ text }: { text: string }) => {
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
-      }, 20);
+      }, time);
 
       return () => clearTimeout(timeout);
     }

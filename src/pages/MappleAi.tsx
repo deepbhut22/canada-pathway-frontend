@@ -1,56 +1,101 @@
 import Layout from "../components/layout/Layout";
-import BackgroundGradientAnimation from "../components/ui/backgrounds/GradientBackgroundAnimation";
 import { FadeIn, TypewriterText } from "../components/home/HeroSection";
+import VantaHaloBackground from "../components/ui/backgrounds/HaloBg";
+import useAuthStore from "../store/authStore";
+import {useUserStore} from "../store/userStore";
+import { useState } from "react";
+import ChatBox from "../components/ui/ChatBox";
+import { MessagePopup } from "../components/ui/MessagePopup";
+import { useNavigate } from "react-router-dom";
+
 export default function MappleAI() {
+
+    const [isLoginPopup, setIsLoginPopup] = useState(false);
+    const [isChatboxOpen, setIsChatboxOpen] = useState(false);
+
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const isComplete = useUserStore((state) => state.userProfile.isComplete);
+
+    const navigate = useNavigate();
+
+    function handleTryNow(): void {
+        if (isAuthenticated) {
+            if (isComplete) {
+                setIsChatboxOpen(true);
+            } else {
+                setIsLoginPopup(true);
+            }
+        } else {
+            setIsLoginPopup(true);
+        }
+    }
+
     return (
         <Layout>
-            <BackgroundGradientAnimation>
-                <div className="flex flex-col items-center pt-24 h-screen w-full relative z-10 isolate">
-                    <div className="flex flex-col rounded-lg h-min w-min p-10">
-                        <div className="w-full flex flex-col items-center gap-5">
-                            {/* <p className="text-5xl font-bold w-96 text-black text-stroke-transparent">
-                                <TypewriterText text="Try Our Mapple AI" />
-                            </p> */}
-                            <p className="relative inline-block text-white font-bold text-5xl">
-                                <span className="relative z-10">Try Our Mapple AI</span>
-                                <span
-                                    className="absolute top-0 left-0 z-0 text-black opacity-20 blur-sm"
-                                    style={{
-                                        WebkitTextStroke: '4px transparent',
-                                    }}
-                                >
-                                    Try Our Mapple AI
-                                </span>
-                            </p>
+            <div className="absolute inset-0 pointer-events-none w-screen h-[50vh]">
+                <VantaHaloBackground />
+            </div>
+
+                <div className="flex flex-col justify-center pt-24 h-screen w-full z-10 isolate">
+                    <div className="flex flex-col rounded-lg h-min w-1/3 p-10">
+                        <div className="w-full flex flex-col gap-5">
+                            <div>
+                                <p className="text-white text-2xl font-bold">
+                                    Try Our
+                                </p>
+                                <p className="text-7xl font-bold w-full text-white">
+                                    <TypewriterText text="Mapple AI" time={100} />
+                                </p>
+                            </div>
 
                             <div className="space-y-10">
-                                <p className="text-2xl font-bold w-96 text-secondary-400 mappleai-text-glow">
+                                <p className="text-xl font-normal w-full text-white">
                                     <FadeIn delay={1000}>
-                                        <p>Get Your Personalized Immigration Insights with Mapple AI</p>
+                                        <p>For Your Personalized Immigration Insights with Mapple AI</p>
                                     </FadeIn>
                                 </p>
                             </div>
+                        <div className="p-[3px] rounded-md border border-white w-1/2">
+                            <button 
+                                onClick={handleTryNow   }
+                                className="bg-transparent text-white border border-white rounded-sm px-4 py-2 text-md w-full">
+                                Try Now
+                            </button>
                         </div>
+
                     </div>
                 </div>
-            </BackgroundGradientAnimation>
-            {/* V-shaped bottom cutout revealing the animated background */}
-            <div className="absolute bottom-0 w-full overflow-hidden leading-none z-[-1]">
-                <svg
-                    className="w-full h-32"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                >
-                    <polygon
-                        fill="white"
-                        points="0,0 0,100 50,50 100,100 100,0"
-                    />
-                </svg>
+                <div className="absolute bottom-0 w-full h-24 overflow-hidden z-[-1]">
+                    <svg
+                        className="w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M0,0 C25,100 75,100 100,0 L100,100 L0,100 Z"
+                            fill="white"
+                        />
+                    </svg>
+                </div>
             </div>
-
-            <div className="flex items-center justify-center h-screen w-full bg-white z-100">
-                haha
-            </div>
+            <MessagePopup
+                isOpen={isLoginPopup}
+                onClose={() => setIsLoginPopup(false)}
+                title="Login Required"
+                message="Please login to access this feature"
+                type="warning"
+                actionText="Redirect to Login"
+                onAction={() => {
+                    setIsLoginPopup(false);
+                    navigate('/login');
+                }}
+                cancelText="Not now"
+            />
+            <ChatBox
+                isOpen={isChatboxOpen}
+                onClose={() => setIsChatboxOpen(false)}
+            />
         </Layout>
     );
 }

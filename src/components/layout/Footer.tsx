@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Mail, Globe } from 'lucide-react';
 import canadaLogoLight from '../../../assets/canada-logo-light.png';
+import { useLocation } from 'react-router-dom';
 
 export default function Footer() {
+  const location = useLocation();
+  const isMappleAiPage = location.pathname === '/mappleAi';
+
+  if (isMappleAiPage) {
+    return null;
+  }
+
   return (
     <footer className="bg-secondary-900 text-white min-w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
