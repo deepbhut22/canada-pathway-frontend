@@ -33,7 +33,7 @@ export default function App() {
           <Route path="/legal-info/:tab" element={<LegalInfoComponent />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
           <Route path="/auth/google/:token" element={<GoogleCallback />} />
-          <Route path="/immigration-insights" element={<Charts />} />
+          <Route path="/immigration-statistics" element={<Charts />} />
           <Route
             path="/news"
             element={

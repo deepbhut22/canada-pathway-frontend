@@ -100,17 +100,19 @@ const CanadaImmigrationDashboard = () => {
     
 
     const COLORS = [
-        '#0f172a', // 900 - dark navy
-        '#1e293b', // 800 - charcoal blue
-        '#334155', // 700 - slate blue
-        '#475569', // 600 - gray blue
-        '#64748b', // 500 - muted steel
-        '#94a3b8', // 400 - light steel
-        '#cbd5e1', // 300 - pale blue-gray
-        '#a0aec0', // custom: add more distinguishable midtones
-        '#718096', // custom: another soft grayish blue
-        '#4a5568', // custom: dark gray-blue
-        '#2d3748', // custom: deep slate
+        // '#062645',
+        '#0a3d6f', // 800 - charcoal blue
+        '#064987', // 700 - slate blue
+        '#0056a0', // 600 - gray blue
+        '#006cc6', // 500 - muted steel
+        '#36a5f5', // 400 - light steel
+        // '#e0effe',
+        '#36a5f5',
+        // '#cbd5e1', // 300 - pale blue-gray
+        // '#a0aec0', // custom: add more distinguishable midtones
+        // '#718096', // custom: another soft grayish blue
+        // '#4a5568', // custom: dark gray-blue
+        // '#2d3748', // custom: deep slate
         '#1a202c'  // custom: near-black navy
     ];
 
@@ -268,8 +270,8 @@ const CanadaImmigrationDashboard = () => {
                                         />
                                         <defs>
                                             <linearGradient id="colorCRS" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#0f172a" stopOpacity={0.8} />
-                                                <stop offset="95%" stopColor="#0f172a" stopOpacity={0.1} />
+                                                <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
                                             </linearGradient>
                                         </defs>
                                         <Tooltip
@@ -299,7 +301,7 @@ const CanadaImmigrationDashboard = () => {
                                             type="monotone"
                                             dataKey="CRS Cut off"
                                             name="CRS Cut-off"
-                                            stroke="#0f172a"
+                                            stroke="#0a3d6f"
                                             strokeWidth={2}
                                             dot={{ r: 5 }}
                                             activeDot={{ r: 6 }}
@@ -326,7 +328,7 @@ const CanadaImmigrationDashboard = () => {
                                                 />                                                
                                                 <YAxis tickFormatter={(value) => new Intl.NumberFormat().format(value as number)} />
                                                 <Tooltip formatter={(value) => new Intl.NumberFormat().format(value as number)} />
-                                                <Bar dataKey="immigrants" fill="#1e293b" />
+                                                <Bar dataKey="immigrants" fill="#064987" />
                                             </BarChart>
                                         </ResponsiveContainer>
                                     </div>
@@ -344,8 +346,8 @@ const CanadaImmigrationDashboard = () => {
                                             >
                                                 <defs>
                                                     <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="#0f172a" stopOpacity={0.8} />
-                                                        <stop offset="95%" stopColor="#0f172a" stopOpacity={0.1} />
+                                                        <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
+                                                        <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
                                                     </linearGradient>
                                                 </defs>
                                                 <XAxis
@@ -383,8 +385,8 @@ const CanadaImmigrationDashboard = () => {
                                                 <Area
                                                     type="monotone"
                                                     dataKey="totalStudents"
-                                                    stroke="#0f172a"
-                                                    fillOpacity={1}
+                                                    stroke="#0056a0"
+                                                    fillOpacity={2}
                                                     fill="url(#colorStudents)"
                                                     name="Total Students"
                                                 />
@@ -423,7 +425,7 @@ const CanadaImmigrationDashboard = () => {
                                                     label={({ province, value, percent }) =>
                                                         `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
                                                     }
-                                                    labelLine={false}
+                                                    labelLine={true}
                                                 >
                                                     {pieData.map((entry, index) => (
                                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -559,7 +561,7 @@ const StudyPermitChart: React.FC = () => {
                     />
                     <Tooltip />
                     {/* <Legend />   */}
-                    <Bar dataKey="value" fill="#0f172a" label={{ position: 'top', fontSize: 10 }}>
+                    <Bar dataKey="value" fill="#064987" label={{ position: 'top', fontSize: 10 }}>
                         {chartData.map((_, index) => (
                             <Cell key={`cell-${index}`} />
                         ))}

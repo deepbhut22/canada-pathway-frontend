@@ -84,7 +84,7 @@ export default function Header() {
   ];
 
   const insightsItems = [
-    { path: '/immigration-insights', label: 'Immigration Insights' },
+    { path: '/immigration-statistics', label: 'Immigration Statistics' },
     { path: '#', label: 'MappleAI' },
     { path: '/news', label: 'News' },
   ];
