@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 import BackgroundAnimation from './BackgroundAnimation';
 // Text animation with typewriter effect
-const TypewriterText = ({ text }: { text: string }) => {
+export const TypewriterText = ({ text }: { text: string }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0); 
 
@@ -24,7 +24,7 @@ const TypewriterText = ({ text }: { text: string }) => {
 };
 
 // Fade-in animation
-const FadeIn = ({ children, delay = 0, duration = 1000 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
+export const FadeIn = ({ children, delay = 0, duration = 1000 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

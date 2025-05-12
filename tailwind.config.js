@@ -59,6 +59,41 @@ export default {
         'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       },
     },
+    animation: {
+      first: "first 30s linear infinite",
+      second: "second 45s linear infinite",
+      third: "third 35s linear infinite",
+      fourth: "fourth 50s linear infinite",
+      fifth: "fifth 60s linear infinite",
+      pulse: 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+    },
+    keyframes: {
+      first: {
+        "0%": { transform: "rotate(0deg) scale(1)" },
+        "50%": { transform: "rotate(180deg) scale(1.2)" },
+        "100%": { transform: "rotate(360deg) scale(1)" },
+      },
+      second: {
+        "0%": { transform: "rotate(0deg) scale(1)" },
+        "50%": { transform: "rotate(-180deg) scale(1.3)" },
+        "100%": { transform: "rotate(-360deg) scale(1)" },
+      },
+      third: {
+        "0%": { transform: "rotate(0deg) scale(1)" },
+        "50%": { transform: "rotate(90deg) scale(1.1)" },
+        "100%": { transform: "rotate(180deg) scale(1)" },
+      },
+      fourth: {
+        "0%": { transform: "rotate(0deg) scale(1)" },
+        "50%": { transform: "rotate(135deg) scale(1.4)" },
+        "100%": { transform: "rotate(270deg) scale(1)" },
+      },
+      fifth: {
+        "0%": { transform: "rotate(0deg) scale(1)" },
+        "50%": { transform: "rotate(-135deg) scale(1.2)" },
+        "100%": { transform: "rotate(-270deg) scale(1)" },
+      },
+    },
   },
   plugins: [],
 };
