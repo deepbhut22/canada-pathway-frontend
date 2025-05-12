@@ -4,6 +4,7 @@ import useAuthStore from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 import BackgroundAnimation from './BackgroundAnimation';
+import VantaHaloBackground from '../ui/backgrounds/HaloBg';
 // Text animation with typewriter effect
 export const TypewriterText = ({ text, time = 20 }: { text: string, time?: number }) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -66,10 +67,12 @@ export default function HeroSection() {
   }
 
   return (
-    <div className="pt-10 bg-gray-950 text-white min-h-screen flex items-center relative overflow-hidden">
+    <>
+    <div className="pt-10 bg-gray-950 text-white min-h-screen bg-white flex items-center relative overflow-hidden">
       {/* Background network effect for the entire page */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none w-full">
-        <BackgroundAnimation />
+      <div className="absolute inset-0 pointer-events-none w-full">
+        {/* <BackgroundAnimation /> */}
+        <VantaHaloBackground xOffset={0.18} yOffset={0.0} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 w-full relative z-10">
@@ -133,8 +136,22 @@ export default function HeroSection() {
             {/* Leave empty or include optional illustration */}
           </div>
         </div>
+        <div className="w-screen md:-ml-40 md:mt-20 h-24 overflow-hidden z-[-1]">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,0 C25,100 75,100 100,0 L100,100 L0,100 Z"
+              fill="white"
+            />
+          </svg>
+        </div>
       </div>
     </div>
+    </>
   );
 
 }

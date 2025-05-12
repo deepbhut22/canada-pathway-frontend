@@ -37,6 +37,7 @@ export default function Header() {
 
 
   const isHome = location.pathname === '/';
+  const isMappleAi = location.pathname === '/mappleAi';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -79,13 +80,14 @@ export default function Header() {
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: '/profile', label: 'My Profile' },
+    { path: '/mappleAi', label: 'MappleAI' },
     { path: "/report", label: 'My Report' },
     // { path: '/news', label: 'News' },
   ];
 
   const insightsItems = [
     { path: '/immigration-statistics', label: 'Immigration Statistics' },
-    { path: '/mappleAi', label: 'MappleAI' },
+    // { path: '/mappleAi', label: 'MappleAI' },
     { path: '/news', label: 'News' },
   ];
 
@@ -107,12 +109,12 @@ export default function Header() {
   };
 
   return (
-    <header className={`fixed top-0 pt-2 pb-2 left-0 right-0 z-50 transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-md' : 'bg-transparent' : 'bg-white/90 backdrop-blur-sm shadow-md'}`}>
+    <header className={`fixed top-0 pt-2 pb-2 left-0 right-0 z-50 transition-all duration-300 ${isHome || isMappleAi ? isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-md' : 'bg-transparent' : 'bg-white/90 backdrop-blur-sm shadow-md'}`}>
       <div className="max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
-              {isHome ? !isScrolled ? (
+              {isHome || isMappleAi ? !isScrolled ? (
                 <img src={canadaLogoLight} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
               ) : (
                 <img src={canadaLogoDark} alt="CanadaPath" className="h-8 sm:h-10 md:h-12 object-contain rounded-lg" />
@@ -121,35 +123,44 @@ export default function Header() {
               }
             </Link>
             <nav className="hidden md:ml-6 lg:ml-10 xl:ml-20 md:flex md:space-x-4 lg:space-x-8">
-              {navigationItems.map((item, idx) => ( (!isAuthPage ) &&
-                <p
-                  key={item.path + " " + idx}
-                  // to={item.path}
-                  onClick={() => handleRedirect(item.path)}
-                  className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 cursor-pointer
-                    ${isHome ? isScrolled ?
-                      isActive(item.path)
-                        ? 'border-secondary-950 font-bold text-secondary-950'
-                        : 'border-transparent font-bold text-secondary-700 hover:border-secondary-950 hover:text-secondary-950'
-                      :
-                      isActive(item.path)
-                        ? 'border-white text-white'
-                        : 'border-transparent text-blue-200 hover:border-white hover:text-white'
-                      :
-                      isActive(item.path)
-                        ? 'border-black font-bold text-black'
-                        : 'border-transparent font-bold text-secondary-700 hover:border-secondary-900 hover:text-secondary-900'
-                    }`}
-                >
-                  {item.label}
-                </p>
+              {navigationItems.map((item, idx) => (
+                !isAuthPage && (
+                  <p
+                    key={item.path + " " + idx}
+                    onClick={() => handleRedirect(item.path)}
+                    className={`relative inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 cursor-pointer
+        ${isHome || isMappleAi ? isScrolled ?
+                        isActive(item.path)
+                          ? 'border-secondary-950 font-bold text-secondary-950'
+                          : 'border-transparent font-bold text-secondary-700 hover:border-secondary-950 hover:text-secondary-950'
+                        :
+                        isActive(item.path)
+                          ? 'border-white text-white'
+                          : 'border-transparent text-blue-200 hover:border-white hover:text-white'
+                        :
+                        isActive(item.path)
+                          ? 'border-black font-bold text-black'
+                          : 'border-transparent font-bold text-secondary-700 hover:border-secondary-900 hover:text-secondary-900'
+                      }`}
+                  >
+                    {item.label}
+
+                    {/* Add NEW badge for mappleAI */}
+                    {item.path === 'mappleAi' && (
+                      <span className="absolute -top-2 -right-3 text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded-md shadow-md">
+                        NEW
+                      </span>
+                    )}
+                  </p>
+                )
               ))}
+
 
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
                   className={`inline-flex items-center px-1 pt-1 text-sm lg:text-md font-medium border-b-2 cursor-pointer
-                    ${isHome ? isScrolled ?
+                    ${isHome || isMappleAi ? isScrolled ?
                       'border-transparent text-secondary-700 hover:border-secondary-950 hover:text-secondary-950'
                       : 'border-transparent text-blue-200 hover:border-white hover:text-white'
                       : 'border-transparent font-bold text-secondary-700 hover:border-secondary-900 hover:text-secondary-900'}`}
@@ -184,9 +195,9 @@ export default function Header() {
             {isLoading !== true ?
               useAuthStore.getState().isAuthenticated ?
                 <>
-                  <span className={`text-sm md:text-base lg:text-lg ${isHome ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
+                  <span className={`text-sm md:text-base lg:text-lg ${isHome || isMappleAi ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
                     Welcome,
-                    <span className={`md:text-lg lg:text-2xl font-bold ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
+                    <span className={`md:text-lg lg:text-2xl font-bold ${isHome || isMappleAi ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
                       {useAuthStore.getState().user?.firstName}
                     </span>
                   </span>
@@ -194,9 +205,9 @@ export default function Header() {
                     onClick={() => useAuthStore.getState().logout()}
                     size="sm"
                     variant="outline"
-                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-white hover:text-black' : 'text-secondary-950 border border-secondary-950'}`}
+                    className={`${isHome || isMappleAi ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-white hover:text-black' : 'text-secondary-950 border border-secondary-950'}`}
                   >
-                    <LogOutIcon className={`w-4 h-4 ${isHome ? isScrolled ? 'text-secondary-950' : 'hover:text-secondary-950' : 'text-secondary-800'}`} />
+                    <LogOutIcon className={`w-4 h-4 ${isHome || isMappleAi ? isScrolled ? 'text-secondary-950' : 'hover:text-secondary-950' : 'text-secondary-800'}`} />
                   </Button>
                 </>
                 :
@@ -204,7 +215,7 @@ export default function Header() {
                   <Button
                     onClick={() => navigate('/login')}
                     size="sm" variant="outline"
-                    className={`${isHome ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-transparent' : 'text-white bg-secondary-950 border border-secondary-950'}`}>Sign In</Button>
+                    className={`${isHome || isMappleAi ? isScrolled ? 'text-secondary-950 border border-secondary-950' : 'text-white hover:bg-transparent' : 'text-white bg-secondary-950 border border-secondary-950'}`}>Sign In</Button>
                   <Button
                     onClick={() => navigate('/register')}
                     size="sm" variant="outline"
@@ -219,7 +230,7 @@ export default function Header() {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className={`inline-flex items-center justify-center p-2 rounded-md ${isHome ? isScrolled ? 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100' : 'text-white hover:text-blue-200' : 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100'} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary-950 border`}
+              className={`inline-flex items-center justify-center p-2 rounded-md ${isHome || isMappleAi ? isScrolled ? 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100' : 'text-white hover:text-blue-200' : 'text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100'} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary-950 border`}
               aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
@@ -235,13 +246,13 @@ export default function Header() {
 
       {/* Mobile menu - with improved transitions and styling */}
       {isMenuOpen && (
-        <div className={`md:hidden transition-all duration-300 ${isHome ? isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent shadow-md backdrop-blur-md' : 'bg-white/95 backdrop-blur-md shadow-md'}`}>
+        <div className={`md:hidden transition-all duration-300 ${isHome || isMappleAi ? isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent shadow-md backdrop-blur-md' : 'bg-white/95 backdrop-blur-md shadow-md'}`}>
           <div className="pt-2 pb-3 space-y-1">
             {navigationItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome || isMappleAi ? isScrolled ?
                   isActive(item.path)
                     ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
                     : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
@@ -262,7 +273,7 @@ export default function Header() {
             <div className="border-b">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome || isMappleAi ? isScrolled ?
                   isActive(insightsItems.find(item => item.path === location.pathname)?.path || '')
                     ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
                     : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
@@ -290,7 +301,7 @@ export default function Header() {
                         handleRedirect(subItem.path);
                         setIsDropdownOpen(false);
                       }}
-                      className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome ? isScrolled ?
+                      className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${isHome || isMappleAi ? isScrolled ?
                         isActive(subItem.path)
                           ? 'border-secondary-950 text-secondary-900 bg-secondary-50/80'
                           : 'border-transparent text-secondary-500 hover:border-secondary-700 hover:text-secondary-700 hover:bg-secondary-50/50'
@@ -313,13 +324,13 @@ export default function Header() {
           </div>
 
           {/* Mobile authentication buttons */}
-          <div className={`pt-3 pb-3 border-t ${isHome ? isScrolled ? 'bg-white/90' : 'bg-secondary-950 border-y border-secondary-50' : 'bg-white/95'}`}>
+          <div className={`pt-3 pb-3 border-t ${isHome || isMappleAi ? isScrolled ? 'bg-white/90' : 'bg-secondary-950 border-y border-secondary-50' : 'bg-white/95'}`}>
             {isLoading !== true ?
               useAuthStore.getState().isAuthenticated ?
                 <div className="flex items-center justify-between px-4">
-                  <span className={`text-base ${isHome ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
+                  <span className={`text-base ${isHome || isMappleAi ? isScrolled ? 'text-secondary-700' : 'text-blue-200' : 'text-secondary-700'}`}>
                     Welcome,
-                    <span className={`ml-1 text-lg font-bold ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
+                    <span className={`ml-1 text-lg font-bold ${isHome || isMappleAi ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950'}`}>
                       {useAuthStore.getState().user!.firstName}
                     </span>
                   </span>
@@ -330,9 +341,9 @@ export default function Header() {
                     }}
                     size="sm"
                     variant="outline"
-                    className={`${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950 border border-secondary-950'}`}
+                    className={`${isHome || isMappleAi ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-950 border border-secondary-950'}`}
                   >
-                    <LogOutIcon className={`w-4 h-4 mr-1 ${isHome ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-800 border border-secondary-800'}`} />
+                    <LogOutIcon className={`w-4 h-4 mr-1 ${isHome || isMappleAi ? isScrolled ? 'text-secondary-950' : 'text-white' : 'text-secondary-800 border border-secondary-800'}`} />
                     Logout
                   </Button>
                 </div>
@@ -345,7 +356,7 @@ export default function Header() {
                     }}
                     size="sm"
                     variant="outline"
-                    className={`w-full ${isHome ? isScrolled ? 'bg-secondary-950 border border-white text-white hover:bg-white hover:text-secondary-950' : 'bg-transparent text-white border border-white hover:bg-white hover:text-secondary-950' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
+                    className={`w-full ${isHome || isMappleAi ? isScrolled ? 'bg-secondary-950 border border-white text-white hover:bg-white hover:text-secondary-950' : 'bg-transparent text-white border border-white hover:bg-white hover:text-secondary-950' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
                   >
                     Sign In
                   </Button>
@@ -356,7 +367,7 @@ export default function Header() {
                     }}
                     size="sm"
                     variant="outline"
-                    className={`w-full ${isHome ? isScrolled ? 'bg-white border border-secondary-950 text-black' : 'bg-white text-black border border-secondary-950 ' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
+                    className={`w-full ${isHome || isMappleAi ? isScrolled ? 'bg-white border border-secondary-950 text-black' : 'bg-white text-black border border-secondary-950 ' : 'bg-transparent border-secondary-950 text-secondary-950'}`}
                   >
                     Sign Up
                   </Button>

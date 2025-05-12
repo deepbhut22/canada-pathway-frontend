@@ -41,7 +41,7 @@ export default function MappleAI() {
             </div>
 
                 <div className="flex flex-col justify-center md:pt-24 h-screen w-full z-10 isolate">
-                    <div className="flex flex-col rounded-lg h-min w-full md:w-1/3 p-10 md:ml-16">
+                    <div className="flex flex-col rounded-lg h-min w-full md:w-1/3 p-10 md:ml-24 sm:mb-14">
                         <div className="w-full flex flex-col gap-5">
                             <div>
                                 <p className="text-white text-md md:text-2xl font-bold">
@@ -59,13 +59,20 @@ export default function MappleAI() {
                                     </FadeIn>
                                 </p>
                             </div>
-                        <div className="p-[3px] rounded-md border border-white w-1/2">
+                        {/* <div className="p-[3px] rounded-md border border-white w-1/2">
                             <button 
-                                onClick={handleTryNow   }
+                                onClick={handleTryNow}
                                 className="bg-transparent text-white border border-white rounded-sm px-4 py-2 text-md w-full">
                                 Try Now
                             </button>
-                        </div>
+                        </div> */}
+
+                        <button className="p-[3px] relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                            <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
+                                Try Now
+                            </div>
+                        </button>
 
                     </div>
                 </div>

@@ -38,6 +38,7 @@ export default function Home() {
       {/* Hero section remains at the top for immediate impact */}
       <HeroSection />
 
+
       {/* Latest News component first as requested */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -163,19 +164,7 @@ export default function Home() {
         isOpen={showChatBox}
         onClose={() => setShowChatBox(false)}
       />
-      <MessagePopup
-        isOpen={isLoginRequiredPopupOpen}
-        onClose={() => useAuthStore.getState().setIsLoginRequiredPopupOpen(false)}
-        title="Login Required"
-        message="Please login to access this feature"
-        type="warning"
-        actionText="Redirect to Login"
-        onAction={() => {
-          useAuthStore.getState().setIsLoginRequiredPopupOpen(false);
-          navigate('/login');
-        }}
-        cancelText="Not now"
-      />
+
     </Layout>
   );  
 }
