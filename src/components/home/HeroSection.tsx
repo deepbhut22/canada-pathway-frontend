@@ -139,7 +139,7 @@ export default function HeroSection() {
                       onClick={() => {
                         if (isAuth) {
                           if (isProfileComplete) {
-                            navigate('/mapple-ai')
+                            navigate('/maple-ai')
                           } else {
                             useAuthStore.getState().setIsPopupOpen(true);
                           }
@@ -150,7 +150,7 @@ export default function HeroSection() {
                       className="p-[3px] relative w-full">
                       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
                       <div className="px-8 py-5 sm:py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
-                        Mapple AI
+                        Maple AI
                       </div>
                     </button>
                     <button

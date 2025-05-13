@@ -37,7 +37,7 @@ export default function Header() {
 
 
   const isHome = location.pathname === '/';
-  const isMappleAi = location.pathname === '/mappleAi';
+  const isMappleAi = location.pathname === '/mapleAi';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const [isScrolled, setIsScrolled] = useState(false);

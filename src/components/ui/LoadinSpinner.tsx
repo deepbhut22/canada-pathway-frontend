@@ -25,7 +25,7 @@ export default function LoadingSpinner({
         <div className={containerClasses}>
             <div className="flex flex-col items-center">
                 <img
-                    src="/assets/loading-spinner.gif"
+                    src="/loading-spinner.gif"
                     alt="Loading..."
                     className={gifSize}
                 />
