@@ -70,14 +70,14 @@ export default function HeroSection() {
     <>
     <div className="pt-10 bg-gray-950 text-white min-h-screen bg-white flex items-center relative overflow-hidden">
       {/* Background network effect for the entire page */}
-      <div className="hidden sm:block absolute inset-0 pointer-events-none w-full">
+      <div className="hidden md:block absolute inset-0 pointer-events-none w-full">
         {/* <BackgroundAnimation /> */}
         <VantaHaloBackground xOffset={0.18} yOffset={0.0} size={1.5} />
       </div>
 
-      <div className="block sm:hidden absolute inset-0 pointer-events-none w-full">
+      <div className="block md:hidden absolute inset-0 pointer-events-none w-full">
         {/* <BackgroundAnimation /> */}
-        <VantaHaloBackground xOffset={0.0} yOffset={-0.22} size={0.5} />
+        <VantaHaloBackground xOffset={0.0} yOffset={-0.26} size={0.5} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 w-full relative z-10">
@@ -130,7 +130,7 @@ export default function HeroSection() {
                     onClick={handleRedirect}
                     className="p-[3px] relative sm:w-auto w-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                    <div className="px-8 py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                    <div className="p-2 bg-secondary-950 rounded-[6px] text-sm md:text-md relative group transition duration-200 text-white hover:bg-transparent">
                       Get My Free All In One AI-Powered PR Report
                     </div>
                   </button>
@@ -149,7 +149,7 @@ export default function HeroSection() {
                       }}
                       className="p-[3px] relative w-full">
                       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                      <div className="px-8 py-5 sm:py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                      <div className="p-2 bg-secondary-950 rounded-[6px] text-sm md:text-md relative group transition duration-200 text-white hover:bg-transparent h-full flex justify-center items-center">
                         Maple AI
                       </div>
                     </button>
@@ -157,7 +157,7 @@ export default function HeroSection() {
                       onClick={() => navigate('/immigration-statistics')}
                       className="p-[3px] relative w-full">
                       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                      <div className="px-8 py-2  bg-secondary-950 rounded-[6px] text-md relative group transition duration-200 text-white hover:bg-transparent">
+                      <div className="p-2 bg-secondary-950 rounded-[6px] text-sm md:text-md relative group transition duration-200 text-white hover:bg-transparent h-full flex justify-center items-center">
                         Recent Trends
                       </div>
                     </button>

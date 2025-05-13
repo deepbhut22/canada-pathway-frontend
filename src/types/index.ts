@@ -167,3 +167,11 @@ export interface AuthState {
   isLoginRequiredPopupOpen: boolean;
   isConsultationDialogOpen: boolean;
 }
+// src/types.ts (or inline if preferred)
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  content: string;
+}

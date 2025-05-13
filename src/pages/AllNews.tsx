@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 import { MessagePopup } from '../components/ui/MessagePopup';
 import useAuthStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
-
+import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 // Sample categories for filter - replace with your actual categories
 const CATEGORIES = [
     'All Categories',
@@ -88,14 +88,19 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
     return (
         <Layout>
             <div className="bg-gray-50 min-h-screen mt-8">
-                {/* Hero Section */}
-                <div className="bg-secondary-900 text-white">
-                    <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl md:text-4xl font-bold mb-4">Immigration News & Updates</h1>
-                        <p className="text-lg text-gray-300 max-w-3xl">
-                            Stay informed about the latest changes in Canadian immigration policies, visa updates, and important announcements.
-                        </p>
-                    </div>
+                <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
+                    {/* <BackgroundAnimation /> */}
+                    <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='10vh' />
+                </div>
+                <div className="block md:hidden absolute inset-0 pointer-events-none w-full mt-20">
+                    {/* <BackgroundAnimation /> */}
+                    <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
+                </div>
+                <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+                    <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration News & Updates</h1>
+                    <p className="text-lg text-gray-300 max-w-3xl">
+                        Stay informed about the latest changes in Canadian immigration policies, visa updates, and important announcements.
+                    </p>
                 </div>
 
                 {/* Filters Section */}

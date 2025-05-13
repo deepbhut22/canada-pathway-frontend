@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-const VantaHaloBackground = ({xOffset, yOffset, size=1.5}: {xOffset: number, yOffset: number, size?: number}) => {
+const VantaHaloBackground = ({xOffset, yOffset, size=1.5, height='100vh'}: {xOffset: number, yOffset: number, size?: number, height?: string}) => {
     const vantaRef = useRef<HTMLDivElement>(null)
     const [vantaEffect, setVantaEffect] = useState<any>(null)
 
@@ -53,7 +53,7 @@ const VantaHaloBackground = ({xOffset, yOffset, size=1.5}: {xOffset: number, yOf
         }
     }, [vantaEffect])
 
-    return <div ref={vantaRef} style={{ width: '100%', height: '100vh' }} />
+    return <div ref={vantaRef} style={{ width: '100%', height: height }} />
 }
 
 export default VantaHaloBackground;

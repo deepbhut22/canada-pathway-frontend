@@ -15,6 +15,9 @@ import GoogleCallback from './pages/GoogleCallback';
 import Charts from './pages/Charts';
 import MapleAI from './pages/MapleAi';
 import PNPResourcesPage from './pages/PNPResourcesPage';
+import Blog from './pages/Blog';
+import BlogPostPage from './pages/BlogPost';
+// import Blog from './pages/Blog';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
   const isAuth = useAuthStore((state) => state.isAuthenticated);
@@ -37,6 +40,8 @@ export default function App() {
           <Route path="/auth/google/:token" element={<GoogleCallback />} />
           <Route path="/immigration-statistics" element={<Charts />} />
           <Route path="/immigration-resources" element={<PNPResourcesPage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route
             path="/news"
             element={
