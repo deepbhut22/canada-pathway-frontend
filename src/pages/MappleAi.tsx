@@ -23,10 +23,10 @@ export default function MappleAI() {
             if (isComplete) {
                 setIsChatboxOpen(true);
             } else {
-                setIsLoginPopup(true);
+                useAuthStore.getState().setIsPopupOpen(true);
             }
         } else {
-            setIsLoginPopup(true);
+            useAuthStore.getState().setIsPopupOpen(true);
         }
     }
 

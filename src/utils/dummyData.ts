@@ -179,6 +179,115 @@ export const provinceLink = {
     NL: NewfoundlandAndLabradorLinks
 }
 
+export const PNPLinks = {
+    "IRCC": [
+        { "title": "IRCC Website", "link": "https://www.canada.ca/en/services/immigration-citizenship.html" },
+        { "title": "IRCC Processing Times", "link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html" },
+        { "title": "IRCC CRS Calculator", "link": "https://www.cic.gc.ca/english/immigrate/skilled/crs-tool.asp" },
+        { "title": "IRCC Forms Checklist", "link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application.html" },
+        { "title": "IRCC TEER NOC Codes", "link": "https://www.jobbank.gc.ca/noc" }
+    ],
+    "AB": [
+        { "title": "Alberta Government Website", "link": "https://www.alberta.ca" },
+        { "title": "AAIP Overview", "link": "https://www.alberta.ca/aaip-overview" },
+        { "title": "Alberta Advantage Immigration Program Updates", "link": "https://www.alberta.ca/aaip-updates" },
+        { "title": "AAIP Processing Information", "link": "https://www.alberta.ca/aaip-processing-information" },
+        { "title": "Alberta Opportunity Stream", "link": "https://www.alberta.ca/aaip-alberta-opportunity-stream" },
+        { "title": "Alberta Express Entry Stream", "link": "https://www.alberta.ca/aaip-alberta-express-entry-stream" },
+        { "title": "Rural Renewal Stream", "link": "https://www.alberta.ca/aaip-rural-renewal-stream" },
+        { "title": "Tourism and Hospitality Stream", "link": "https://www.alberta.ca/tourism-and-hospitality-stream" }
+    ],
+    "BC": [
+        { "title": "BC Government Website", "link": "https://www.welcomebc.ca/" },
+        { "title": "About the BC PNP", "link": "https://www.welcomebc.ca/Immigrate-to-B-C/About-The-BC-PNP" },
+        { "title": "Skills Immigration", "link": "https://www.welcomebc.ca/Immigrate-to-B-C/BC-PNP-Skills-Immigration" },
+        { "title": "Entrepreneur Immigration", "link": "https://www.welcomebc.ca/Immigrate-to-B-C/BC-PNP-Entrepreneur-Immigration" },
+        { "title": "Recent Draws", "link": "https://www.welcomebc.ca/Immigrate-to-B-C/BC-PNP-Draws" },
+        { "title": "Latest News", "link": "https://news.gov.bc.ca/ministries/jobs-economic-development-and-innovation" },
+        { "title": "Guides, Forms, Reports, and Documents", "link": "https://www.welcomebc.ca/Immigrate-to-B-C/Documents-Guides" }
+    ],
+    "MB": [
+        { "title": "Government Website", "link": "https://immigratemanitoba.com/" },
+        { "title": "MPNP Overview", "link": "https://immigratemanitoba.com/immigrate-to-manitoba/mpnp/" },
+        { "title": "Skilled Worker Stream", "link": "https://immigratemanitoba.com/immigrate-to-manitoba/mpnp/skilled-workers/" },
+        { "title": "International Education Stream", "link": "https://immigratemanitoba.com/immigrate-to-manitoba/international-education-stream/" },
+        { "title": "Business Investor Stream", "link": "https://immigratemanitoba.com/immigrate-to-manitoba/business-investor-stream/" },
+        { "title": "Recent Draws", "link": "https://immigratemanitoba.com/immigrate-to-manitoba/mpnp-notices/" },
+        { "title": "Latest News and Updates", "link": "https://immigratemanitoba.com/news/" }
+    ],
+    "NB": [
+        { "title": "Government of New Brunswick", "link": "https://www.welcomenb.ca/" },
+        { "title": "NBPNP Overview", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration.html" },
+        { "title": "Important Notices", "link": "https://www.welcomenb.ca/content/wel-bien/en/notices.html" },
+        { "title": "Skilled Workers Stream", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/nbpnp.html#skilled" },
+        { "title": "Express Entry Stream", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/nbpnp.html#express" },
+        { "title": "Entrepreneurial Stream", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/nbpnp.html#entrepreneur" },
+        { "title": "Strategic Initiative Stream", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/strategic-initiative.html" },
+        { "title": "Private Career College Graduate Pilot Program", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/private-career-college-graduate-pilot.html" },
+        { "title": "Atlantic Immigration Program", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/atlantic-immigration-program.html" },
+        { "title": "Latest Draws", "link": "https://www.welcomenb.ca/content/wel-bien/en/immigration/draws.html" }
+    ],
+    "NL": [
+        { "title": "Government Website", "link": "https://www.gov.nl.ca/" },
+        { "title": "NLPNP Overview", "link": "https://www.gov.nl.ca/immigration/programs/" },
+        { "title": "News and Updates", "link": "https://www.gov.nl.ca/immigration/news/" },
+        { "title": "Express Entry Skilled Worker Category", "link": "https://www.gov.nl.ca/immigration/programs/eeskilledworker/" },
+        { "title": "Skilled Worker Category", "link": "https://www.gov.nl.ca/immigration/programs/skilledworker/" },
+        { "title": "International Graduate Category", "link": "https://www.gov.nl.ca/immigration/programs/internationalgraduate/" },
+        { "title": "International Entrepreneur Category", "link": "https://www.gov.nl.ca/immigration/programs/internationalentrepreneur/" },
+        { "title": "Atlantic Immigration Program", "link": "https://www.gov.nl.ca/immigration/programs/atlanticimmigration/" },
+        { "title": "Required Documents and Forms", "link": "https://www.gov.nl.ca/immigration/forms/" },
+        { "title": "Latest Draws", "link": "https://www.gov.nl.ca/immigration/news/" }
+    ],
+    "NS": [
+        { "title": "Government Website", "link": "https://novascotiaimmigration.com/" },
+        { "title": "NSNP Overview", "link": "https://novascotiaimmigration.com/move-here/nova-scotia-nominee-program/" },
+        { "title": "Skilled Worker", "link": "https://novascotiaimmigration.com/move-here/skilled-workers/" },
+        { "title": "Express Entry", "link": "https://novascotiaimmigration.com/move-here/nova-scotia-demand-express-entry/" },
+        { "title": "Labour Market Priorities", "link": "https://novascotiaimmigration.com/move-here/labour-market-priorities-stream/" },
+        { "title": "Latest Draws", "link": "https://novascotiaimmigration.com/move-here/latest-updates/" },
+        { "title": "Latest News", "link": "https://novascotiaimmigration.com/news/" }
+    ],
+    "ON": [
+        { "title": "OINP Overview", "link": "https://www.ontario.ca/page/ontario-immigrant-nominee-program-oinp" },
+        { "title": "Employer Job Offer: Foreign Worker", "link": "https://www.ontario.ca/page/oinp-employer-job-offer-foreign-worker-stream" },
+        { "title": "Employer Job Offer: International Student", "link": "https://www.ontario.ca/page/oinp-employer-job-offer-international-student-stream" },
+        { "title": "Employer Job Offer: In-Demand Skills", "link": "https://www.ontario.ca/page/oinp-employer-job-offer-demand-skills-stream" },
+        { "title": "Masters Graduate Stream", "link": "https://www.ontario.ca/page/oinp-masters-graduate-stream" },
+        { "title": "PhD Graduate Stream", "link": "https://www.ontario.ca/page/oinp-phd-graduate-stream" },
+        { "title": "Human Capital Priorities Stream (Express Entry)", "link": "https://www.ontario.ca/page/oinp-human-capital-priorities-stream" },
+        { "title": "French-Speaking Skilled Worker Stream", "link": "https://www.ontario.ca/page/oinp-french-speaking-skilled-worker-stream" },
+        { "title": "Skilled Trades Stream (Express Entry)", "link": "https://www.ontario.ca/page/oinp-skilled-trades-stream" },
+        { "title": "Entrepreneur Stream", "link": "https://www.ontario.ca/page/oinp-entrepreneur-stream" },
+        { "title": "Latest Draws", "link": "https://www.ontario.ca/page/oinp-expression-interest-system" },
+        { "title": "Latest News", "link": "https://news.ontario.ca/newsroom/en" }
+    ],
+    "PE": [
+        { "title": "PEI PNP Overview", "link": "https://www.princeedwardisland.ca/en/topic/immigrate-to-pei" },
+        { "title": "PEI Express Entry", "link": "https://www.princeedwardisland.ca/en/information/office-immigration/pei-express-entry" },
+        { "title": "Labour Impact Category", "link": "https://www.princeedwardisland.ca/en/information/office-immigration/labour-impact-category" },
+        { "title": "Business Impact Category", "link": "https://www.princeedwardisland.ca/en/information/office-immigration/business-impact-category" },
+        { "title": "Latest Draws", "link": "https://www.princeedwardisland.ca/en/news" },
+        { "title": "Latest News", "link": "https://www.princeedwardisland.ca/en/news" }
+    ],
+    "SK": [
+        { "title": "SINP Overview", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program" },
+        { "title": "International Skilled Worker", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program/international-skilled-worker-category" },
+        { "title": "Saskatchewan Experience", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program/saskatchewan-experience-category" },
+        { "title": "Entrepreneur", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program/entrepreneur-and-farm-category" },
+        { "title": "Farm Owner and Operator", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program/entrepreneur-and-farm-category" },
+        { "title": "Latest Draws", "link": "https://www.saskatchewan.ca/residents/moving-to-saskatchewan/immigrating-to-saskatchewan/saskatchewan-immigrant-nominee-program/sinp-results" },
+        { "title": "Latest News", "link": "https://www.saskatchewan.ca/government/news-and-media" }
+    ],
+    "NT": [
+        { "title": "NTNP Overview", "link": "https://www.immigratenwt.ca/en" },
+        { "title": "Employer-Driven Stream", "link": "https://www.immigratenwt.ca/en/employer-driven-stream" },
+        { "title": "Business Stream", "link": "https://www.immigratenwt.ca/en/business-stream" },
+        { "title": "Latest Draws", "link": "https://www.immigratenwt.ca/en/news" },
+        { "title": "Latest News", "link": "https://www.immigratenwt.ca/en/news" }
+    ]
+};
+
 
 export const getNocOptions = () => {
     return [

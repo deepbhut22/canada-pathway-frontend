@@ -14,6 +14,7 @@ import LegalInfoComponent from './pages/PrivacyPolicy';
 import GoogleCallback from './pages/GoogleCallback';  
 import Charts from './pages/Charts';
 import MappleAi from './pages/MappleAi';
+import PNPResourcesPage from './pages/PNPResourcesPage';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
   const isAuth = useAuthStore((state) => state.isAuthenticated);
@@ -33,8 +34,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/legal-info/:tab" element={<LegalInfoComponent />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
-          <Route path="/immigration-statistics" element={<Charts />} />
           <Route path="/auth/google/:token" element={<GoogleCallback />} />
+          <Route path="/immigration-statistics" element={<Charts />} />
+          <Route path="/immigration-resources" element={<PNPResourcesPage />} />
           <Route
             path="/news"
             element={
