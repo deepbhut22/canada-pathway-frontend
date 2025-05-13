@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import { NewsItem } from '../../types';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardImage } from '../ui/Card';
 import {HorizontalSlider} from '../ui/HorizontalSlider';
 import { ProvinceLinksDialog } from '../ProvinceLinksDialogs';
 import { PNPLinks } from '../../utils/dummyData';
+import { useNavigate } from 'react-router-dom';
 
 interface ProvincialSectionProps {
   provincialNews: NewsItem[];
@@ -12,16 +13,18 @@ interface ProvincialSectionProps {
 
 export default function ProvincialSection({ provincialNews }: ProvincialSectionProps) {
   const provinces = [
+    { code: 'IRCC', name: 'IRCC', flag: 'https://images.unsplash.com/photo-1607578774871-249a5b07c380?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FuYWRhJTIwZmxhZ3xlbnwwfHwwfHx8MA%3D%3D' },
     { code: 'ON', name: 'Ontario', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Ontario.svg/500px-Flag_of_Ontario.svg.png' },
     { code: 'BC', name: 'British Columbia', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_British_Columbia.svg/500px-Flag_of_British_Columbia.svg.png' },
     { code: 'AB', name: 'Alberta', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Flag_of_Alberta.svg/500px-Flag_of_Alberta.svg.png' },
-    { code: 'QC', name: 'Quebec', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Flag_of_Quebec.svg/500px-Flag_of_Quebec.svg.png' },
+    // { code: 'QC', name: 'Quebec', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Flag_of_Quebec.svg/500px-Flag_of_Quebec.svg.png' },
     { code: 'NS', name: 'Nova Scotia', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Nova_Scotia.svg/500px-Flag_of_Nova_Scotia.svg.png' },
     { code: 'MB', name: 'Manitoba', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Manitoba.svg/500px-Flag_of_Manitoba.svg.png' },
     { code: 'SK', name: 'Saskatchewan', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_Saskatchewan.svg/500px-Flag_of_Saskatchewan.svg.png' },
     { code: 'NB', name: 'New Brunswick', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_New_Brunswick.svg/500px-Flag_of_New_Brunswick.svg.png' },
     { code: 'NL', name: 'Newfoundland and Labrador', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Newfoundland_and_Labrador.svg/500px-Flag_of_Newfoundland_and_Labrador.svg.png' },
-    { code: 'PE', name: 'Prince Edward Island', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Flag_of_Prince_Edward_Island.svg/500px-Flag_of_Prince_Edward_Island.svg.png' }
+    { code: 'PE', name: 'Prince Edward Island', flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Flag_of_Prince_Edward_Island.svg/500px-Flag_of_Prince_Edward_Island.svg.png' },
+
   ];
 
   interface ProvinceLinksOption {
@@ -31,7 +34,7 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
 
   const [showLinksDialog, setShowLinksDialog] = useState<boolean>(false);
   const [options, setOptions] = useState<ProvinceLinksOption[]>([]);
-
+  const navigate = useNavigate();
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +44,12 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
             Explore immigration opportunities specific to each province and territory
           </p>
         </div>
-
+        <p 
+          onClick={() => navigate('/immigration-resources')}
+          className='flex justify-end w-full items-center gap-1 cursor-pointer'
+        ><ExternalLink className='w-4 h-4' /> 
+          View All Resources
+        </p>
         <HorizontalSlider
           className="hidden sm:block"
           items={provinces}

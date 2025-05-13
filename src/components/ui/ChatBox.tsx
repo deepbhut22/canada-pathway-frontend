@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from '
 import { X, Send, Loader2, MessageCircle } from 'lucide-react';
 import api from '../../utils/axios';
 import useAuthStore from '../../store/authStore';
+import ReactMarkdown from 'react-markdown';
 
 // Define types for our component and data
 interface ChatMessage {
@@ -133,7 +134,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
                                         : 'bg-white border border-secondary-100 border border-secondary-400 shadow-md text-secondary-900'
                                     }`}
                             >
-                                <p className="whitespace-pre-wrap text-sm">{msg.content}</p>
+                                <ReactMarkdown>{msg.content}</ReactMarkdown>
                                 <p className={`text-sm mt-1 ${msg.role === 'user' ? 'text-primary-100' : 'text-secondary-400'
                                     }`}>
                                     {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

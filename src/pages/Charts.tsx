@@ -10,7 +10,8 @@ import Layout from '../components/layout/Layout';
 import { expressEntryData, expressEntryData as expressEntryDataCsv, internationalStudents } from '../utils/chartsData';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 import { cn } from '../lib/utils';
-
+import { ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 // Immigration Data
 const immigrationData = [
     { year: '2000-01', immigrants: 252527 },
@@ -557,11 +558,12 @@ const renderCustomizedLabel = (props: any) => {
 };
 
 
-export const ExpressEntryDrawsChart = ({className}: {className?: string}) => {
+export const ExpressEntryDrawsChart = ({className, isFromHomePage=false}: {className?: string, isFromHomePage?: boolean}) => {
     
     const [isDesktop, setIsDesktop] = useState<boolean>(true);
     const [selectedYear, setSelectedYear] = useState<string>('2025');
     const [selectedProgramType, setSelectedProgramType] = useState<string>('');
+    const navigate = useNavigate();
     
     useEffect(() => {
         const handleResize = () => {
@@ -623,7 +625,10 @@ export const ExpressEntryDrawsChart = ({className}: {className?: string}) => {
 
     return (
         <div className={cn("w-[90%] bg-white rounded-lg border-2 border-secondary-300 shadow-lg p-6 mt-16 mx-auto", className)}>
-            <h2 className="text-2xl font-semibold mb-4">Express Entry Draws</h2>
+            <div className='flex justify-between items-center'>
+                <h2 className="text-2xl font-semibold mb-4">Express Entry Draws</h2>
+                {isFromHomePage && <p className="text-sm text-gray-500 flex gap-1 items-center cursor-pointer" onClick={() => navigate('/immigration-statistics')}><ExternalLink className='w-4 h-4' /> View All Statistics</p>}
+            </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-2">
                 <select
                     className="border-2 border-secondary-300 rounded p-2 w-full sm:w-auto"

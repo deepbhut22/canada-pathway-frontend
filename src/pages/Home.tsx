@@ -45,7 +45,9 @@ export default function Home() {
       {/* Hero section remains at the top for immediate impact */}
       <HeroSection />
 
-      <ExpressEntryDrawsChart className='w-full border-none mt-0 pt-24 md:px-24' />
+    
+
+      <ExpressEntryDrawsChart className='w-full border-none mt-0 pt-24 md:px-24' isFromHomePage={true} />
 
       {/* Latest News component first as requested */}
       <div className="py-12 bg-white">
