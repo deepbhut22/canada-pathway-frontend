@@ -17,7 +17,7 @@ import ChatBox from '../components/ui/ChatBox';
 import { CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { ExternalLink } from 'lucide-react';
-
+import { ExpressEntryDrawsChart } from './Charts';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
@@ -45,6 +45,7 @@ export default function Home() {
       {/* Hero section remains at the top for immediate impact */}
       <HeroSection />
 
+      <ExpressEntryDrawsChart className='w-full border-none mt-0 pt-24 md:px-24' />
 
       {/* Latest News component first as requested */}
       <div className="py-12 bg-white">

@@ -98,7 +98,7 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
                 </div>
                 <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10">
                     <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration News & Updates</h1>
-                    <p className="text-lg text-gray-300 max-w-3xl">
+                    <p className="text-sm md:text-lg text-gray-300 max-w-3xl">
                         Stay informed about the latest changes in Canadian immigration policies, visa updates, and important announcements.
                     </p>
                 </div>

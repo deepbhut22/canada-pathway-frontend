@@ -7,7 +7,9 @@ import {
 // import { Papa } from 'papaparse';
 import _ from 'lodash';
 import Layout from '../components/layout/Layout';
-import { expressEntryData as expressEntryDataCsv, internationalStudents } from '../utils/chartsData';
+import { expressEntryData, expressEntryData as expressEntryDataCsv, internationalStudents } from '../utils/chartsData';
+import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
+import { cn } from '../lib/utils';
 
 // Immigration Data
 const immigrationData = [
@@ -206,114 +208,36 @@ const CanadaImmigrationDashboard = () => {
 
     return (
         <Layout >
-            <div className="hidden md:flex flex-col w-full space-y-8 p-4 mt-20">
+            <div className="hidden md:flex flex-col w-full space-y-8 p-4">
+                    <div className="bg-white min-h-screen">
+                        <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
+                            {/* <BackgroundAnimation /> */}
+                            <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='10vh' />
+                        </div>
+                        <div className="block md:hidden absolute inset-0 pointer-events-none w-full mt-20">
+                            {/* <BackgroundAnimation /> */}
+                            <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
+                        </div>
+                        <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 relative z-10">
+                            <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration Statistics</h1>
+                            <p className="text-lg text-gray-300 max-w-3xl">
+                                A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.                            </p>
+                        </div>
+
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <p className="text-xl">Loading data...</p>
                     </div>
                 ) : (
                     <>
-                        <div className="w-full bg-white rounded-lg shadow-lg p-6 mt-14">
-                            <h2 className="text-2xl font-semibold mb-4">Express Entry Draws</h2>    
-                            <div className='flex gap-4 mb-2'>
-                                <select 
-                                    className="border-2 border-secondary-300 rounded p-2"
-                                    value={selectedYear} 
-                                    onChange={(e) => setSelectedYear(e.target.value)}>
-                                    {yearsAvailable.map(year => (
-                                        <option key={year} value={year}>{year}</option>
-                                    ))}
-                                </select>
-
-                                <select 
-                                    className="border-2 border-secondary-300 rounded p-2"
-                                    value={selectedProgramType} 
-                                    onChange={(e) => setProgramType(e.target.value)}>
-                                    {programTypes.map(type => (
-                                        <option key={type} value={type}>{type}</option>
-                                    ))}
-                                </select>
-                            </div>
-                                <ResponsiveContainer width="100%" height={450}>
-                                    <ComposedChart 
-                                        data={normalizedData}
-                                        margin={{ top: 40, right: 40, left: 40, bottom: 20 }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis
-                                            dataKey="Date"
-                                            tickFormatter={formatDate}
-                                            interval="preserveStartEnd"
-                                            angle={-45}
-                                            textAnchor="end"
-                                            height={60}
-                                            label={{
-                                                value: "Draw Date",
-                                                position: "insideBottom",
-                                                offset: -15,
-                                                fontSize: 20,
-                                                fontWeight: "bold",
-                                            }}
-                                        />
-                                        <YAxis
-                                            domain={["auto", "auto"]}
-                                            label={<Text
-                                                x={30}
-                                                y={170}
-                                                angle={-90}
-                                                textAnchor="middle"
-                                                fontSize={20}
-                                                fontWeight="bold"
-                                            >CRS Cut-off</Text>}
-                                        />
-                                        <defs>
-                                            <linearGradient id="colorCRS" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
-                                                <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
-                                            </linearGradient>
-                                        </defs>
-                                        <Tooltip
-                                            content={({ active, payload }) => {
-                                                if (active && payload?.length) {
-                                                    const data = payload[0].payload;
-                                                    return (
-                                                        <div className="bg-white border border-gray-300 rounded p-3 shadow text-sm">
-                                                            <p><strong>Date:</strong> {data.Date}</p>
-                                                            <p><strong>Number:</strong> {data.Number}</p>
-                                                            <p><strong>Type:</strong> {data.Type}</p>
-                                                            <p><strong>CRS Cut-off:</strong> {data["CRS Cut off"]}</p>
-                                                            <p><strong>Invitations:</strong> {data.Invitations}</p>
-                                                        </div>
-                                                    );
-                                                }
-                                                return null;
-                                            }}
-                                        />
-                                        <Area
-                                            type="monotone"
-                                            dataKey="CRS Cut off"
-                                            stroke="none"
-                                            fill="url(#colorCRS)"
-                                        />
-                                        <Line
-                                            type="monotone"
-                                            dataKey="CRS Cut off"
-                                            name="CRS Cut-off"
-                                            stroke="#0a3d6f"
-                                            strokeWidth={2}
-                                            dot={{ r: 5 }}
-                                            activeDot={{ r: 6 }}
-                                        />
-                                    </ComposedChart>
-                                </ResponsiveContainer>
-                            </div>
+                        <ExpressEntryDrawsChart />  
 
 
                         {/* 2x2 Grid for other charts */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-[90%] mx-auto mt-14">
                             {/* Immigration Trends */}
-                                <div className="bg-white rounded-lg shadow-lg p-6">
-                                    <h2 className="text-xl font-semibold mb-4">Number of Immigrants in Canada (2000–2024)</h2>
+                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
+                                    <h2 className="text-xl font-semibold mb-4">Number of Immigrants Entered in Canada (2000–2024)</h2>
                                     <div className="h-96">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <BarChart 
@@ -334,8 +258,8 @@ const CanadaImmigrationDashboard = () => {
 
 
                                 {/* Study Permits */}
-                                <div className="bg-white rounded-lg shadow-lg p-6">
-                                    <h2 className="text-xl font-semibold mb-4">Study Permit Holders (2000-2024)</h2>
+                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
+                                    <h2 className="text-xl font-semibold mb-4">Actie Study Permit Holders in Canada (2000-2024)</h2>
                                     <div className="h-80">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <AreaChart
@@ -394,7 +318,7 @@ const CanadaImmigrationDashboard = () => {
                                 </div>
 
                                 {/* Provincial Distribution */}
-                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
                                     <h2 className="text-xl font-semibold mb-4">Provincial Immigration Distribution</h2>
 
                                     <div className="mb-4">
@@ -410,7 +334,7 @@ const CanadaImmigrationDashboard = () => {
                                         </select>
                                     </div>
 
-                                    <div className="h-80">
+                                    <div className="h-[400px]">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <PieChart>
                                                 <Pie
@@ -419,7 +343,7 @@ const CanadaImmigrationDashboard = () => {
                                                     nameKey="province"
                                                     cx="50%"
                                                     cy="50%"
-                                                    outerRadius={100}
+                                                    outerRadius={150}
                                                     label={({ province, value, percent }) =>
                                                         `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
                                                     }
@@ -446,6 +370,7 @@ const CanadaImmigrationDashboard = () => {
                     </>
                 )}
             </div>
+        </div>
 
             <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20 md:hidden">
                 <h1 className="text-3xl font-bold text-center text-secondary-950">
@@ -521,7 +446,7 @@ const StudyPermitChart: React.FC = () => {
     });
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
             <h2 className="text-2xl font-semibold mb-4">
                 International Students by Province in {selectedYear}
             </h2>
@@ -632,5 +557,169 @@ const renderCustomizedLabel = (props: any) => {
 };
 
 
+export const ExpressEntryDrawsChart = ({className}: {className?: string}) => {
+    
+    const [isDesktop, setIsDesktop] = useState<boolean>(true);
+    const [selectedYear, setSelectedYear] = useState<string>('2024');
+    const [selectedProgramType, setSelectedProgramType] = useState<string>('');
+    
+    useEffect(() => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth >= 640); // sm breakpoint
+        };
+        handleResize(); // initial check
+        window.addEventListener('resize', handleResize);
 
+        setSelectedProgramType(isDesktop ? 'All' : 'General');
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        setSelectedProgramType(isDesktop ? 'All' : 'General');
+    }, [isDesktop]);
+
+
+    const yearsAvailable = _.uniq(
+        expressEntryData.map(item => {
+            const year = item.Date.split('-')[2];
+            return year ? '20' + year : undefined;
+        })
+    ).filter(Boolean).sort();
+
+    const filteredTypes = expressEntryData.filter(item => {
+        const year = '20' + item.Date.split('-')[2];
+        return year === selectedYear;
+    });
+
+    const programTypes = ['All', ..._.uniq(filteredTypes.map(item => item.Type))];
+
+    // Filter based on year and type
+    const filteredData = expressEntryData.filter(item => {
+        const year = '20' + item.Date.split('-')[2];
+        if (year !== selectedYear) return false;
+        if (selectedProgramType !== 'All' && item.Type !== selectedProgramType) return false;
+        return true;
+    });
+
+    // Sort by date
+    const sortedData = _.sortBy(filteredData, item => {
+        const [day, monthStr, year] = item.Date.split('-');
+        const date = new Date(`${monthStr} ${day}, 20${year}`);
+        return date.getTime();
+    });
+
+    const normalizedData = sortedData.map(d => ({
+        ...d,
+        'CRS Cut off': Number(d['CRS Cut off']),
+    }));
+
+    // Format date for X-axis labels
+    const formatDate = (dateStr: string) => {
+        const [day, month] = dateStr.split('-');
+        return `${day} ${month}`;
+    };
+
+
+    return (
+        <div className={cn("w-[90%] bg-white rounded-lg border-2 border-secondary-300 shadow-lg p-6 mt-16 mx-auto", className)}>
+            <h2 className="text-2xl font-semibold mb-4">Express Entry Draws</h2>
+            <div className="flex flex-col sm:flex-row gap-4 mb-2">
+                <select
+                    className="border-2 border-secondary-300 rounded p-2 w-full sm:w-auto"
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}>
+                    {yearsAvailable.map(year => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
+
+                <select
+                    className="border-2 border-secondary-300 rounded p-2 w-full sm:w-auto"
+                    value={selectedProgramType}
+                    onChange={(e) => setSelectedProgramType(e.target.value)}>
+                    {programTypes.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                    ))}
+                </select>
+            </div>
+
+            <ResponsiveContainer width="100%" height={450}>
+                <ComposedChart
+                    data={normalizedData}
+                    margin={{ top: 40, right: isDesktop ? 40 : 0, left: isDesktop ? 40 : -15, bottom: 20 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                        dataKey="Date"
+                        tickFormatter={formatDate}
+                        interval="preserveStartEnd"
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
+                        label={isDesktop ? {
+                            value: "Draw Date",
+                            position: "insideBottom",
+                            offset: -15,
+                            fontSize: 20,
+                            fontWeight: "bold",
+                        } : undefined}
+                    />
+
+                    <YAxis
+                        domain={["auto", "auto"]}
+                        label={isDesktop ? (
+                            < Text
+                                x={30}
+                                y={170}
+                                angle={-90}
+                                textAnchor="middle"
+                                fontSize={20}
+                                fontWeight="bold"
+                            >CRS Cut-off</Text>
+                        ) : undefined}
+                    />
+                    <defs>
+                        <linearGradient id="colorCRS" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
+                        </linearGradient>
+                    </defs>
+                    <Tooltip
+                        content={({ active, payload }) => {
+                            if (active && payload?.length) {
+                                const data = payload[0].payload;
+                                return (
+                                    <div className="bg-white border border-gray-300 rounded p-3 shadow text-sm">
+                                        <p><strong>Date:</strong> {data.Date}</p>
+                                        <p><strong>Number:</strong> {data.Number}</p>
+                                        <p><strong>Type:</strong> {data.Type}</p>
+                                        <p><strong>CRS Cut-off:</strong> {data["CRS Cut off"]}</p>
+                                        <p><strong>Invitations:</strong> {data.Invitations}</p>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        }}
+                    />
+                    <Area
+                        type="monotone"
+                        dataKey="CRS Cut off"
+                        stroke="none"
+                        fill="url(#colorCRS)"
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="CRS Cut off"
+                        name="CRS Cut-off"
+                        stroke="#0a3d6f"
+                        strokeWidth={2}
+                        dot={{ r: 5 }}
+                        activeDot={{ r: 6 }}
+                    />
+                </ComposedChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
 
