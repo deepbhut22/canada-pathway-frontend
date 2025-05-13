@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 export default function Footer() {
   const location = useLocation();
-  const isMappleAiPage = location.pathname === '/mappleAi';
+  const isMapleAiPage = location.pathname === '/mapleAi';
 
-  if (isMappleAiPage) {
+  if (isMapleAiPage) {
     return null;
   }
 
