@@ -7,7 +7,7 @@
     "dev": "vite",
     "generate:blogs": "ts-node lib/generateBlogData.ts",
     "generate:sitemap": "ts-node scripts/generateSitemap.ts",
-    "build": "node lib/generateBlogData.js && npm run generate:sitemap && vite build",
+    "build": "node lib/generateBlogData.js && node scripts/generateSitemap.js && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
