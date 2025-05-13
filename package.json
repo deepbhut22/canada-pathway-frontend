@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-      "generate:blogs": "ts-node lib/generateBlogData.ts",
-      "build": "node lib/generateBlogData.js && vite build",
+    "generate:blogs": "ts-node lib/generateBlogData.ts",
+    "generate:sitemap": "ts-node scripts/generateSitemap.ts",
+    "build": "node lib/generateBlogData.js && npm run generate:sitemap && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -31,6 +32,7 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^6.22.3",
     "recharts": "^2.15.3",
+    "sitemap": "^8.0.0",
     "tailwind-merge": "^2.6.0",
     "three": "^0.176.0",
     "vanta": "^0.5.24",

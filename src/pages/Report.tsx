@@ -266,14 +266,15 @@ export default function Report() {
               </p>
             </div>
             <div className="mt-5 flex flex-col md:flex-row md:mt-0 md:ml-4 space-y-3 md:space-y-0 md:space-x-3 w-full">
-              <Button
-                variant="outline"
+              <button
+                // variant="outline"
                 onClick={downloadReport}
-                leftIcon={<Download className="h-4 w-4" />}
-                className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
+                disabled={true}
+                // leftIcon={<Download className="h-4 w-4" />}
+                className='w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 disabled:opacity-50 disabled:cursor-not-allowed rounded-md px-4'
               >
                 Download Report
-              </Button>
+              </button>
 
               <Button
                 leftIcon={<Edit className="h-4 w-4" />}

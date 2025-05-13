@@ -5,13 +5,13 @@ import axios from 'axios';
 //     baseURL: 'http://3.98.13.227:5000/api',
 // });
 
-const api = axios.create({
-    baseURL: 'https://api.pathpr.ca/api',
-});
-
 // const api = axios.create({
-//     baseURL: 'http://localhost:5000/api',
+//     baseURL: 'https://api.pathpr.ca/api',
 // });
+
+const api = axios.create({
+    baseURL: 'http://localhost:5000/api',
+});
 
 // Add JWT to headers
 // api.interceptors.request.use((config) => {

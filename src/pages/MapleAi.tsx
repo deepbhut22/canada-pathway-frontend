@@ -37,7 +37,7 @@ export default function MapleAI() {
             </div>
 
             <div className="block absolute sm:hidden pointer-events-none w-screen h-[50vh]">
-                <VantaHaloBackground xOffset={0.0} yOffset={0.0} />
+                <VantaHaloBackground xOffset={0.0} yOffset={0.0} size={1.8}/>
             </div>
 
                 <div className="flex flex-col justify-center md:pt-24 h-screen w-full z-10 isolate">
@@ -78,7 +78,7 @@ export default function MapleAI() {
 
                     </div>
                 </div>
-                <div className="absolute bottom-0 w-full h-24 overflow-hidden z-[-1]">
+                <div className="hidden sm:block absolute bottom-0 w-full h-24 overflow-hidden z-[-1]">
                     <svg
                         className="w-full h-full"
                         viewBox="0 0 100 100"
