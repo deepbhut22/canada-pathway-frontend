@@ -560,7 +560,7 @@ const renderCustomizedLabel = (props: any) => {
 export const ExpressEntryDrawsChart = ({className}: {className?: string}) => {
     
     const [isDesktop, setIsDesktop] = useState<boolean>(true);
-    const [selectedYear, setSelectedYear] = useState<string>('2024');
+    const [selectedYear, setSelectedYear] = useState<string>('2025');
     const [selectedProgramType, setSelectedProgramType] = useState<string>('');
     
     useEffect(() => {
@@ -576,7 +576,7 @@ export const ExpressEntryDrawsChart = ({className}: {className?: string}) => {
     }, []);
 
     useEffect(() => {
-        setSelectedProgramType(isDesktop ? 'All' : 'General');
+        setSelectedProgramType(isDesktop ? 'All' : 'Canadian Experience Class');
     }, [isDesktop]);
 
 

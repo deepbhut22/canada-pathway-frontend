@@ -83,6 +83,21 @@ export default function Home() {
                   Latest invitation rounds for Canada's immigration programs.
                 </p>
                 <div className="space-y-4">
+                    <div
+                      onClick={() => window.open("https://immigratemanitoba.com/2025/05/eoi-draw-244/", "_blank", "noopener,noreferrer")}
+                      className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <div className="flex flex-col">
+                          <div className="font-medium text-secondary-800">Express Entry</div>
+                          <p className="text-secondary-600">Canadian Experience Class</p>
+                        </div>
+                        <div className="text-sm text-secondary-500">May 13, 2025</div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-secondary-600">500 invitations</div>
+                        <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 547</div>
+                      </div>
+                    </div>
                   <div
                     onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=344", "_blank", "noopener,noreferrer")}
                     className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1"
@@ -113,22 +128,6 @@ export default function Home() {
                     <div className="flex justify-between items-center">
                       <div className="text-sm text-secondary-600">500 invitations</div>
                       <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 510</div>
-                    </div>
-                  </div>
-
-                  <div 
-                    onClick={() => window.open("https://immigratemanitoba.com/2025/05/eoi-draw-244/", "_blank", "noopener,noreferrer")}
-                    className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex flex-col">
-                        <div className="font-medium text-secondary-800">Manitoba PNP</div>
-                        <p className="text-secondary-600">Skilled Workers Overseas</p>
-                      </div>
-                      <div className="text-sm text-secondary-500">May 01, 2025</div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">26 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">Score: 727</div>
                     </div>
                   </div>
                   <div className='flex justify-between items-center'>

@@ -1,5 +1,19 @@
 export const expressEntryData = [
     {
+        "Number": "347",
+        "Date": "13-May-25",
+        "Type": "Canadian Experience Class",
+        "Invitations": "500",
+        "CRS Cut off": 547
+    },
+    {
+        "Number": "346",
+        "Date": "12-May-25",
+        "Type": "Provincial Nominee Program",
+        "Invitations": "511",
+        "CRS Cut off": 706
+    },
+    {
         "Number": "345",
         "Date": "2-May-25",
         "Type": "Healthcare and social services occupations (Version 2)",
