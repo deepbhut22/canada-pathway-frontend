@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Step } from '../types';
 import { getNextStep } from '../utils/helpers';
@@ -100,6 +100,10 @@ export default function Questionnaire() {
         return <div>Invalid step</div>;
     }
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   
   return (
     <Layout>

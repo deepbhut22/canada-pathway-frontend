@@ -4,7 +4,7 @@ import { NewsItem } from '../../types';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardImage } from '../ui/Card';
 import {HorizontalSlider} from '../ui/HorizontalSlider';
 import { ProvinceLinksDialog } from '../ProvinceLinksDialogs';
-import { provinceLink } from '../../utils/dummyData';
+import { PNPLinks } from '../../utils/dummyData';
 
 interface ProvincialSectionProps {
   provincialNews: NewsItem[];
@@ -51,7 +51,7 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
               onClick={() => {
                 setShowLinksDialog(true);
                 // console.log(provinceLink[province.code as keyof typeof provinceLink]);
-                setOptions(provinceLink[province.code as keyof typeof provinceLink]);
+                setOptions(PNPLinks[province.code as keyof typeof PNPLinks]);
               }}
               interactive
             >
@@ -72,7 +72,7 @@ export default function ProvincialSection({ provincialNews }: ProvincialSectionP
             <Card key={province.code} className="flex flex-col justify-between items-center text-center hover:shadow-md transition-shadow mx-2 my-1 max-h-40 min-h-40"
               onClick={() => {
                 setShowLinksDialog(true);
-                setOptions(provinceLink[province.code as keyof typeof provinceLink]);
+                setOptions(PNPLinks[province.code as keyof typeof PNPLinks]);
               }}
               interactive
             >

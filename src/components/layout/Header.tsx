@@ -80,7 +80,7 @@ export default function Header() {
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: '/profile', label: 'My Profile' },
-    { path: '/mappleAi', label: 'MappleAI' },
+    { path: '/mapleAi', label: 'MapleAI' },
     { path: "/report", label: 'My Report' },
     // { path: '/news', label: 'News' },
   ];

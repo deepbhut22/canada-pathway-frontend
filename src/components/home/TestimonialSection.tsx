@@ -6,10 +6,10 @@ export default function TestimonialSection() {
     {
       id: 1,
       content: "I was completely overwhelmed by conflicting IRCC guides, provincial websites, and forum advice—until PathPR’s all‑in‑one AI dashboard gave me instant clarity. It pinpointed Ontario’s tech‑stream for me,  and mapped out every next step.",
-      author: "Raj",
+      author: "Navdeep",
       origin: "Toronto",
       rating: 5,
-      avatar: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150"
+      avatar: "https://images.unsplash.com/photo-1736627767464-0b49b52ce699?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8fA%3D%3D"
     },
     {
       id: 2,
@@ -17,15 +17,15 @@ export default function TestimonialSection() {
       author: "Raj",
       origin: "Toronto",
       rating: 5,
-      avatar: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150"
+      avatar: "https://images.unsplash.com/photo-1588733103629-b77afe0425ce?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       id: 3,
       content: "We were frustrated by conflicting IRCC info and didn’t know if our IT role qualified.PathPR instantly showed that updating to ‘Software Engineer(2173)’ made us STEM- eligible—exactly the clarity we’d been searching for.",
-      author: "Sarah Kim",
-      origin: "South Korea",
+      author: "Sarah & Amir",
+      origin: "Calgary",
       rating: 4,
-      avatar: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150"
+      avatar: "https://images.unsplash.com/photo-1502003148287-a82ef80a6abc?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
 

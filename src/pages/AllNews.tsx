@@ -39,6 +39,8 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
 
     // Filter and sort news whenever the filters change
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         let result = [...allNews];
 
         // Apply search filter

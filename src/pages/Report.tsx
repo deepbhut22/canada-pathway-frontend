@@ -67,6 +67,9 @@ export default function Report() {
   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
   React.useEffect(() => {
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (!isComplete) {
       navigate('/profile');
     }    

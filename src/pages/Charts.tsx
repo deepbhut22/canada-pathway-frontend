@@ -134,6 +134,8 @@ const CanadaImmigrationDashboard = () => {
                 setProgramType('All');
             }
             setLoading(false);
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [selectedYear, expressEntryData]);
 
 
@@ -205,10 +207,6 @@ const CanadaImmigrationDashboard = () => {
     return (
         <Layout >
             <div className="hidden md:flex flex-col w-full space-y-8 p-4 mt-20">
-                <h1 className="text-3xl font-bold text-center text-secondary-950">
-                    Canada Immigration Dashboard
-                </h1>
-
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <p className="text-xl">Loading data...</p>

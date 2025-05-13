@@ -13,7 +13,7 @@ import { getGeneralNews, getProvincialNews } from './data/dummyNews';
 import LegalInfoComponent from './pages/PrivacyPolicy';
 import GoogleCallback from './pages/GoogleCallback';  
 import Charts from './pages/Charts';
-import MappleAi from './pages/MappleAi';
+import MapleAI from './pages/MapleAi';
 import PNPResourcesPage from './pages/PNPResourcesPage';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -55,10 +55,10 @@ export default function App() {
           />
 
           <Route
-            path='/mappleAi'
+            path='/mapleAi'
             element={
               <ProtectedRoute>
-                <MappleAi />
+                <MapleAI />
               </ProtectedRoute>
             }
           />

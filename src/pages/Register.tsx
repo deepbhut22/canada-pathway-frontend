@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import BackgroundAnimation from '../components/home/BackgroundAnimation';
@@ -32,6 +32,10 @@ const Register = () => {
     }
 
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const handleGoogleLogin = () => {
     window.location.href = 'https://api.pathpr.ca/api/auth/google';

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import { ProvinceLinksDialog } from "../components/ProvinceLinksDialogs";
 import { HoverEffect } from "../components/ui/card-hover-effect";
@@ -10,13 +10,16 @@ interface ProvinceLinksOption {
 
 export default function PNPResourcesPage() {
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
     const [showLinksDialog, setShowLinksDialog] = useState(false);
     const [provinceLinks, setProvinceLinks] = useState<ProvinceLinksOption[]>([]);
 
   return (
     <Layout>
         <div className="w-[80%] mx-auto mt-24 text-center">
-            <h1 className="text-2xl font-bold">PNP Resources</h1>
             <HoverEffect items={provinces} setProvinceLinks={setProvinceLinks} setShowLinksDialog={setShowLinksDialog} />
         </div>
           <ProvinceLinksDialog

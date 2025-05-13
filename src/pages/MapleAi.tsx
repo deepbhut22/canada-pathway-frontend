@@ -8,7 +8,7 @@ import ChatBox from "../components/ui/ChatBox";
 import { MessagePopup } from "../components/ui/MessagePopup";
 import { useNavigate } from "react-router-dom";
 
-export default function MappleAI() {
+export default function MapleAI() {
 
     const [isLoginPopup, setIsLoginPopup] = useState(false);
     const [isChatboxOpen, setIsChatboxOpen] = useState(false);
@@ -48,14 +48,14 @@ export default function MappleAI() {
                                     Try Our
                                 </p>
                                 <p className="text-4xl md:text-7xl font-bold w-full text-white">
-                                    <TypewriterText text="Mapple AI" time={100} />
+                                    <TypewriterText text="Maple AI" time={100} />
                                 </p>
                             </div>
 
                             <div className="space-y-10">
                                 <p className="text-xl font-normal w-full text-white">
                                     <FadeIn delay={1000}>
-                                        <p>For Your Personalized Immigration Insights with Mapple AI</p>
+                                        <p>For Your Personalized Immigration Insights.</p>
                                     </FadeIn>
                                 </p>
                             </div>

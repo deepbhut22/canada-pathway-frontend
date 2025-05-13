@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import HeroSection from '../components/home/HeroSection';
 import NewsSection from '../components/home/NewsSection';
@@ -10,11 +10,14 @@ import TestimonialSection from '../components/home/TestimonialSection';
 import { getGeneralNews, getProvincialNews } from '../data/dummyNews';
 import useAuthStore from '../store/authStore';
 import { useUserStore } from '../store/userStore';
-import { MessagePopup } from '../components/ui/MessagePopup';
-import { CheckCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+
+import { Link, useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/ui/LoadinSpinner';
 import ChatBox from '../components/ui/ChatBox';
+import { CardFooter } from '../components/ui/Card';
+import Button from '../components/ui/Button';
+import { ExternalLink } from 'lucide-react';
+
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
@@ -32,6 +35,10 @@ export default function Home() {
       <LoadingSpinner fullScreen={true} size='large' />
     );
   }
+
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // }, []);
 
   return (
     <Layout>
@@ -75,6 +82,23 @@ export default function Home() {
                   Latest invitation rounds for Canada's immigration programs.
                 </p>
                 <div className="space-y-4">
+                  <div
+                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=344", "_blank", "noopener,noreferrer")}
+                    className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1"
+                  >
+                    <div className="flex justify-between items-center mb-1">
+                      <div className="flex flex-col">
+                        <div className="font-medium text-secondary-800">Express Entry</div>
+                        <p className="text-secondary-600">Provincial Nominee Program</p>
+                      </div>
+                      <div className="text-sm text-secondary-500">May 12, 2025</div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm text-secondary-600">511 invitations</div>
+                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 706</div>
+                    </div>
+                  </div>
+
                   <div 
                     onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=345", "_blank", "noopener,noreferrer")}
                     className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
@@ -106,22 +130,9 @@ export default function Home() {
                       <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">Score: 727</div>
                     </div>
                   </div>
-
-                  <div
-                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=344", "_blank", "noopener,noreferrer")}
-                    className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1"
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex flex-col">
-                        <div className="font-medium text-secondary-800">Express Entry</div>
-                        <p className="text-secondary-600">Education Occupations</p>
-                      </div>
-                      <div className="text-sm text-secondary-500">May 01, 2025</div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">1,000 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 479</div>
-                    </div>
+                  <div className='flex justify-between items-center'>
+                    <p className='text-secondary-600'>View all draws</p>
+                    <Link className='text-secondary-600 text-sm underline flex items-center gap-1' to="/immigration-statistics"><ExternalLink className='w-4 h-4' /> Private Draws</Link>
                   </div>
                 </div>
               </div>
