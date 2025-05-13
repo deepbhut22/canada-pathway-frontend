@@ -139,7 +139,7 @@ export default function HeroSection() {
                       onClick={() => {
                         if (isAuth) {
                           if (isProfileComplete) {
-                            navigate('/maple-ai')
+                            navigate('/mapleAi')
                           } else {
                             useAuthStore.getState().setIsPopupOpen(true);
                           }
