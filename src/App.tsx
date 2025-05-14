@@ -17,6 +17,11 @@ import MapleAI from './pages/MapleAi';
 import PNPResourcesPage from './pages/PNPResourcesPage';
 import Blog from './pages/Blog';
 import BlogPostPage from './pages/BlogPost';
+import ForgotPassword from './pages/ForgotPassword';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ResetPassword from './pages/ResetPassword';
+
 // import Blog from './pages/Blog';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -42,6 +47,8 @@ export default function App() {
           <Route path="/immigration-resources" element={<PNPResourcesPage />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/news"
             element={
@@ -94,6 +101,18 @@ export default function App() {
           />
         </Routes>
       </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark" // or "dark"
+        limit={5}
+      />
     </>
   );
 }

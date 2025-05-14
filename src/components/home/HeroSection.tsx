@@ -172,6 +172,20 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+        <div className="hidden sm:block absolute bottom-0 w-full h-24 overflow-hidden z-10">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,0 C30,120 70,120 100,0 L100,100 L0,100 Z"
+
+              fill="white"
+            />
+          </svg>
+        </div>
     </div>
     </>
   );
