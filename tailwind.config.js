@@ -66,6 +66,7 @@ export default {
       fourth: "fourth 50s linear infinite",
       fifth: "fifth 60s linear infinite",
       pulse: 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      bounceSlow: 'bounce 1.2s infinite',
     },
     keyframes: {
       first: {

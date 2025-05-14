@@ -220,7 +220,7 @@ const CanadaImmigrationDashboard = () => {
                             <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
                         </div>
                         <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 relative z-10">
-                            <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration Statistics</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Canada Immigration Dashboard</h1>
                             <p className="text-lg text-gray-300 max-w-3xl">
                                 A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.                            </p>
                         </div>
@@ -260,7 +260,7 @@ const CanadaImmigrationDashboard = () => {
 
                                 {/* Study Permits */}
                                 <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
-                                    <h2 className="text-xl font-semibold mb-4">Actie Study Permit Holders in Canada (2000-2024)</h2>
+                                    <h2 className="text-xl font-semibold mb-4">Active Study Permit Holders in Canada (2000-2024)</h2>
                                     <div className="h-80">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <AreaChart
@@ -375,7 +375,7 @@ const CanadaImmigrationDashboard = () => {
 
             <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20 md:hidden">
                 <h1 className="text-3xl font-bold text-center text-secondary-950">
-                    You will need bigger screen to view the charts (desktop views)
+                    You will need bigger screen to view the charts (desktop view.)
                 </h1>
             </div>
         </Layout>

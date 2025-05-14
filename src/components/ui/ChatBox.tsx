@@ -146,7 +146,15 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
                 {isLoading && (
                     <div className="flex justify-start">
                         <div className="rounded-lg px-4 py-2 bg-white border border-secondary-200">
-                            <Loader2 className="h-5 w-5 animate-spin text-secondary-950" />
+                            <div className="flex justify-start">
+                                <div className="rounded-lg px-4 py-2 bg-white border border-secondary-200">
+                                    <div className="flex space-x-1">
+                                        <span className="h-2 w-2 bg-secondary-950 rounded-full animate-bounce [animation-delay:0s]"></span>
+                                        <span className="h-2 w-2 bg-secondary-950 rounded-full animate-bounce [animation-delay:0.15s]"></span>
+                                        <span className="h-2 w-2 bg-secondary-950 rounded-full animate-bounce [animation-delay:0.3s]"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

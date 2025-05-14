@@ -86,7 +86,7 @@ export default function Home() {
                 </p>
                 <div className="space-y-4">
                     <div
-                      onClick={() => window.open("https://immigratemanitoba.com/2025/05/eoi-draw-244/", "_blank", "noopener,noreferrer")}
+                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=347", "_blank", "noopener,noreferrer")}
                       className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
                       <div className="flex justify-between items-center mb-1">
                         <div className="flex flex-col">
@@ -101,7 +101,7 @@ export default function Home() {
                       </div>
                     </div>
                   <div
-                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=344", "_blank", "noopener,noreferrer")}
+                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=346", "_blank", "noopener,noreferrer")}
                     className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1"
                   >
                     <div className="flex justify-between items-center mb-1">
