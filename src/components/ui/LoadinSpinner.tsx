@@ -10,9 +10,9 @@ export default function LoadingSpinner({
     fullScreen = false
 }: LoadingSpinnerProps) {
     const gifSizes = {
-        small: 'w-8 h-8',
-        medium: 'w-14 h-14',
-        large: 'w-24 h-24',
+        small: 'w-14 h-12',
+        medium: 'w-24 h-20',
+        large: 'w-32 h-28',
     };
 
     const gifSize = gifSizes[size];
@@ -30,7 +30,7 @@ export default function LoadingSpinner({
                     className={gifSize}
                 />
                 {message && (
-                    <p className="mt-3 text-secondary-700 font-medium">{message}</p>
+                    <p className="text-secondary-700 font-medium">{message}</p>
                 )}
             </div>
         </div>
