@@ -12,6 +12,7 @@ import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 import { cn } from '../lib/utils';
 import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 // Immigration Data
 const immigrationData = [
     { year: '2000-01', immigrants: 252527 },
@@ -208,177 +209,186 @@ const CanadaImmigrationDashboard = () => {
     };
 
     return (
-        <Layout >
-            <div className="hidden md:flex flex-col w-full space-y-8 p-4">
-                    <div className="bg-white min-h-screen">
-                        <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
-                            {/* <BackgroundAnimation /> */}
-                            <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='10vh' />
+        <>
+            <Helmet>
+                <title>Canada Immigration Statistics | Pathpr</title>
+                <meta name="description" content="Explore interactive charts showing the number of study permits, Express Entry draws, provincial immigration, and more across Canada by year." />
+                <meta property="og:title" content="Canada Immigration Statistics | Pathpr" />
+                <meta property="og:description" content="Visualize immigration trends across Canada with our latest statistics and interactive charts." />
+                <meta property="og:url" content="https://pathpr.ca/immigration-statistics" />
+            </Helmet>
+            <Layout >
+                <div className="hidden md:flex flex-col w-full space-y-8 p-4">
+                        <div className="bg-white min-h-screen">
+                            <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
+                                {/* <BackgroundAnimation /> */}
+                                <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='10vh' />
+                            </div>
+                            <div className="block md:hidden absolute inset-0 pointer-events-none w-full mt-20">
+                                {/* <BackgroundAnimation /> */}
+                                <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
+                            </div>
+                            <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 relative z-10">
+                            <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Canada Immigration Dashboard</h1>
+                                <p className="text-lg text-gray-300 max-w-3xl">
+                                    A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.                            </p>
+                            </div>
+
+                    {loading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <p className="text-xl">Loading data...</p>
                         </div>
-                        <div className="block md:hidden absolute inset-0 pointer-events-none w-full mt-20">
-                            {/* <BackgroundAnimation /> */}
-                            <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
-                        </div>
-                        <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 relative z-10">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Canada Immigration Dashboard</h1>
-                            <p className="text-lg text-gray-300 max-w-3xl">
-                                A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.                            </p>
-                        </div>
-
-                {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <p className="text-xl">Loading data...</p>
-                    </div>
-                ) : (
-                    <>
-                        <ExpressEntryDrawsChart />  
+                    ) : (
+                        <>
+                            <ExpressEntryDrawsChart />  
 
 
-                        {/* 2x2 Grid for other charts */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-[90%] mx-auto mt-14">
-                            {/* Immigration Trends */}
-                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
-                                    <h2 className="text-xl font-semibold mb-4">Number of Immigrants Entered in Canada (2000–2024)</h2>
-                                    <div className="h-96">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <BarChart 
-                                                margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
-                                                data={immigrationData}>
-                                                <XAxis
-                                                    dataKey="year"
-                                                    tick={<CustomTick />}
-                                                    interval={0}
-                                                />                                                
-                                                <YAxis tickFormatter={(value) => new Intl.NumberFormat().format(value as number)} />
-                                                <Tooltip formatter={(value) => new Intl.NumberFormat().format(value as number)} />
-                                                <Bar dataKey="immigrants" fill="#064987" />
-                                            </BarChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                </div>
-
-
-                                {/* Study Permits */}
-                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
-                                    <h2 className="text-xl font-semibold mb-4">Active Study Permit Holders in Canada (2000-2024)</h2>
-                                    <div className="h-80">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <AreaChart
-                                                data={studyPermitData}
-                                                margin={{ top: 10, right: 30, left: 30, bottom: 25 }}
-                                            >
-                                                <defs>
-                                                    <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
-                                                        <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
-                                                    </linearGradient>
-                                                </defs>
-                                                <XAxis
-                                                    dataKey="year"
-                                                    angle={-45}
-                                                    textAnchor="end"
-                                                    height={60}
-                                                    label={{ value: 'Year', position: 'insideBottom', offset: 0, fontSize: 20, fontWeight: 'bold' }}
-                                                    tick={{ fontSize: 12 }}
-                                                />
-                                                <YAxis
-                                                    tickFormatter={(value) => new Intl.NumberFormat().format(value)}
-                                                    tick={{ fontSize: 12 }}
-                                                    label={
-                                                        <Text
-                                                            x={20} // adjust this to move it horizontally
-                                                            y={140} // adjust this to move it vertically
-                                                            angle={-90}
-                                                            textAnchor="middle"
-                                                            fontSize={20}
-                                                            fontWeight="bold"
-                                                        >
-                                                            Number of People
-                                                        </Text>
-                                                    }
-                                                />
-                                                <CartesianGrid strokeDasharray="3 3" />
-                                                <Tooltip
-                                                    formatter={(value) => {
-                                                        const numericValue = typeof value === 'number' ? value : Number(value);
-                                                        return new Intl.NumberFormat().format(numericValue);
-                                                    }}
-                                                />
-
-                                                <Area
-                                                    type="monotone"
-                                                    dataKey="totalStudents"
-                                                    stroke="#0056a0"
-                                                    fillOpacity={2}
-                                                    fill="url(#colorStudents)"
-                                                    name="Total Students"
-                                                />
-                                            </AreaChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                </div>
-
-                                {/* Provincial Distribution */}
-                                <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
-                                    <h2 className="text-xl font-semibold mb-4">Provincial Immigration Distribution</h2>
-
-                                    <div className="mb-4">
-                                        <label className="mr-2 font-medium">Year:</label>
-                                        <select
-                                            value={provincialYear}
-                                            onChange={(e) => setProvincialYear(e.target.value)}
-                                            className="border rounded p-2"
-                                        >
-                                            <option value="2021-2022">2021-2022</option>
-                                            <option value="2022-2023">2022-2023</option>
-                                            <option value="2023-2024">2023-2024</option>
-                                        </select>
+                            {/* 2x2 Grid for other charts */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-[90%] mx-auto mt-14">
+                                {/* Immigration Trends */}
+                                    <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
+                                        <h2 className="text-xl font-semibold mb-4">Number of Immigrants Entered in Canada (2000–2024)</h2>
+                                        <div className="h-96">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <BarChart 
+                                                    margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+                                                    data={immigrationData}>
+                                                    <XAxis
+                                                        dataKey="year"
+                                                        tick={<CustomTick />}
+                                                        interval={0}
+                                                    />                                                
+                                                    <YAxis tickFormatter={(value) => new Intl.NumberFormat().format(value as number)} />
+                                                    <Tooltip formatter={(value) => new Intl.NumberFormat().format(value as number)} />
+                                                    <Bar dataKey="immigrants" fill="#064987" />
+                                                </BarChart>
+                                            </ResponsiveContainer>
+                                        </div>
                                     </div>
 
-                                    <div className="h-[400px]">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <PieChart>
-                                                <Pie
-                                                    data={pieData}
-                                                    dataKey="value"
-                                                    nameKey="province"
-                                                    cx="50%"
-                                                    cy="50%"
-                                                    outerRadius={150}
-                                                    label={({ province, value, percent }) =>
-                                                        `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
-                                                    }
-                                                    labelLine={true}
+
+                                    {/* Study Permits */}
+                                    <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
+                                        <h2 className="text-xl font-semibold mb-4">Active Study Permit Holders in Canada (2000-2024)</h2>
+                                        <div className="h-80">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <AreaChart
+                                                    data={studyPermitData}
+                                                    margin={{ top: 10, right: 30, left: 30, bottom: 25 }}
                                                 >
-                                                    {pieData.map((entry, index) => (
-                                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                                    ))}
-                                                </Pie>
-                                                <Tooltip
-                                                    formatter={(value) => {
-                                                        const numericValue = typeof value === 'number' ? value : Number(value);
-                                                        return new Intl.NumberFormat().format(numericValue);
-                                                    }}
-                                                />
-                                            </PieChart>
-                                        </ResponsiveContainer>
+                                                    <defs>
+                                                        <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor="#0056a0" stopOpacity={0.8} />
+                                                            <stop offset="95%" stopColor="#0056a0" stopOpacity={0.1} />
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <XAxis
+                                                        dataKey="year"
+                                                        angle={-45}
+                                                        textAnchor="end"
+                                                        height={60}
+                                                        label={{ value: 'Year', position: 'insideBottom', offset: 0, fontSize: 20, fontWeight: 'bold' }}
+                                                        tick={{ fontSize: 12 }}
+                                                    />
+                                                    <YAxis
+                                                        tickFormatter={(value) => new Intl.NumberFormat().format(value)}
+                                                        tick={{ fontSize: 12 }}
+                                                        label={
+                                                            <Text
+                                                                x={20} // adjust this to move it horizontally
+                                                                y={140} // adjust this to move it vertically
+                                                                angle={-90}
+                                                                textAnchor="middle"
+                                                                fontSize={20}
+                                                                fontWeight="bold"
+                                                            >
+                                                                Number of People
+                                                            </Text>
+                                                        }
+                                                    />
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <Tooltip
+                                                        formatter={(value) => {
+                                                            const numericValue = typeof value === 'number' ? value : Number(value);
+                                                            return new Intl.NumberFormat().format(numericValue);
+                                                        }}
+                                                    />
+
+                                                    <Area
+                                                        type="monotone"
+                                                        dataKey="totalStudents"
+                                                        stroke="#0056a0"
+                                                        fillOpacity={2}
+                                                        fill="url(#colorStudents)"
+                                                        name="Total Students"
+                                                    />
+                                                </AreaChart>
+                                            </ResponsiveContainer>
+                                        </div>
                                     </div>
-                                </div>
 
-                            {/* international students */}
-                            <StudyPermitChart />                           
-                        </div>
-                    </>
-                )}
-            </div>
-        </div>
+                                    {/* Provincial Distribution */}
+                                    <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-secondary-300">
+                                        <h2 className="text-xl font-semibold mb-4">Provincial Immigration Distribution</h2>
 
-            <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20 md:hidden">
-                <h1 className="text-3xl font-bold text-center text-secondary-950">
-                    You will need bigger screen to view the charts (desktop view.)
-                </h1>
+                                        <div className="mb-4">
+                                            <label className="mr-2 font-medium">Year:</label>
+                                            <select
+                                                value={provincialYear}
+                                                onChange={(e) => setProvincialYear(e.target.value)}
+                                                className="border rounded p-2"
+                                            >
+                                                <option value="2021-2022">2021-2022</option>
+                                                <option value="2022-2023">2022-2023</option>
+                                                <option value="2023-2024">2023-2024</option>
+                                            </select>
+                                        </div>
+
+                                        <div className="h-[400px]">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={pieData}
+                                                        dataKey="value"
+                                                        nameKey="province"
+                                                        cx="50%"
+                                                        cy="50%"
+                                                        outerRadius={150}
+                                                        label={({ province, value, percent }) =>
+                                                            `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
+                                                        }
+                                                        labelLine={true}
+                                                    >
+                                                        {pieData.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip
+                                                        formatter={(value) => {
+                                                            const numericValue = typeof value === 'number' ? value : Number(value);
+                                                            return new Intl.NumberFormat().format(numericValue);
+                                                        }}
+                                                    />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                {/* international students */}
+                                <StudyPermitChart />                           
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </Layout>
+
+                <div className="flex flex-col w-full h-[70vh] justify-center items-center space-y-8 p-4 mt-20 md:hidden">
+                    <h1 className="text-3xl font-bold text-center text-secondary-950">
+                        You will need bigger screen to view the charts (desktop view.)
+                    </h1>
+                </div>
+            </Layout>
+        </>
     );
 };
 

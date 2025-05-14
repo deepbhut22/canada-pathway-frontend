@@ -7,6 +7,7 @@ import { MessagePopup } from '../components/ui/MessagePopup';
 import useAuthStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
+import { Helmet } from 'react-helmet-async';
 // Sample categories for filter - replace with your actual categories
 const CATEGORIES = [
     'All Categories',
@@ -86,6 +87,14 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
     };
 
     return (
+        <>
+        <Helmet>
+            <title>Latest Canadian Immigration News | Pathpr</title>
+            <meta name="description" content="Stay updated with the most recent news in Canadian immigration. Filter by provinces or topics for tailored updates." />
+            <meta property="og:title" content="Latest Canadian Immigration News | Pathpr" />
+            <meta property="og:description" content="Get the latest and most accurate updates on Canadian immigration policies, announcements, and trends." />
+            <meta property="og:url" content="https://pathpr.ca/news" />
+        </Helmet>
         <Layout>
             <div className="bg-gray-50 min-h-screen mt-8">
                 <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
@@ -276,6 +285,7 @@ export default function AllNewsPage({ allNews }: AllNewsPageProps) {
                 benefits={benefits}
             />  
         </Layout>
+        </>
     );
 }
 

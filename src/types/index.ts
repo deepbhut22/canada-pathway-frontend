@@ -175,3 +175,39 @@ export interface BlogPost {
   description: string;
   content: string;
 }
+
+
+export interface ConsultationFee {
+  serviceName: string;
+  cost: number;
+  duration: string;
+}
+
+export interface Consultant {
+  about: string;
+  category: string;
+  businessName: string;
+  logoUrl: string;
+  fullName: string;
+  shortBio: string;
+  officeAddress: string;
+  serviceAreas: string[];
+  city: string;
+  membershipNumber: string;
+  licenseStatus: string;
+  licenseExpiry: string;
+  phoneNumber: string;
+  emailAddress: string;
+  websiteUrl: string;
+  contactPersonName: string;
+  contactPersonPhone: string;
+  contactPersonEmail: string;
+  deliveryEmail: string;
+  languagesSpoken: string[];
+  starRating: number;
+  testimonials: string[];
+  areasOfExpertise: string[];
+  totalNumberOfReviews: number;
+  serviceStartsFrom: number;
+  consultationFees: ConsultationFee[];
+}
