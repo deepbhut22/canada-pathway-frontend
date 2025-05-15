@@ -19,6 +19,9 @@ import Button from '../components/ui/Button';
 import { ExternalLink } from 'lucide-react';
 import { ExpressEntryDrawsChart } from './Charts';
 import { Helmet } from 'react-helmet-async';
+import { HorizontalSlider } from '../components/ui/HorizontalSlider';
+import consultantsData from '../utils/ConsultanatFakeData.json';
+import { ConsultantCard } from '../pages/ConsultantList';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuthStore();
   const { userProfile } = useUserStore();
@@ -158,6 +161,19 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className='w-[80%] mx-auto px-4 py-2 shadow-xl m-8 sm:px-6 lg:px-8 mt-14 border border-secondary-100 rounded-lg'>
+          <h2 className='text-2xl font-semibold text-secondary-900 mb-4 mt-4'>Connect With Our Best Consultants</h2>
+          <HorizontalSlider
+            items={consultantsData.slice(0, 5)}
+            renderItem={(item) => (
+              <ConsultantCard consultant={item} className='m-4 bg-white'/>
+            )}
+            itemsPerSlide={3}
+            showControls={true}
+            className='bg-white'
+          />
         </div>
 
         {/* Provincial News */}

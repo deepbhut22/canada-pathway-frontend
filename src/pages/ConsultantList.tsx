@@ -194,15 +194,16 @@
 // src/components/ConsultantCard.tsx
 import React from 'react';
 import { Consultant } from '../types/index';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface ConsultantCardProps {
     consultant: Consultant;
+    className?: string;
 }
 
-const ConsultantCard: React.FC<ConsultantCardProps> = ({ consultant }) => {
+export const ConsultantCard: React.FC<ConsultantCardProps> = ({ consultant, className }) => {
     return (
-        <div className="bg-secondary-50 rounded-lg shadow-md overflow-hidden transition-all border border-secondary-200 duration-500 ease-in-out hover:shadow-lg hover:-translate-y-2 hover:shadow-xl">
+        <div className={`bg-secondary-50 rounded-lg shadow-md overflow-hidden transition-all border border-secondary-200 duration-500 ease-in-out hover:shadow-lg hover:-translate-y-2 hover:shadow-xl ${className}`}>
             <div className="p-6">
                 <div className="flex items-center mb-4">
                     <img
@@ -247,7 +248,7 @@ const ConsultantCard: React.FC<ConsultantCardProps> = ({ consultant }) => {
 
                 <Link
                     to={`/consultants/${consultant.membershipNumber}`}
-                    className="block w-full text-center bg-secondary-900 text-white hover:bg-secondary-50 hover:text-secondary-900 hover:border-2 hover:border-secondary-900 py-2 px-4 rounded transition-colors duration-300"
+                    className="block w-full text-center bg-secondary-900 text-white hover:bg-secondary-50 hover:text-secondary-900 hover:border-2 hover:border-secondary-900 py-1 rounded-lg px-4 transition-colors duration-300"
                 >
                     View Profile
                 </Link>
@@ -264,6 +265,8 @@ interface FilterSectionProps {
     onCityChange: (city: string) => void;
     sortOption: string;
     onSortChange: (option: string) => void;
+    searchQuery?: string;
+    onSearchChange: (query: string) => void;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
@@ -271,16 +274,18 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     selectedCity,
     onCityChange,
     sortOption,
-    onSortChange
+    onSortChange,
+    searchQuery,
+    onSearchChange
 }) => {
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-secondary-800 mb-4">Filter & Sort</h2>
+        <div className="bg-white rounded-lg shadow-md mb-6">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center p-2">
+            <h2 className="text-xl w-max font-semibold text-secondary-800">Filter & Sort</h2>
                 {/* City Filter */}
                 <div>
-                    <label htmlFor="city-filter" className="block text-secondary-700 font-medium mb-2">
+                    <label htmlFor="city-filter" className="block text-secondary-700 text-sm mb-2">
                         Filter by City
                     </label>
                     <select
@@ -300,7 +305,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
 
                 {/* Sort Options */}
                 <div>
-                    <label htmlFor="sort-options" className="block text-secondary-700 font-medium mb-2">
+                    <label htmlFor="sort-options" className="block text-secondary-700 text-sm mb-2">
                         Sort By
                     </label>
                     <select
@@ -313,6 +318,17 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                         <option value="price-asc">Price: Low to High</option>
                         <option value="price-desc">Price: High to Low</option>
                     </select>
+                </div>
+                <div>
+                    <label htmlFor="search" className="block text-secondary-700 text-sm mb-2">Search by Name</label>
+                    <GeneralSearchSelect
+                        items={consultantsData.map((consultant) => ({ value: consultant.membershipNumber, label: consultant.businessName }))}
+                        label="Search"
+                        name="search"
+                        value={{ value: searchQuery!, label: searchQuery! }}
+                        onChange={(value) => onSearchChange(value?.value!)}
+                        className="w-full border border-secondary-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500"
+                    />
                 </div>
             </div>
         </div>
@@ -418,11 +434,14 @@ import { useState, useEffect, useMemo } from 'react';
 import consultantsData from '../utils/ConsultanatFakeData.json';
 import Layout from '../components/layout/Layout';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
+import { GeneralSearchSelect } from '../components/ui/Form';
 
 const ConsultantListingPage: React.FC = () => {
     const [selectedCity, setSelectedCity] = useState('');
     const [sortOption, setSortOption] = useState('rating-desc');
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
     const itemsPerPage = 6;
 
     // Extract unique cities for the filter
@@ -467,6 +486,10 @@ const ConsultantListingPage: React.FC = () => {
 
     // Reset to first page when filters change
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
         setCurrentPage(1);
     }, [selectedCity, sortOption]);
 
@@ -487,6 +510,13 @@ const ConsultantListingPage: React.FC = () => {
         });
     };
 
+    const handleSearchChange = (membershipNumber: string) => {
+        const consultant = consultantsData.find(c => c.membershipNumber === membershipNumber);
+        if (consultant) {
+            navigate(`/consultants/${consultant.membershipNumber}`);
+        }
+    };
+
     return (
         <Layout>
             <div className="bg-white min-h-screen mt-8">
@@ -502,20 +532,23 @@ const ConsultantListingPage: React.FC = () => {
                         Connect with experienced Regulated Canadian Immigration Consultants (RCICs) who can help with your immigration journey.
                     </p>
                 </div>
-                <div className="min-h-screen mt-14 w-[90%] mx-auto">
+                <div className="min-h-screen mt-8 w-[90%] mx-auto">
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 relative z-10" id="results-container">
+                    <div className="mb-6 flex justify-between items-center">
                     {/* Filter Section */}
-                    <FilterSection
-                        cities={cities}
-                        selectedCity={selectedCity}
-                        onCityChange={handleCityChange}
-                        sortOption={sortOption}
-                        onSortChange={handleSortChange}
-                    />
-
-                    {/* Results Summary */}
-                    <div className="mb-6">
+                        <div>
+                            <FilterSection
+                                cities={cities}
+                                selectedCity={selectedCity}
+                                onCityChange={handleCityChange}
+                                sortOption={sortOption}
+                                onSortChange={handleSortChange}
+                                searchQuery={searchQuery}
+                                onSearchChange={handleSearchChange}
+                            />
+                        </div>
+                        {/* Results Summary */}
                         <h2 className="text-xl font-semibold text-secondary-800">
                             {filteredAndSortedConsultants.length} Consultants Available
                             {selectedCity && ` in ${selectedCity}`}

@@ -22,7 +22,9 @@ import html2canvas from 'html2canvas';
 import ChatBox from '../components/ui/ChatBox';
 import { MessagePopup } from '../components/ui/MessagePopup';
 import { Helmet } from 'react-helmet-async';
-
+import { ConsultantCard } from './ConsultantList';
+import ConsultantFakeData from '../utils/ConsultanatFakeData.json';
+import { Consultant } from '../types';
 interface PNPAssessment {
   id?: string;
   province: string;
@@ -54,6 +56,7 @@ export default function Report() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [showChatBox, setShowChatBox] = useState(false);
   const [regenerateReport, setRegenerateReport] = useState(false);
+  const [consultant, setConsultant] = useState<Consultant[] | null>(null);
   // const [isConsultancyLoading, setIsConsultancyLoading] = useState(false);
   const [msg, setMsg] = useState('');
 
@@ -63,7 +66,14 @@ export default function Report() {
   const expressEntryProfile = useExpressEntryStore((state) => state.profile);
   const expressEntryRecommendations = useRecommendationStore((state) => state.recommendations);
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
-  const { isLoading, error, setError } = useReportData(regenerateReport, setRegenerateReport);
+
+  // TODO: user ReportData hook for production, for testing of new feature we have commented it out
+  // const { isLoading, error, setError } = useReportData(regenerateReport, setRegenerateReport);
+
+  // TODO: remove this for production
+  const isLoading = false;
+  const error = null;
+  const setError = (arg0: any) => {};
 
   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
@@ -74,6 +84,16 @@ export default function Report() {
     if (!isComplete) {
       navigate('/profile');
     }    
+
+    const fetchConsultant = () => {
+      // const consultant = ConsultantFakeData.find((c) => c.serviceAreas.includes(basicInfo.province!));
+      const consultant = ConsultantFakeData.filter((c) => c.serviceAreas.includes('British Columbia'))!.slice(0, 2);
+      console.log(consultant);
+      setConsultant(consultant);
+    }
+
+    fetchConsultant();
+
   }, [isComplete]);
 
   const handlePNPOptionSelect = (optionId: string) => {
@@ -91,15 +111,6 @@ export default function Report() {
       selected: selectedPNPOption === (assessment.id || `pnp-${index}`)
     }));
   };
-
-  // async function generateReport(): Promise<void> {
-  //   try {
-  //     const response = await api.get(`/report/regenerate/${useAuthStore.getState().user?._id}`);
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error('Error generating report:', error);
-  //   }
-  // }
 
   const downloadReport = async () => {
     setIsDownloading(true);
@@ -838,7 +849,7 @@ export default function Report() {
             </div>}
             
             <div className="lg:col-span-1 space-y-6">
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Profile Summary</CardTitle>
                 </CardHeader>
@@ -860,14 +871,6 @@ export default function Report() {
                       <h4 className="text-sm font-medium text-secondary-500">Education</h4>
                       <p className="text-secondary-900">{useUserStore.getState().userProfile?.educationInfo.educationList[0]?.type || 'Master\'s Degree'}</p>
                     </div>
-                    {/* <div>
-                      <h4 className="text-sm font-medium text-secondary-500">Language Proficiency</h4>
-                      <p className="text-secondary-900">English (CLB 9)</p>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium text-secondary-500">Work Experience</h4>
-                      <p className="text-secondary-900">5+ years (NOC 21311)</p>
-                    </div> */}
                   </div>
                   <div className="mt-6">
                     <Button 
@@ -880,14 +883,14 @@ export default function Report() {
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
               
               <Card>
                 <CardHeader>
                   <CardTitle>Expert Assistance</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-secondary-100 rounded-lg p-4 mb-4">
+                  <div className="bg-secondary-100 rounded-lg p-4">
                     <MessageCircle className="h-8 w-8 text-secondary-900 mb-2" />
                     <h3 className="text-lg font-semibold text-secondary-900 mb-1">Have questions?</h3>
                     <p className="text-secondary-600 text-sm mb-3">
@@ -899,9 +902,16 @@ export default function Report() {
                       className="w-full bg-secondary-900 text-white hover:bg-secondary-950"
                     >Chat with MapleAI</Button>
                   </div>
+                </CardContent>
 
-                  
-                  <div className="border-t border-secondary-200 pt-4 mt-4">
+                <div className="border-t border-secondary-200">
+                </div>
+
+                <CardHeader>
+                  <CardTitle>Licensed(RCIC) Consultants</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col bg-secondary-100 p-4 rounded-lg w-full">
                     <h3 className="font-medium text-secondary-900 mb-2">
                       Connect with Licensed(RCIC) Consultants For Free
                     </h3>
@@ -909,26 +919,22 @@ export default function Report() {
                       Get personalized guidance from a regulated immigration consultant.
                     </p>
 
-                      <div className="relative">
-                        <div className="space-y-3">
-                          <Button 
-                            onClick={() => useAuthStore.getState().setIsConsultationDialogOpen(true)}
-                            variant="outline" size="sm" className="w-full">
-                            Pre-Book Consultation
-                          </Button>
-                          {/* <Button variant="secondary" size="sm" className="w-full disabled:opacity-50">
-                            View Consultant Profiles
-                          </Button> */}
-                        </div>
-                      </div>
-
-                      
+                    <Button 
+                      // onClick={() => useAuthStore.getState().setIsConsultationDialogOpen(true)}
+                      onClick={() => navigate('/consultants')}
+                      size="sm" className="w-full bg-secondary-900 text-white hover:bg-secondary-950">
+                      Book Consultation
+                    </Button>
                   </div>
                 </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
+
+            </Card>
+
+              {consultant && consultant.length > 0 && consultant.map((c) => (
+                <ConsultantCard consultant={c} className="bg-white hover:translate-y-0"/>
+              ))}
+                <Card>
+                  <CardHeader>
                   <CardTitle>Recent Draws</CardTitle>
                 </CardHeader>
                 <CardContent>

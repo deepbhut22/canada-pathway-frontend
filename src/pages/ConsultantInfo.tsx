@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 import consultantsData from '../utils/ConsultanatFakeData.json';
 import { Consultant } from '../types';
 
@@ -13,6 +12,7 @@ const ConsultantInfoPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+
         // In a real app, you would fetch this from an API
         // For now, we're using the mock data
 
@@ -220,7 +220,7 @@ const ConsultantInfoPage: React.FC = () => {
                                                 </table>
                                             </div>
                                             <p className="text-sm text-secondary-500 mt-2">
-                                                Starting from ${consultant.serviceAreas} CAD
+                                                Services Available At <span className="font-bold">{consultant.serviceAreas.map((area) => area).join(", ")}</span>
                                             </p>
                                         </section>
                                     )}
