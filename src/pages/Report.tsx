@@ -932,15 +932,15 @@ export default function Report() {
 
             <Card>
               <CardHeader >
-                    <CardTitle className='flex justify-between'>Verified Consultants Available In Your Province    
+                    <CardTitle>Verified Consultants Available In Your Province    
 
-                      <Link className='text-secondary-600 ml-4 text-sm flex font-normal items-center hover:underline' to={"/consultants"}> View All <ExternalLink className="w-4 h-4" /></Link>
                     </CardTitle>
               </CardHeader>
               <CardContent>
                 {consultant && consultant.length > 0 && consultant.map((c) => (
-                  <ConsultantCard consultant={c} className="bg-white hover:translate-y-0 mx-1 my-2"/>
+                  <ConsultantCard consultant={c} className="bg-white hover:translate-y-0 mx-1 my-2 hover:shadow-md"/>
                 ))}
+                    <Link className='text-secondary-600 ml-4 text-sm flex font-normal justify-end items-center hover:underline' to={"/consultants"}><ExternalLink className="w-4 h-4" />View All</Link>
               </CardContent>
             </Card>
                 <Card>
