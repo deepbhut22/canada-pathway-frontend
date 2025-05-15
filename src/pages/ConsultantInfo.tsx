@@ -15,6 +15,9 @@ const ConsultantInfoPage: React.FC = () => {
     useEffect(() => {
         // In a real app, you would fetch this from an API
         // For now, we're using the mock data
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         const foundConsultant = consultantsData.find(
             (c) => c.membershipNumber === membershipNumber
         );
