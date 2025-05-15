@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 import Layout from '../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2 } from 'lucide-react';
+import { Download, MessageCircle, Edit, ExternalLink, Clipboard, CheckCircle, AlertTriangle, ChevronRight, Loader2, Car } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import api from '../utils/axios';
 import { useExpressEntryStore, useRecommendationStore } from '../store/reports';
@@ -930,9 +930,19 @@ export default function Report() {
 
             </Card>
 
-              {consultant && consultant.length > 0 && consultant.map((c) => (
-                <ConsultantCard consultant={c} className="bg-white hover:translate-y-0"/>
-              ))}
+            <Card>
+              <CardHeader >
+                    <CardTitle className='flex justify-between'>Verified Consultants Available In Your Province    
+
+                      <Link className='text-secondary-600 ml-4 text-sm flex font-normal items-center hover:underline' to={"/consultants"}> View All <ExternalLink className="w-4 h-4" /></Link>
+                    </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {consultant && consultant.length > 0 && consultant.map((c) => (
+                  <ConsultantCard consultant={c} className="bg-white hover:translate-y-0 mx-1 my-2"/>
+                ))}
+              </CardContent>
+            </Card>
                 <Card>
                   <CardHeader>
                   <CardTitle>Recent Draws</CardTitle>

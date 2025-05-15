@@ -281,8 +281,8 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     return (
         <div className="bg-white rounded-lg shadow-md mb-6">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center p-2">
-            <h2 className="text-xl w-max font-semibold text-secondary-800">Filter & Sort</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center p-2">
+            {/* <h2 className="text-xl w-max font-semibold text-secondary-800">Filter & Sort</h2> */}
                 {/* City Filter */}
                 <div>
                     <label htmlFor="city-filter" className="block text-secondary-700 text-sm mb-2">
@@ -536,7 +536,12 @@ const ConsultantListingPage: React.FC = () => {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 relative z-10" id="results-container">
                     <div className="mb-6 flex justify-between items-center">
-                    {/* Filter Section */}
+                        {/* Results Summary */}
+                        <h2 className="text-xl font-semibold text-secondary-800">
+                            {filteredAndSortedConsultants.length} Consultants Available
+                            {selectedCity && ` in ${selectedCity}`}
+                        </h2>
+                        {/* Filter Section */}
                         <div>
                             <FilterSection
                                 cities={cities}
@@ -548,11 +553,6 @@ const ConsultantListingPage: React.FC = () => {
                                 onSearchChange={handleSearchChange}
                             />
                         </div>
-                        {/* Results Summary */}
-                        <h2 className="text-xl font-semibold text-secondary-800">
-                            {filteredAndSortedConsultants.length} Consultants Available
-                            {selectedCity && ` in ${selectedCity}`}
-                        </h2>
                     </div>
 
                     {/* Consultants Grid */}

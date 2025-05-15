@@ -164,7 +164,10 @@ export default function Home() {
         </div>
 
         <div className='w-[80%] mx-auto px-4 py-2 shadow-xl m-8 sm:px-6 lg:px-8 mt-14 border border-secondary-100 rounded-lg'>
-          <h2 className='text-2xl font-semibold text-secondary-900 mb-4 mt-4'>Connect With Our Best Consultants</h2>
+          <div className='flex justify-between items-center'>
+            <h2 className='text-2xl font-semibold text-secondary-900 mb-4 mt-4'>Connect With Our Best Consultants</h2>
+            <Link className='text-secondary-600 text-sm underline flex items-center gap-1' to="/consultants">View All <ExternalLink className='w-4 h-4' /></Link>
+          </div>
           <HorizontalSlider
             items={consultantsData.slice(0, 5)}
             renderItem={(item) => (
