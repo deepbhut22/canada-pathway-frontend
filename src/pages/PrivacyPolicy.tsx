@@ -5,6 +5,7 @@ import FAQ from '../components/LegalInfo/FAQ';
 import Privacy from '../components/LegalInfo/Privacy';
 import Disclaimer from '../components/LegalInfo/Disclaimer';
 import Terms from '../components/LegalInfo/Terms';
+import { Helmet } from 'react-helmet-async';
 
 const VALID_TABS = ['faqs', 'privacy', 'disclaimer', 'terms'];
 
@@ -53,41 +54,59 @@ export default function LegalInfoComponent() {
     // ... Just replace all `activeTab === 'privacy'` etc. with the new state
 
     return (
-        <Layout>
-            <div className="bg-gray-100 min-h-screen p-4 mt-20">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div className="bg-gray-100 p-4">
-                            <h1 className="text-2xl font-bold text-center text-gray-800">PathPR.ca Legal Information</h1>
+        <>
+            <Helmet>
+                <title>Legal Information – FAQ, Privacy Policy & Terms | Pathpr</title>
+                <meta
+                    name="description"
+                    content="Read Pathpr’s legal information including FAQs, privacy policy, terms and conditions, and disclaimer regarding Canadian immigration services."
+                />
+                <meta property="og:title" content="Legal Information – Pathpr" />
+                <meta
+                    property="og:description"
+                    content="Understand our policies, terms, and frequently asked questions about using Pathpr's immigration tools and services."
+                />
+                <meta property="og:url" content="https://pathpr.ca/legal-info/privacy" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://pathpr.ca/assets/canada-logo-light.png" />
+            </Helmet>
 
-                            {/* Tab Navigation */}
-                            <div className="flex mt-6">
-                                {VALID_TABS.map((t) => (
-                                    <button key={t} onClick={() => setActiveTab(t)} style={tabStyle(t)}>
-                                        {t.charAt(0).toUpperCase() + t.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
+            <Layout>
+                <div className="bg-gray-100 min-h-screen p-4 mt-20">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div className="bg-gray-100 p-4">
+                                <h1 className="text-2xl font-bold text-center text-gray-800">PathPR.ca Legal Information</h1>
 
-                            {/* Dynamic Content */}
-                            <div
-                                className="bg-white p-6 border-t-4"
-                                style={{ borderColor: '#102954' }}
-                            >
-                                {activeTab === 'faqs' && <FAQ />}
-                                {activeTab === 'privacy' && <Privacy />}
-                                {activeTab === 'disclaimer' && <Disclaimer />}
-                                {activeTab === 'terms' && <Terms />}
+                                {/* Tab Navigation */}
+                                <div className="flex mt-6">
+                                    {VALID_TABS.map((t) => (
+                                        <button key={t} onClick={() => setActiveTab(t)} style={tabStyle(t)}>
+                                            {t.charAt(0).toUpperCase() + t.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
 
-                                <div className="mt-6 text-sm text-gray-500 text-center">
-                                    Effective Date: May 3, 2025<br />
-                                    For further questions or concerns, please contact us at contact@pathpr.ca
+                                {/* Dynamic Content */}
+                                <div
+                                    className="bg-white p-6 border-t-4"
+                                    style={{ borderColor: '#102954' }}
+                                >
+                                    {activeTab === 'faqs' && <FAQ />}
+                                    {activeTab === 'privacy' && <Privacy />}
+                                    {activeTab === 'disclaimer' && <Disclaimer />}
+                                    {activeTab === 'terms' && <Terms />}
+
+                                    <div className="mt-6 text-sm text-gray-500 text-center">
+                                        Effective Date: May 3, 2025<br />
+                                        For further questions or concerns, please contact us at contact@pathpr.ca
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </Layout>
+            </Layout>
+        </>
     );
 }

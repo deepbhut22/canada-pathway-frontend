@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import { ProvinceLinksDialog } from "../components/ProvinceLinksDialogs";
 import { HoverEffect } from "../components/ui/card-hover-effect";
+import { Helmet } from "react-helmet-async";
 
 interface ProvinceLinksOption {
     title: String;
@@ -18,17 +19,26 @@ export default function PNPResourcesPage() {
     const [provinceLinks, setProvinceLinks] = useState<ProvinceLinksOption[]>([]);
 
   return (
-    <Layout>
-        <div className="w-[80%] mx-auto mt-24 text-center">
-            <HoverEffect items={provinces} setProvinceLinks={setProvinceLinks} setShowLinksDialog={setShowLinksDialog} />
-        </div>
-          <ProvinceLinksDialog
-              isOpen={showLinksDialog}
-              onClose={() => setShowLinksDialog(false)}
-              options={provinceLinks || []}
-              onOptionSelect={() => { }}
-          />
-    </Layout>
+    <>
+        <Helmet>
+            <title>Immigration Resources by Province | Pathpr</title>
+            <meta name="description" content="Find province-specific immigration resources, official websites, and guides to help you through your journey." />
+            <meta property="og:title" content="Provincial Immigration Resources | Pathpr" />
+            <meta property="og:description" content="Access curated immigration resources categorized by each Canadian province." />
+              <meta property="og:url" content="https://pathpr.ca/immigration-resources" />
+        </Helmet>
+        <Layout>
+            <div className="w-[80%] mx-auto mt-24 text-center">
+                <HoverEffect items={provinces} setProvinceLinks={setProvinceLinks} setShowLinksDialog={setShowLinksDialog} />
+            </div>
+            <ProvinceLinksDialog
+                isOpen={showLinksDialog}
+                onClose={() => setShowLinksDialog(false)}
+                options={provinceLinks || []}
+                onOptionSelect={() => { }}
+            />
+        </Layout>
+    </>
   );
 }
 

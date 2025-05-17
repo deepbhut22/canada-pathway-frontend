@@ -84,7 +84,7 @@ const initialUserProfile: UserProfile = {
   connectionInfo: defaultConnectionInfo,
   workInfo: defaultWorkInfo,
   jobOfferInfo: defaultJobOfferInfo,
-  isComplete: false
+  isComplete: true
 };
 
 interface UserState {

@@ -17,7 +17,7 @@ export default function Layout({ children, className = '' }: LayoutProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col bg-secondary-50">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className={`flex-grow ${className}`}>{children}</main>
       <Footer />

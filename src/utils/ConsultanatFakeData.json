@@ -1,0 +1,413 @@
+[
+  {
+    "category": "Consultant",
+    "businessName": "Maple Immigration Solutions",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Jane Doe, RCIC",
+    "shortBio": "Jane Doe is a Regulated Canadian Immigration Consultant with over 10 years of experience helping clients navigate Canada's immigration system. She specializes in Express Entry and Provincial Nominee Programs.",
+    "about": "Maple Immigration Solutions is a full-service immigration consultancy based in Vancouver, BC. Founded in 2010, our team offers personalized guidance across all federal and provincial immigration programs, delivering tailored strategies to achieve Canadian permanent residency for skilled workers, students, and families.",
+    "officeAddress": "123 Main St, Vancouver, BC",
+    "city": "Vancouver",
+    "serviceAreas": ["British Columbia", "Alberta"],
+    "membershipNumber": "R123456",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2026-06-30",
+    "phoneNumber": "+1-604-555-0123",
+    "emailAddress": "jane.doe@mapleimmigration.ca",
+    "websiteUrl": "https://mapleimmigration.ca",
+    "contactPersonName": "Sarah Lee",
+    "contactPersonPhone": "+1-604-555-0456",
+    "contactPersonEmail": "sarah.lee@mapleimmigration.ca",
+    "deliveryEmail": "deliveries@mapleimmigration.ca",
+    "languagesSpoken": ["English", "French"],
+    "starRating": 4.8,
+    "totalNumberOfReviews": 125,
+    "testimonials": [
+      "Jane made my Express Entry process seamless and stress-free.",
+      "Highly recommend Jane for her professionalism and expertise."
+    ],
+    "areasOfExpertise": ["Express Entry", "Provincial Nominee Programs", "Study Permits"],
+    "consultationFees": [
+      {
+        "serviceName": "Initial Consultation",
+        "cost": 100,
+        "duration": "30 minutes"
+      },
+      {
+        "serviceName": "Full Application Review",
+        "cost": 250,
+        "duration": "1 hour"
+      }
+    ],
+    "serviceStartsFrom": 100
+  },
+  {
+    "category": "Lawyer",
+    "businessName": "Northern Lights Law",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Michael Thompson, LL.B",
+    "shortBio": "Michael Thompson is an immigration lawyer called to the bar in Ontario with over 8 years of litigation and appeals experience. He represents clients across Canada in judicial review applications.",
+    "about": "Northern Lights Law is a Toronto-based law firm specializing in immigration litigation and appeals. With over two decades of combined experience, we represent clients nationwide in judicial review applications and complex immigration hearings.",
+    "officeAddress": "456 Queen St, Toronto, ON",
+    "city": "Toronto",
+    "serviceAreas": ["Ontario", "Quebec", "British Columbia"],
+    "membershipNumber": "LSO987654",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2025-11-15",
+    "phoneNumber": "+1-416-555-0789",
+    "emailAddress": "michael.thompson@northernlightslaw.ca",
+    "websiteUrl": "https://northernlightslaw.ca",
+    "contactPersonName": "Emily Carter",
+    "contactPersonPhone": "+1-416-555-0234",
+    "contactPersonEmail": "emily.carter@northernlightslaw.ca",
+    "deliveryEmail": "deliveries@northernlightslaw.ca",
+    "languagesSpoken": ["English"],
+    "starRating": 4.5,
+    "totalNumberOfReviews": 87,
+    "testimonials": [
+      "Michael guided me through my appeal with great success."
+    ],
+    "areasOfExpertise": ["Appeals & Judicial Reviews", "Family Sponsorship", "Refugee Claims"],
+    "consultationFees": [
+      {
+        "serviceName": "Case Consultation",
+        "cost": 200,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Judicial Review Representation",
+        "cost": 1500,
+        "duration": "Varies"
+      }
+    ],
+    "serviceStartsFrom": 200
+  },
+  {
+    "category": "Consultant",
+    "businessName": "Pacific Pathways Immigration",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Linda Park, RCIC",
+    "shortBio": "Linda Park specializes in helping tech professionals and skilled trades candidates immigrate to Canada through Express Entry and PNP streams. She offers personalized guidance throughout the process.",
+    "about": "Pacific Pathways Immigration, located in Vancouver, BC, focuses on guiding tech professionals and skilled trades individuals through Express Entry and Provincial Nominee streams, offering strategic planning and personalized support from start to finish.",
+    "officeAddress": "789 Burrard St, Vancouver, BC",
+    "city": "Vancouver",
+    "serviceAreas": ["British Columbia"],
+    "membershipNumber": "R234567",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2027-01-20",
+    "phoneNumber": "+1-604-555-0345",
+    "emailAddress": "linda.park@pacificpathways.ca",
+    "websiteUrl": "https://pacificpathways.ca",
+    "contactPersonName": "Kevin Zhang",
+    "contactPersonPhone": "+1-604-555-0678",
+    "contactPersonEmail": "kevin.zhang@pacificpathways.ca",
+    "deliveryEmail": "deliveries@pacificpathways.ca",
+    "languagesSpoken": ["English", "Mandarin"],
+    "starRating": 4.9,
+    "totalNumberOfReviews": 200,
+    "testimonials": [
+      "Linda’s expertise led to my IT job offer and PR approval."
+    ],
+    "areasOfExpertise": ["Express Entry", "Provincial Nominee Programs", "Work Permits"],
+    "consultationFees": [
+      {
+        "serviceName": "30-Minute Quick Consultation",
+        "cost": 75,
+        "duration": "30 minutes"
+      },
+      {
+        "serviceName": "Express Entry Package",
+        "cost": 500,
+        "duration": "3 hours"
+      }
+    ],
+    "serviceStartsFrom": 75
+  },
+  {
+    "category": "Lawyer",
+    "businessName": "TrueNorth Immigration Law",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Sara Ahmed, J.D.",
+    "shortBio": "Sara Ahmed is a bilingual immigration lawyer licensed in Quebec and Ontario, with a focus on family reunification and humanitarian applications. Fluent in French and Arabic.",
+    "about": "TrueNorth Immigration Law is a bilingual Montreal firm offering compassionate legal services in family reunification and humanitarian applications. Our multilingual team is dedicated to navigating Quebec and Ontario immigration regulations with cultural sensitivity.",
+    "officeAddress": "1010 Sherbrooke St W, Montreal, QC",
+    "city": "Montreal",
+    "serviceAreas": ["Quebec", "Ontario"],
+    "membershipNumber": "LSQ543210",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2026-05-02",
+    "phoneNumber": "+1-514-555-0912",
+    "emailAddress": "sara.ahmed@truenorthlaw.ca",
+    "websiteUrl": "https://truenorthlaw.ca",
+    "contactPersonName": "Marc Dupont",
+    "contactPersonPhone": "+1-514-555-0450",
+    "contactPersonEmail": "marc.dupont@truenorthlaw.ca",
+    "deliveryEmail": "deliveries@truenorthlaw.ca",
+    "languagesSpoken": ["English", "French", "Arabic"],
+    "starRating": 4.6,
+    "totalNumberOfReviews": 66,
+    "testimonials": [
+      "Sara reunited my family with compassion and efficiency."
+    ],
+    "areasOfExpertise": ["Family Sponsorship", "Humanitarian & Compassionate Grounds"],
+    "consultationFees": [
+      {
+        "serviceName": "Initial Assessment",
+        "cost": 150,
+        "duration": "45 minutes"
+      },
+      {
+        "serviceName": "Family Sponsorship Application",
+        "cost": 600,
+        "duration": "2 hours"
+      }
+    ],
+    "serviceStartsFrom": 150
+  },
+  {
+    "category": "Consultant",
+    "businessName": "GreatWhite Immigration",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Raj Singh, RCIC",
+    "shortBio": "Raj Singh has over 15 years of experience assisting entrepreneurs with business immigration to Canada, including Start-up Visa and Self-employed programs.",
+    "about": "GreatWhite Immigration, headquartered in Toronto, ON, specializes in business immigration for entrepreneurs and investors. We provide comprehensive support for Start-up Visa and Self-employed programs, helping clients launch and grow their ventures in Canada.",
+    "officeAddress": "1600 Yonge St, Toronto, ON",
+    "city": "Toronto",
+    "serviceAreas": ["Ontario"],
+    "membershipNumber": "R345678",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2025-09-15",
+    "phoneNumber": "+1-416-555-1122",
+    "emailAddress": "raj.singh@greatwhiteimmigration.ca",
+    "websiteUrl": "https://greatwhiteimmigration.ca",
+    "contactPersonName": "Laura White",
+    "contactPersonPhone": "+1-416-555-1333",
+    "contactPersonEmail": "laura.white@greatwhiteimmigration.ca",
+    "deliveryEmail": "deliveries@greatwhiteimmigration.ca",
+    "languagesSpoken": ["English", "Punjabi"],
+    "starRating": 4.3,
+    "totalNumberOfReviews": 44,
+    "testimonials": [
+      "Raj helped launch my business in Canada smoothly and quickly."
+    ],
+    "areasOfExpertise": ["Business Immigration", "Start-up Visa", "Self-Employed"],
+    "consultationFees": [
+      {
+        "serviceName": "Entrepreneur Consultation",
+        "cost": 250,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Business Plan Review",
+        "cost": 400,
+        "duration": "2 hours"
+      }
+    ],
+    "serviceStartsFrom": 250
+  },
+  {
+    "category": "Lawyer",
+    "businessName": "GlobalReach Law Firm",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Anna Müller, LL.M.",
+    "shortBio": "Anna Müller is an immigration lawyer with a Master of Laws specializing in international mobility and corporate immigration. She advises multinational clients and skilled professionals.",
+    "about": "GlobalReach Law Firm in Toronto offers expert corporate immigration services for multinational corporations. Our team advises on intra-company transfers, international mobility, and compliance to ensure seamless relocation of professionals.",
+    "officeAddress": "200 King St W, Toronto, ON",
+    "city": "Toronto",
+    "serviceAreas": ["Ontario", "British Columbia", "Alberta"],
+    "membershipNumber": "LSO112233",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2025-12-01",
+    "phoneNumber": "+1-416-555-2233",
+    "emailAddress": "anna.mueller@globalreachlaw.ca",
+    "websiteUrl": "https://globalreachlaw.ca",
+    "contactPersonName": "David Brown",
+    "contactPersonPhone": "+1-416-555-2444",
+    "contactPersonEmail": "david.brown@globalreachlaw.ca",
+    "deliveryEmail": "deliveries@globalreachlaw.ca",
+    "languagesSpoken": ["English", "German"],
+    "starRating": 4.7,
+    "totalNumberOfReviews": 92,
+    "testimonials": [
+      "Anna’s corporate immigration solutions were outstanding."
+    ],
+    "areasOfExpertise": ["Corporate Immigration", "Intra-Company Transfers"],
+    "consultationFees": [
+      {
+        "serviceName": "Corporate Initial Consultation",
+        "cost": 300,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Intra-Company Transfer Application",
+        "cost": 800,
+        "duration": "2 hours"
+      }
+    ],
+    "serviceStartsFrom": 300
+  },
+  {
+    "category": "Consultant",
+    "businessName": "Advantage Immigration Consulting",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Carlos Herrera, RCIC",
+    "shortBio": "Carlos Herrera provides comprehensive services for students and temporary workers seeking study and work permits in Canada.",
+    "about": "Advantage Immigration Consulting in Ottawa, ON, supports students and temporary workers with study and work permit applications. We streamline the process with step-by-step guidance and thorough document preparation.",
+    "officeAddress": "120 Wellington St, Ottawa, ON",
+    "city": "Ottawa",
+    "serviceAreas": ["Ontario", "Quebec"],
+    "membershipNumber": "R456789",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2026-03-30",
+    "phoneNumber": "+1-613-555-3344",
+    "emailAddress": "carlos.herrera@advantageimmigration.ca",
+    "websiteUrl": "https://advantageimmigration.ca",
+    "contactPersonName": "Melissa King",
+    "contactPersonPhone": "+1-613-555-3567",
+    "contactPersonEmail": "melissa.king@advantageimmigration.ca",
+    "deliveryEmail": "deliveries@advantageimmigration.ca",
+    "languagesSpoken": ["English", "French", "Spanish"],
+    "starRating": 4.4,
+    "totalNumberOfReviews": 58,
+    "testimonials": [
+      "Carlos’s assistance with my study permit was exceptional."
+    ],
+    "areasOfExpertise": ["Study Permits", "Work Permits"],
+    "consultationFees": [
+      {
+        "serviceName": "Study Permit Consultation",
+        "cost": 120,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Work Permit Application",
+        "cost": 200,
+        "duration": "90 minutes"
+      }
+    ],
+    "serviceStartsFrom": 120
+  },
+  {
+    "category": "Lawyer",
+    "businessName": "Summit Immigration Advocates",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Emily Nguyen, LL.B",
+    "shortBio": "Emily Nguyen is a seasoned immigration lawyer focusing on refugee claims and detention reviews, advocating for vulnerable clients.",
+    "about": "Summit Immigration Advocates in Hamilton, ON, provides dedicated legal representation for refugee claims and detention reviews. We advocate vigorously for vulnerable clients within the immigration tribunal system.",
+    "officeAddress": "75 King St E, Hamilton, ON",
+    "city": "Hamilton",
+    "serviceAreas": ["Ontario"],
+    "membershipNumber": "LSO667788",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2025-07-22",
+    "phoneNumber": "+1-905-555-7788",
+    "emailAddress": "emily.nguyen@summitadvocates.ca",
+    "websiteUrl": "https://summitadvocates.ca",
+    "contactPersonName": "Oliver Smith",
+    "contactPersonPhone": "+1-905-555-7999",
+    "contactPersonEmail": "oliver.smith@summitadvocates.ca",
+    "deliveryEmail": "deliveries@summitadvocates.ca",
+    "languagesSpoken": ["English", "Vietnamese"],
+    "starRating": 4.2,
+    "totalNumberOfReviews": 35,
+    "testimonials": [
+      "Emily’s dedication to my refugee claim was unparalleled."
+    ],
+    "areasOfExpertise": ["Refugee Claims", "Detention Reviews"],
+    "consultationFees": [
+      {
+        "serviceName": "Refugee Claim Consultation",
+        "cost": 180,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Detention Review Representation",
+        "cost": 1000,
+        "duration": "Varies"
+      }
+    ],
+    "serviceStartsFrom": 180
+  },
+  {
+    "category": "Consultant",
+    "businessName": "Horizon Immigration Services",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "Fatima Ali, RCIC",
+    "shortBio": "Fatima Ali specializes in family sponsorship and caregiver programs, offering compassionate support for reunification cases.",
+    "about": "Horizon Immigration Services in Toronto, ON, specializes in family sponsorship and caregiver programs. Our compassionate consultants work closely with clients to navigate complex application requirements.",
+    "officeAddress": "350 Yonge St, Toronto, ON",
+    "city": "Toronto",
+    "serviceAreas": ["Ontario"],
+    "membershipNumber": "R567890",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2026-09-10",
+    "phoneNumber": "+1-416-555-4455",
+    "emailAddress": "fatima.ali@horizonimmigration.ca",
+    "websiteUrl": "https://horizonimmigration.ca",
+    "contactPersonName": "Priya Patel",
+    "contactPersonPhone": "+1-416-555-4666",
+    "contactPersonEmail": "priya.patel@horizonimmigration.ca",
+    "deliveryEmail": "deliveries@horizonimmigration.ca",
+    "languagesSpoken": ["English", "Urdu", "Hindi"],
+    "starRating": 4.6,
+    "totalNumberOfReviews": 79,
+    "testimonials": [
+      "Fatima’s guidance brought my family together."
+    ],
+    "areasOfExpertise": ["Family Sponsorship", "Caregiver Programs"],
+    "consultationFees": [
+      {
+        "serviceName": "Family Sponsorship Consultation",
+        "cost": 130,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Caregiver Program Application",
+        "cost": 300,
+        "duration": "2 hours"
+      }
+    ],
+    "serviceStartsFrom": 130
+  },
+  {
+    "category": "Lawyer",
+    "businessName": "Coast2Coast Legal",
+    "logoUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "fullName": "David Romero, J.D.",
+    "shortBio": "David Romero provides end-to-end legal services for skilled workers, including LMIA applications and federal skilled worker files.",
+    "about": "Coast2Coast Legal, based in Vancouver, BC, delivers comprehensive legal services for skilled workers, including LMIA applications and Federal Skilled Worker processes. Our proactive approach ensures timely and accurate submissions.",
+    "officeAddress": "500 Granville St, Vancouver, BC",
+    "city": "Vancouver",
+    "serviceAreas": ["British Columbia", "Alberta", "Saskatchewan"],
+    "membershipNumber": "LSBC334455",
+    "licenseStatus": "Active",
+    "licenseExpiry": "2026-02-28",
+    "phoneNumber": "+1-604-555-5566",
+    "emailAddress": "david.romero@coast2coastlegal.ca",
+    "websiteUrl": "https://coast2coastlegal.ca",
+    "contactPersonName": "Jessica Tan",
+    "contactPersonPhone": "+1-604-555-5777",
+    "contactPersonEmail": "jessica.tan@coast2coastlegal.ca",
+    "deliveryEmail": "deliveries@coast2coastlegal.ca",
+    "languagesSpoken": ["English", "Spanish"],
+    "starRating": 4.5,
+    "totalNumberOfReviews": 149,
+    "testimonials": [
+      "David’s service for my LMIA was professional and timely."
+    ],
+    "areasOfExpertise": ["Work Permits", "LMIA Applications", "Express Entry"],
+    "consultationFees": [
+      {
+        "serviceName": "LMIA Consultation",
+        "cost": 220,
+        "duration": "1 hour"
+      },
+      {
+        "serviceName": "Federal Skilled Worker Application",
+        "cost": 500,
+        "duration": "3 hours"
+      }
+    ],
+    "serviceStartsFrom": 220
+  }
+]

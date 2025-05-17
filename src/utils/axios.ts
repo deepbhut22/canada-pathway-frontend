@@ -1,10 +1,13 @@
 import axios from 'axios';
 
 // Create instance
+
+// aws
 // const api = axios.create({
 //     baseURL: 'http://3.98.13.227:5000/api',
 // });
 
+// local
 const api = axios.create({
     baseURL: 'https://api.pathpr.ca/api',
 });

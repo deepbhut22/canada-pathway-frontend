@@ -21,7 +21,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ResetPassword from './pages/ResetPassword';
-
+import ConsultantListPage from './pages/ConsultantList';
+import ConsultantInfoPage from './pages/ConsultantInfo';
 // import Blog from './pages/Blog';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -49,6 +50,8 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/consultants" element={<ConsultantListPage />} />
+          <Route path="/consultants/:membershipNumber" element={<ConsultantInfoPage />} />
           <Route
             path="/news"
             element={

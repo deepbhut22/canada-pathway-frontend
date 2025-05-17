@@ -464,3 +464,174 @@ export function SearchSelect({
     </FormGroup>
   );
 }
+
+
+
+
+interface GeneralSearchSelectProps {
+  items: { value: string; label: string }[];
+  value: { value: string; label: string } | null;
+  onChange: (item: { value: string; label: string } | null) => void;
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  helperText?: string;
+  className?: string;
+  name: string;
+}
+
+export function GeneralSearchSelect({
+  items = [],
+  value = null,
+  onChange,
+  label,
+  placeholder = "Search...",
+  required = false,
+  error = false,
+  errorMessage,
+  helperText,
+  className,
+  name
+}: GeneralSearchSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredItems, setFilteredItems] = useState(items);
+  const dropdownRef = useRef(null);
+
+  // Filter items when search term changes
+  useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredItems(items);
+    } else {
+      const filtered = items.filter(item =>
+        item.label.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredItems(filtered);
+    }
+  }, [searchTerm, items]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      // setIsOpen(false);
+      // }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Handle item selection
+  const handleSelectItem = (item: { value: string; label: string }) => {
+    onChange(item);
+    setIsOpen(false);
+    setSearchTerm('');
+  };
+
+  // Handle input focus
+  const handleFocus = () => {
+    setIsOpen(true);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (!isOpen) setIsOpen(true);
+
+    // If search field is cleared, reset the selection
+    if (e.target.value === '' && value) {
+      onChange(null);
+    }
+  };
+
+  return (
+    // <FormGroup className={className}>
+    //   {label && (
+    //     <FormLabel required={required}>{label}</FormLabel>
+    //   )}
+    //   <FormControl>
+        <div className="relative" ref={dropdownRef}>
+          {/* Search input */}
+          <div className="relative">
+            <input
+              type="text"
+              autoComplete="off"
+              className={cn(
+                'block w-full rounded-md border border-secondary-300 bg-white py-2 px-3 shadow-sm',
+                'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder:text-secondary-400 sm:text-sm',
+                error && 'border-red-300 focus:ring-red-500 focus:border-red-500'
+              )}
+              placeholder={placeholder}
+              value={isOpen ? searchTerm : (value ? value.label : '')}
+              onChange={handleSearchChange}
+              onFocus={handleFocus}
+              name={name}
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <svg
+                className="h-5 w-5 text-secondary-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <path
+                  fillRule="evenodd"
+                  d={isOpen
+                    ? "M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z"
+                    : "M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  }
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Dropdown list */}
+          {isOpen && (
+            <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg max-h-60 overflow-auto border border-secondary-200">
+              <ul className="py-1 text-sm">
+                {filteredItems.length > 0 ? (
+                  filteredItems.map((item, index) => (
+                    <li
+                      key={index}
+                      className="px-3 py-2 hover:bg-primary-100 cursor-pointer flex flex-col"
+                      onClick={() => handleSelectItem(item)}
+                    >
+                      <span className="font-medium">{item.label}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-3 py-2 text-secondary-500">No items found</li>
+                )}
+              </ul>
+            </div>
+          )}
+
+          {/* Hidden input to store the full value for form submission */}
+          {value && (
+            <input
+              type="hidden"
+              name={`${name}_full`}
+              value={JSON.stringify(value)}
+            />
+          )}
+        </div>
+    //   </FormControl>
+
+    //   {helperText && !error && (
+    //     <FormHelperText>{helperText}</FormHelperText>
+    //   )}
+
+    //   {error && errorMessage && (
+    //     <FormErrorMessage>{errorMessage}</FormErrorMessage>
+    //   )}
+    // </FormGroup>
+  );
+}
