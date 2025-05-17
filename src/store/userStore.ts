@@ -13,6 +13,7 @@ const defaultBasicInfo: BasicInfo = {
   citizenCountry: '',
   residenceCountry: '',
   province: '',
+  mobileNumber: ''
 };
 
 const defaultLanguageInfo: LanguageInfo = {

@@ -14,6 +14,7 @@ import Connection from '../../components/questionnaire/steps/Connection';
 import Work from './steps/Work';
 import JobOffer from './steps/JobOffer';
 import api from '../../utils/axios';
+import useAuthStore, { isProfileComplete } from '../../store/authStore';
 
 export default function Questionnaire() {
   const { step = 'basic' } = useParams<{ step?: string }>();
@@ -63,7 +64,13 @@ export default function Questionnaire() {
     try {
       const currentStepData = getCurrentStepName(currentStep);
       const response = await api.put(`/profile/${currentStep}`, currentStepData);
-      alert('Progress saved successfully!');
+      if (response.status === 200) {
+        setProfileComplete(isProfileComplete(useUserStore.getState().userProfile));
+
+        alert('Progress saved successfully!');
+      } else {
+        alert('Error saving progress!');
+      }
     } catch (error) {
       console.error('Error saving progress:', error);
       alert('Error saving progress!');

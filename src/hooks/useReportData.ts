@@ -14,6 +14,7 @@ export const useReportData = (regenerateReport: boolean, setRegenerateReport: (v
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+
       if (userProfile.isComplete && user?._id) {
         try {
           const response = await api.get(`/report/${regenerateReport ? 'regenerate' : 'generate'}/${user._id}`);

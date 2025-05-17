@@ -101,6 +101,10 @@ export default function BasicInfo({
     if (basicInfo.residenceCountry === 'canada' && !basicInfo.province) {
       newErrors.province = 'Please select your province';
     }
+
+    if (basicInfo?.mobileNumber && basicInfo?.mobileNumber?.length !== 10) {
+      newErrors.mobileNumber = 'Please enter a valid mobile number';
+    }
     
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
@@ -157,6 +161,23 @@ export default function BasicInfo({
           </FormControl>
           {errors.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
           <FormHelperText>We'll use this to send you updates about your immigration process.</FormHelperText>
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel htmlFor="mobileNumber">Mobile Number</FormLabel>
+          <FormControl>
+            <Input
+              id="mobileNumber"
+              name="mobileNumber"
+              type="number"
+              value={basicInfo?.mobileNumber!}
+              onChange={handleChange}
+              placeholder="Enter your mobile number"
+              error={!!errors.mobileNumber}
+            />
+          </FormControl>
+          {errors.mobileNumber && <div className="text-red-500 text-xs mt-1">{errors.mobileNumber}</div>}
+          <FormHelperText>This is non-mandatory, but in future if you wish to connect with our immigration consultant then we will need your mobile number as your contact info.</FormHelperText>
         </FormGroup>
 
         <FormGroup>

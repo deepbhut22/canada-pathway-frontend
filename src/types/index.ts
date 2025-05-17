@@ -16,6 +16,7 @@ export interface NewsItem {
 export interface BasicInfo {
   fullName: string;
   email: string;
+  mobileNumber?: string | '';
   gender: 'male' | 'female' | 'other' | '';
   age: number | null;
   citizenCountry: string;

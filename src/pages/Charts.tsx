@@ -197,7 +197,7 @@ const CanadaImmigrationDashboard = () => {
     const otherProvinces = provincialImmigrationForYear.slice(5);
     const otherSum = otherProvinces.reduce((sum, item) => sum + (item.value as number), 0);
 
-    const pieData = [...topProvinces, { province: 'Others', value: otherSum }];
+    const pieData = [...topProvinces.filter(item => item.province !== 'British Columbia'), { province: 'Others', value: otherSum }, {province: 'British Columbia', value: provincialImmigrationForYear.find(item => item.province === 'British Columbia')?.value || 0}];
     // Format large numbers
     const formatNumber = (num: number) => {
         if (num >= 1000000) {
@@ -231,7 +231,16 @@ const CanadaImmigrationDashboard = () => {
                             <div className="max-w-7xl mx-auto mt-24 px-4 sm:px-6 lg:px-8 relative z-10">
                             <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Canada Immigration Dashboard</h1>
                                 <p className="text-lg text-gray-300 max-w-3xl">
-                                    A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.                            </p>
+                                    A complete visual dashboard featuring Express Entry trends, student permits, and provincial immigration stats — all in one place to guide your path to PR.           
+                                </p>
+                                <p className="text-sm text-gray-400 max-w-3xl mt-4">
+                                    This dashboard is updated regularly with the latest data from the Government of Canada.
+                                    <ExternalLink className='inline-block w-4 h-4 ml-4 text-blue-600' />
+                                    <a 
+                                        href='https://www150.statcan.gc.ca/n1/en/type/data'
+                                        target='_blank'
+                                        className='underline cursor-pointer text-blue-600'>source</a>
+                                </p>
                             </div>
 
                     {loading ? (
@@ -346,16 +355,18 @@ const CanadaImmigrationDashboard = () => {
 
                                         <div className="h-[400px]">
                                             <ResponsiveContainer width="100%" height="100%">
-                                                <PieChart>
+                                                <PieChart
+                                                    margin={{ top: 20, right: 20, left: 0, bottom: 50 }}
+                                                >
                                                     <Pie
                                                         data={pieData}
                                                         dataKey="value"
                                                         nameKey="province"
                                                         cx="50%"
                                                         cy="50%"
-                                                        outerRadius={150}
+                                                        outerRadius={130}
                                                         label={({ province, value, percent }) =>
-                                                            `${province}: ${formatNumber(value)} (${(percent * 100).toFixed(0)}%)`
+                                                            `${province}: ${formatNumber(value)} \n (${(percent * 100).toFixed(0)}%)` 
                                                         }
                                                         labelLine={true}
                                                     >

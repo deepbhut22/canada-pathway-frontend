@@ -107,7 +107,7 @@ import api from '../utils/axios';
 // };
 
 // Helper function to check if the user profile is complete
-const isProfileComplete = (profile: UserProfile): boolean => {
+export const isProfileComplete = (profile: UserProfile): boolean => {
   const {
     basicInfo,
     educationInfo,
@@ -317,7 +317,7 @@ const useAuthStore = create<AuthState & {
       });
 
       if (response.status === 201) {
-        set({ isAuthenticated: true, isLoading: false });
+        set({ user: response.data, isAuthenticated: true, isLoading: false });
         localStorage.setItem('canda-pathway-auth-token', response.data.token);
 
         const profileResponse = await api.get('/auth/profile');
@@ -328,7 +328,7 @@ const useAuthStore = create<AuthState & {
         userProfile.isComplete = profileComplete;
         set({ user: profileResponse.data.user, isAuthenticated: true });
         useUserStore.setState({ userProfile });
-        return true;
+        return true; 
       } else if (response.status === 400) {
         set({ isLoading: false, error: "Email already exists" });
         return false;
