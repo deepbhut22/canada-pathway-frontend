@@ -86,7 +86,7 @@ export default function Header() {
   ];
 
   const insightsItems = [
-    { path: '/consultants', label: 'Consultants' },
+    // { path: '/consultants', label: 'Consultants' },
     { path: '/immigration-statistics', label: 'Statistics' },
     { path: '/immigration-resources', label: 'Resources' },
     { path: '/news', label: 'News' },

@@ -29,6 +29,7 @@ export default function App() {
   const isAuth = useAuthStore((state) => state.isAuthenticated);
   const generalNews = getGeneralNews();
   const provincialNews = getProvincialNews();
+  
   useEffect(() => {
     initializeAuth();
   }, [isAuth]);

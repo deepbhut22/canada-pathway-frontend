@@ -1,8 +1,11 @@
 import { create } from 'zustand';
 import type { AuthState, UserProfile } from '../types';
 import { useUserStore } from './userStore';
-
+// import { useNavigate } from 'react-router-dom';
 import api from '../utils/axios';
+
+// const navigate = useNavigate();
+
 
 // Helper function to check if the user profile is complete
 // const isProfileComplete = (profile: UserProfile): boolean => {
@@ -215,7 +218,7 @@ const useAuthStore = create<AuthState & {
   setIsConsultationDialogOpen: (isConsultationDialogOpen: boolean) => void;
 }>((set) => ({
   user: null,
-  isAuthenticated: true, // make is false for production
+  isAuthenticated: false, // make is false for production
   isLoading: true,
   error: null,
   isPopupOpen: false,
@@ -373,6 +376,7 @@ const useAuthStore = create<AuthState & {
     localStorage.removeItem('canda-pathway-auth-token');
     set({ user: null, isAuthenticated: false, error: null });
     useUserStore.getState().resetUserProfile();
+  
   }
 }));
 

@@ -10,6 +10,7 @@ import useAuthStore from '../store/authStore';
 import {MessagePopup} from '../components/ui/MessagePopup';
 import ChatBox from '../components/ui/ChatBox';
 import { Helmet } from 'react-helmet-async';
+import api from '../utils/axios';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -101,6 +102,23 @@ export default function Profile() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  async function handleDeleteAccount(): Promise<void> {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      try {
+        const response = await api.delete('/auth/delete-account');
+        if (response.status === 200) {
+        localStorage.removeItem('canda-pathway-auth-token');
+        useAuthStore.getState().isAuthenticated = false;
+        useAuthStore.getState().user = null;
+        useUserStore.getState().resetUserProfile();
+        navigate('/');
+      }
+    } catch (error) {
+        console.error('Error deleting account:', error);
+      }
+    }
+  }
 
   return (
     <>
@@ -341,6 +359,7 @@ export default function Profile() {
                     </ul>
                   </CardContent>
                 </Card>
+                <p className='text-sm text-red-500 px-4 underline cursor-pointer' onClick={handleDeleteAccount}>delete my account</p>
               </div>
             </div>
           ) : (

@@ -68,12 +68,12 @@ export default function Report() {
   // Use the useReportData hook to handle fetching both Express Entry and PNP data
 
   // TODO: user ReportData hook for production, for testing of new feature we have commented it out
-  // const { isLoading, error, setError } = useReportData(regenerateReport, setRegenerateReport);
+  const { isLoading, error, setError } = useReportData(regenerateReport, setRegenerateReport);
 
   // TODO: remove this for production
-  const isLoading = false;
-  const error = null;
-  const setError = (arg0: any) => {};
+  // const isLoading = false;
+  // const error = null;
+  // const setError = (arg0: any) => {};
 
   const isConsultationDialogOpen = useAuthStore((state) => state.isConsultationDialogOpen);
   
@@ -930,7 +930,7 @@ export default function Report() {
 
             </Card>
 
-            <Card>
+            {/* <Card>
               <CardHeader >
                     <CardTitle>Verified Consultants Available In Your Province    
 
@@ -942,7 +942,7 @@ export default function Report() {
                 ))}
                     <Link className='text-secondary-600 ml-4 text-sm flex font-normal justify-end items-center hover:underline' to={"/consultants"}><ExternalLink className="w-4 h-4" />View All</Link>
               </CardContent>
-            </Card>
+            </Card> */}
                 <Card>
                   <CardHeader>
                   <CardTitle>Recent Draws</CardTitle>

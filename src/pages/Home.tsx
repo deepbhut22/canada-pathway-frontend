@@ -137,31 +137,47 @@ export default function Home() {
                       </div>
                     </div>
 
-                  <div 
-                    onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=345", "_blank", "noopener,noreferrer")}
-                    className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex flex-col">
-                        <div className="font-medium text-secondary-800">Express Entry</div>
-                        <p className="text-secondary-600">Healthcare And Social Services Occupations</p>
+                    <div 
+                      onClick={() => window.open("https://www.canada.ca/en/immigration-refugees-citizenship/corporate/mandate/policies-operational-instructions-agreements/ministerial-instructions/express-entry-rounds/invitations.html?q=345", "_blank", "noopener,noreferrer")}
+                      className="border-b border-secondary-200 pb-1 cursor-pointer hover:bg-secondary-200 transition-all duration-300 rounded-md hover:px-2 hover:py-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <div className="flex flex-col">
+                          <div className="font-medium text-secondary-800">Express Entry</div>
+                          <p className="text-secondary-600">Healthcare And Social Services Occupations</p>
+                        </div>
+                        <div className="text-sm text-secondary-500">May 02, 2025</div>
                       </div>
-                      <div className="text-sm text-secondary-500">May 02, 2025</div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-secondary-600">500 invitations</div>
+                        <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 510</div>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-secondary-600">500 invitations</div>
-                      <div className="text-sm font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">CRS: 510</div>
+                    <div className='flex justify-between items-center'>
+                      <p className='text-secondary-600'>View all draws</p>
+                      <Link className='text-secondary-600 text-sm underline flex items-center gap-1' to="/immigration-statistics"><ExternalLink className='w-4 h-4' /> Private Draws</Link>
                     </div>
-                  </div>
-                  <div className='flex justify-between items-center'>
-                    <p className='text-secondary-600'>View all draws</p>
-                    <Link className='text-secondary-600 text-sm underline flex items-center gap-1' to="/immigration-statistics"><ExternalLink className='w-4 h-4' /> Private Draws</Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
+        {/* <div className='w-[80%] mx-auto px-4 py-2 shadow-xl m-8 sm:px-6 lg:px-8 mt-14 border border-secondary-100 rounded-lg'>
+          <div className='flex justify-between items-center'>
+            <h2 className='text-2xl font-semibold text-secondary-900 mb-4 mt-4'>Connect With Our Best Consultants</h2>
+            <Link className='text-secondary-600 text-sm underline flex items-center gap-1' to="/consultants">View All <ExternalLink className='w-4 h-4' /></Link>
+          </div>
+          <HorizontalSlider
+            items={consultantsData.slice(0, 5)}
+            renderItem={(item) => (
+              <ConsultantCard consultant={item} className='m-4 bg-white'/>
+            )}
+            itemsPerSlide={3}
+            showControls={true}
+            className='bg-white'
+          />
+        </div> */}
 
         {/* Provincial News */}
         <ProvincialSection provincialNews={provincialNews} />
