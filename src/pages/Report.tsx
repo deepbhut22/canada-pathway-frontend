@@ -921,7 +921,7 @@ export default function Report() {
 
                     <Button 
                       // onClick={() => useAuthStore.getState().setIsConsultationDialogOpen(true)}
-                      onClick={() => navigate('/consultants')}
+                      // onClick={() => navigate('/consultants')}
                       size="sm" className="w-full bg-secondary-900 text-white hover:bg-secondary-950">
                       Book Consultation
                     </Button>

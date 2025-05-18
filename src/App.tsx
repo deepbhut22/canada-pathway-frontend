@@ -51,8 +51,8 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/consultants" element={<ConsultantListPage />} />
-          <Route path="/consultants/:membershipNumber" element={<ConsultantInfoPage />} />
+          {/* <Route path="/consultants" element={<ConsultantListPage />} />
+          <Route path="/consultants/:membershipNumber" element={<ConsultantInfoPage />} /> */}
           <Route
             path="/news"
             element={
