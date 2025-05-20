@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from 'react';
-import { X, Send, Loader2, MessageCircle } from 'lucide-react';
+import { X, Send, Loader2, MessageCircle, User } from 'lucide-react';
 import api from '../../utils/axios';
 import useAuthStore from '../../store/authStore';
 import ReactMarkdown from 'react-markdown';
@@ -22,6 +22,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const chatContainerRef = useRef<HTMLDivElement | null>(null);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     // Default fallback ID if user is not authenticated
     const userId = useAuthStore((state) => state.user?._id) || "6816970bd2c7f39134b23fbb";
@@ -29,6 +30,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
     useEffect(() => {
         if (isOpen) {
             fetchChatHistory();
+            // Auto-focus the textarea when chat opens
+            setTimeout(() => {
+                textareaRef.current?.focus();
+            }, 300);
         }
     }, [isOpen]);
 
@@ -96,89 +101,138 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isOpen, onClose }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Handle textarea auto-resize
+    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+        setInputMessage(e.target.value);
+
+        // Auto-resize textarea based on content
+        const textarea = e.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`; // Max height 120px
+    };
+
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-y-0 right-0 w-full sm:w-[36%] bg-white z-50 flex flex-col border-l border-secondary-200 animate-slide-in-right sm:mt-20">
-            <div className="p-4 border-b border-secondary-200 bg-secondary-100 flex justify-between items-center">
+        <div className="fixed inset-y-0 right-0 w-full sm:w-1/3 bg-white z-50 flex flex-col border-2 border-gray-700/20 rounded-xl shadow-xl animate-slide-in-right mt-20">
+            {/* Header */}
+            <div className="p-4 border-b border-gray-700/10 bg-secondary-950 text-white flex justify-between items-center rounded-t-xl">
                 <div className="flex items-center">
-                    <MessageCircle className="h-5 w-5 text-secondary-900 mr-2" />
-                    <h3 className="font-semibold text-secondary-900">Immigration AI Assistant</h3>
+                    <MessageCircle className="h-5 w-5 text-white mr-2 opacity-80" />
+                    <h3 className="font-semibold">Immigration AI Assistant</h3>
                 </div>
                 <button
                     onClick={onClose}
-                    className="text-secondary-500 hover:text-secondary-700 focus:outline-none"
+                    className="text-gray-300 hover:text-white focus:outline-none transition duration-200"
+                    aria-label="Close chat"
                 >
                     <X className="h-5 w-5" />
                 </button>
             </div>
 
+            {/* Chat Messages */}
             <div
                 ref={chatContainerRef}
-                className="flex-1 overflow-y-auto p-4 space-y-4 bg-secondary-50"
+                className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
             >
                 {messages.length === 0 && !isLoading ? (
-                    <div className="text-center text-secondary-500 py-8">
-                        <MessageCircle className="h-12 w-12 mx-auto mb-3 text-secondary-300" />
-                        <p>Ask me anything about Canadian immigration pathways!</p>
+                    <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8">
+                        <div className="bg-gray-900/5 rounded-full p-3 mb-4">
+                            <MessageCircle className="h-10 w-10 text-gray-700" />
+                        </div>
+                        <p className="text-gray-700 font-medium mb-1">Welcome to Immigration Assistant</p>
+                        <p className="text-sm text-gray-500 text-center max-w-xs">
+                            Ask me anything about Canadian immigration pathways and I'll help guide you through the process.
+                        </p>
                     </div>
                 ) : (
                     messages.map((msg, idx) => (
                         <div
                             key={idx}
-                            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-3`}
                         >
+                            {msg.role === 'assistant' && (
+                                <div className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center mr-2 mt-1 flex-shrink-0">
+                                    <MessageCircle className="h-4 w-4 text-white" />
+                                </div>
+                            )}
+
                             <div
-                                className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.role === 'user'
-                                        ? 'bg-secondary-900 text-white shadow-md'
-                                        : 'bg-white border border-secondary-100 border border-secondary-400 shadow-md text-secondary-900'
-                                    }`}
+                                className={`rounded-2xl px-4 py-3 max-w-[85%] ${msg.role === 'user'
+                                        ? 'bg-gray-800 text-white shadow-xl'
+                                        : 'bg-white border border-gray-200 text-gray-800 shadow-xl'
+                                    } shadow-sm`}
                             >
-                                <ReactMarkdown>{msg.content}</ReactMarkdown>
-                                <p className={`text-sm mt-1 ${msg.role === 'user' ? 'text-primary-100' : 'text-secondary-400'
+                                <div className="prose prose-sm max-w-none">
+                                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                </div>
+                                <p className={`text-xs mt-1 ${msg.role === 'user' ? 'text-gray-300' : 'text-gray-400'
                                     }`}>
-                                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    {new Date(msg.timestamp).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
                                 </p>
                             </div>
+
+                            {msg.role === 'user' && (
+                                <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center ml-2 mt-1 flex-shrink-0">
+                                    <User className="h-4 w-4 text-white" />
+                                </div>
+                            )}
                         </div>
                     ))
                 )}
+
                 {isLoading && (
-                    <div className="flex justify-start">
-                        <div className="rounded-lg bg-white border border-secondary-200">
-                            <img src="/loading.gif" alt="Loading..." className="w-14 h-12" />
+                    <div className="flex justify-start items-start">
+                        <div className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center mr-2 flex-shrink-0">
+                            <MessageCircle className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="bg-white rounded-2xl p-3 border border-gray-200 shadow-sm">
+                            <div className="flex space-x-2">
+                                <div className="w-2 h-2 rounded-full bg-gray-800 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                <div className="w-2 h-2 rounded-full bg-gray-800 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                <div className="w-2 h-2 rounded-full bg-gray-800 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            </div>
                         </div>
                     </div>
                 )}
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 border-t border-secondary-200 bg-white">
-                <div className="flex items-center space-x-2">
+            {/* Input Area */}
+            <div className="p-4 border-t border-gray-700/10 bg-white">
+                <div className="relative flex items-end space-x-2">
                     <textarea
+                        ref={textareaRef}
                         value={inputMessage}
-                        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputMessage(e.target.value)}
+                        onChange={handleTextareaChange}
                         onKeyPress={handleKeyPress}
                         placeholder="Type your question here..."
-                        className="flex-1 border border-secondary-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-secondary-950 resize-none"
-                        rows={2}
+                        className="flex-1 border border-gray-300 bg-gray-50 rounded-xl p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent resize-none min-h-[52px] max-h-[120px] transition-all duration-200 text-gray-800"
+                        style={{ lineHeight: '1.5' }}
+                        rows={1}
                         disabled={isLoading}
                     />
                     <button
                         onClick={sendMessage}
                         disabled={isLoading || !inputMessage.trim()}
-                        className={`flex p-2 rounded-full text-center items-center justify-center ${isLoading || !inputMessage.trim()
-                                ? 'bg-secondary-900 text-secondary-400'
-                                : 'bg-secondary-900 text-white hover:bg-secondary-950'
+                        className={`flex-shrink-0 p-3 rounded-full flex items-center justify-center transition-all duration-200 ${isLoading || !inputMessage.trim()
+                                ? 'bg-gray-600 cursor-not-allowed'
+                                : 'bg-gray-900 hover:bg-gray-950 active:bg-gray-800'
                             }`}
                     >
                         {isLoading ? (
-                            <Loader2 className="h-5 w-5 animate-spin text-white m-auto" />
+                            <Loader2 className="h-5 w-5 animate-spin text-white" />
                         ) : (
                             <Send className="h-5 w-5 text-white" />
                         )}
                     </button>
                 </div>
+                <p className="text-xs text-gray-400 mt-2 text-center">
+                    Press Enter to send, Shift+Enter for new line
+                </p>
             </div>
         </div>
     );
