@@ -4,11 +4,13 @@ import Button from "../components/ui/Button";
 import { FormControl, FormLabel, Input, FormHelperText } from "../components/ui/Form";
 import api from "../utils/axios";
 import { toast } from "react-toastify";
-import { Loader } from "lucide-react";
-export default function ForgotPassword() {
+import { ArrowLeft, Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-    const [email, setEmail] = React.useState('');   
+export default function ForgotPassword() {
+    const [email, setEmail] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,16 +27,28 @@ export default function ForgotPassword() {
             setIsLoading(false);
         } catch (error: any) {
             setIsLoading(false);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Something went wrong");
             console.log(error);
         }
     }
 
     return (
-        <Layout className="flex flex-col items-center justify-center h-screen">
-            <form onSubmit={(e) => handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)} className="flex flex-col items-center justify-center gap-4 w-1/3 mx-auto bg-secondary-100 border-2 border-secondary-300 py-8 rounded-lg shadow-lg">
-                <FormControl className="w-full max-w-md">
-                    <FormLabel>Enter your mail id of which you want to reset your password</FormLabel>
+        <Layout className="flex flex-col items-center justify-center min-h-screen px-4">
+            <div
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 text-secondary-950 cursor-pointer self-start mb-4 hover:underline"
+            >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Back</span>
+            </div>
+            <form
+                onSubmit={(e) => handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)}
+                className="flex flex-col items-center justify-center gap-4 w-full max-w-md mx-auto bg-secondary-100 border-2 border-secondary-300 py-8 px-4 rounded-lg shadow-lg"
+            >
+                <FormControl className="w-full">
+                    <FormLabel>
+                        Enter your mail id of which you want to reset your password
+                    </FormLabel>
                     <FormControl>
                         <Input
                             placeholder="Enter your email"
@@ -43,16 +57,19 @@ export default function ForgotPassword() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-
                     </FormControl>
-                    <FormHelperText>You will receive an e-mail to reset your password</FormHelperText>
+                    <FormHelperText>
+                        You will receive an e-mail to reset your password
+                    </FormHelperText>
                 </FormControl>
-                <div className="flex justify-start w-[90%]">
-                    <Button 
+                <div className="flex justify-start w-full">
+                    <Button
                         disabled={isLoading}
                         className="bg-secondary-950 text-white hover:bg-secondary-600"
                         type="submit"
-                    >{isLoading ? <Loader className="w-4 h-4 animate-spin" /> : 'Reset Password'}</Button>
+                    >
+                        {isLoading ? <Loader className="w-4 h-4 animate-spin" /> : 'Reset Password'}
+                    </Button>
                 </div>
             </form>
         </Layout>
