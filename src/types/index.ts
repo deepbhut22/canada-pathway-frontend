@@ -212,3 +212,60 @@ export interface Consultant {
   serviceStartsFrom: number;
   consultationFees: ConsultationFee[];
 }
+
+// — Supporting types for structured embeds —
+export interface TableData {
+  headers: string[];
+  rows: string[][];
+  caption?: string;
+}
+
+export interface ImageData {
+  src: string;               // image URL
+  alt: string;               // alt text for accessibility & SEO
+  caption?: string;
+  position?: 'left' | 'center' | 'right';
+}
+
+export interface VideoData {
+  url: string;               // embed URL or direct link
+  type: 'youtube' | 'vimeo' | 'mp4';
+  caption?: string;
+}
+
+// — Main blog post type —
+export interface BlogPostNew {
+  id: string;                // renamed from _id for clarity
+  slug: string;              // “how-to-immigrate-to-canada”
+  title: string;
+  author: {
+    id: string;
+    name: string;
+    avatarUrl?: string;
+  };
+  thumbnailUrl: string;      // explicit URL field
+  excerpt: string;           // short summary for listings
+  content: string;           // markdown or HTML
+  categories: string[];      // allow multiple
+  tags?: string[] | '';           // for finer filtering
+  tableData?: TableData[] | '';
+  imageData?: ImageData[] | '';
+  videoData?: VideoData[] | '';
+
+  // publishing & workflow
+  status: 'draft' | 'published' | 'archived';
+  readingTime?: number;      // in minutes
+
+  // timestamps
+  createdAt: string;         // ISO date string
+  updatedAt: string;         // ISO date string
+  publishedAt?: string;      // ISO date string when status = published
+
+  // SEO / social share
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string[];
+    openGraphImageUrl?: string;
+  };
+}

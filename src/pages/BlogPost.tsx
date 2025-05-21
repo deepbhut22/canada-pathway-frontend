@@ -1,15 +1,15 @@
 import { useParams } from 'react-router-dom';
 import blogPostsData from '../data/blogs.json';
 import ReactMarkdown from 'react-markdown';
-import { BlogPost } from '../types';
+import { BlogPost as BlogPostType } from '../types';
 import Layout from '../components/layout/Layout';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 import { Helmet } from 'react-helmet-async';
 
-const blogPosts = blogPostsData as BlogPost[];
+const blogPosts = blogPostsData as BlogPostType[];
 
 
-function BlogPostPage() {
+function BlogPost() {
     const { slug } = useParams();
     const post = blogPosts.find(p => p.slug === slug);
 
@@ -39,4 +39,4 @@ function BlogPostPage() {
     );
 }
 
-export default BlogPostPage;
+export default BlogPost;

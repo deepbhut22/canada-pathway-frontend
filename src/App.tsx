@@ -16,13 +16,18 @@ import Charts from './pages/Charts';
 import MapleAI from './pages/MapleAi';
 import PNPResourcesPage from './pages/PNPResourcesPage';
 import Blog from './pages/Blog';
-import BlogPostPage from './pages/BlogPost';
+import BlogPost from './pages/BlogPost';
 import ForgotPassword from './pages/ForgotPassword';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ResetPassword from './pages/ResetPassword';
 import ConsultantListPage from './pages/ConsultantList';
 import ConsultantInfoPage from './pages/ConsultantInfo';
+import BlogListPage from './pages/BlogListPage';
+import BlogPostPage from './pages/BlogPostPage';
+
+import { blogPostsData, getSingleBlogPost, getRelatedBlogPosts } from './utils/blogUtils';
+
 // import Blog from './pages/Blog';
 export default function App() {
   const initializeAuth = useAuthStore(state => state.initializeAuth);
@@ -48,11 +53,16 @@ export default function App() {
           <Route path="/immigration-statistics" element={<Charts />} />
           <Route path="/immigration-resources" element={<PNPResourcesPage />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           {/* <Route path="/consultants" element={<ConsultantListPage />} />
           <Route path="/consultants/:membershipNumber" element={<ConsultantInfoPage />} /> */}
+
+          <Route path="/blog-list" element={<BlogListPage blogs={blogPostsData} isLoading={false} />} />
+
+          <Route path="/blog-post/:slug" element={<BlogPostPage fetchBlogPost={getSingleBlogPost} getRelatedPosts={getRelatedBlogPosts} isLoading={false}  />} />
+
           <Route
             path="/news"
             element={
