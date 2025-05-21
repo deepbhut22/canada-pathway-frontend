@@ -18,10 +18,10 @@ import Button from '../../ui/Button';
 import { Plus, Trash2 } from 'lucide-react';
 
 const EDUCATION_TYPE_OPTIONS = [
-  { value: '1 year program', label: '1 Year Post-Secondary Program' },
-  { value: '2 year program', label: '2 Year Post-Secondary Program' },
-  { value: '3 year program', label: '3 Year Post-Secondary Program' },
-  { value: 'trade certificate', label: 'Trade Certificate' },
+  { value: 'oneYear', label: 'One-year program at a university, college, trade or technical school, or other institute' },
+  { value: 'twoYear', label: 'Two-year program at a university, college, trade or technical school, or other institute' },
+  { value: 'threeYear', label: 'Two or more certificates, diplomas or degrees. One must be for a program of three or more years' },
+  { value: 'tradeCertificate', label: 'Trade Certificate' },
   { value: 'bachelor', label: "Bachelor's Degree" },
   { value: 'masters', label: "Master's Degree" },
   { value: 'phd', label: 'Doctorate (PhD)' }
