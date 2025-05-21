@@ -133,16 +133,16 @@ export default function BlogPostPage({
                     {/* Hero section with thumbnail */}
                     <div className="hidden md:block absolute inset-0 pointer-events-none w-full mt-20">
                         {/* <BackgroundAnimation /> */}
-                        <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='10vh' />
+                        <VantaHaloBackground xOffset={0.25} yOffset={0.0} size={1.5} height='15vh' />
                     </div>
                     <div className="block md:hidden absolute inset-0 pointer-events-none w-full mt-20">
                         {/* <BackgroundAnimation /> */}
-                        <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
+                        <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='15vh' />
                     </div>
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 relative mt-20 z-10">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white my-4">{post.title}</h1>
-                        <p className="text-sm md:text-lg text-gray-300 max-w-3xl">
-                            {post.excerpt}
+                    <div className="text-white w-[95%] md:w-[70%] mt-20 z-10 relative flex flex-col gap-4 justify-center h-52 items-start mx-auto">
+                        <h1 className="text-xl md:text-2xl font-bold text-white">{post.title}</h1>
+                        <p className="text-sm md:text-md text-gray-300 max-w-3xl">
+                            {post.excerpt.length > 100 ? post.excerpt.slice(0, 100) + '...' : post.excerpt}
                         </p>
                         <div className="flex flex-wrap items-center text-white text-opacity-90 text-sm md:text-base gap-4 md:gap-6">
                             <div className="flex items-center">
@@ -194,7 +194,7 @@ export default function BlogPostPage({
                     </div> */}
 
                     {/* Content section */}
-                    <div className="max-w-4xl mx-auto px-4 py-12">
+                    <div className="max-w-4xl mx-auto px-4 mt-4 py-12">
                         {/* Back to blog link */}
                         <div className="mb-8">
                             <Link
@@ -269,6 +269,24 @@ export default function BlogPostPage({
                             </button> */}
                         </div>
 
+                        {/* Render images if present */}
+                        {post.imageData && post.imageData.length > 0 && (
+                            <div className="my-8">
+                                {post.imageData.map((image, index) => (
+                                    <ImageComponent key={index} imageData={image} />
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Render videos if present */}
+                        {post.videoData && post.videoData.length > 0 && (
+                            <div className="my-8">
+                                {post.videoData.map((video, index) => (
+                                    <VideoComponent key={index} videoData={video} />
+                                ))}
+                            </div>
+                        )}
+
                         {/* Blog content */}
                         <div className="prose prose-lg max-w-none">
                             {/* Render main content */}
@@ -279,24 +297,6 @@ export default function BlogPostPage({
                                 <div className="my-8">
                                     {post.tableData.map((table, index) => (
                                         <TableComponent key={index} tableData={table} />
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Render images if present */}
-                            {post.imageData && post.imageData.length > 0 && (
-                                <div className="my-8">
-                                    {post.imageData.map((image, index) => (
-                                        <ImageComponent key={index} imageData={image} />
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Render videos if present */}
-                            {post.videoData && post.videoData.length > 0 && (
-                                <div className="my-8">
-                                    {post.videoData.map((video, index) => (
-                                        <VideoComponent key={index} videoData={video} />
                                     ))}
                                 </div>
                             )}
