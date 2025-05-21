@@ -67,6 +67,7 @@ export default function Footer() {
               <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/find-national-occupation-code.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">NOC Finder</a></li>
               <li><a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/language-test.html" className="text-secondary-300 hover:text-white text-sm" target="_blank">Language Testing</a></li>
               <li><Link to="/legal-info/faqs" className="text-secondary-300 hover:text-white text-sm">FAQs</Link></li>
+              <li><Link to="/blog-list" className="text-secondary-300 hover:text-white text-sm">Blog</Link></li>
             </ul>
           </div>
 
