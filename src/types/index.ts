@@ -235,7 +235,7 @@ export interface VideoData {
 
 // — Main blog post type —
 export interface BlogPostNew {
-  id: string;                // renamed from _id for clarity
+  _id: string;                // renamed from _id for clarity
   slug: string;              // “how-to-immigrate-to-canada”
   title: string;
   author: {

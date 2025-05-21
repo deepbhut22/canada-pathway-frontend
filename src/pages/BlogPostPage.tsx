@@ -11,24 +11,26 @@ import TableComponent from '../components/ui/BlogTableData';
 import ImageComponent from '../components/ui/BlogImageComponent';
 import VideoComponent from '../components/ui/BlogVideoComponent';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
+import api from '../utils/axios';
 interface BlogPostPageProps {
-    fetchBlogPost: (slug: string) => BlogPostNew;
-    getRelatedPosts: (slug: string, limit?: number) => BlogPostNew[];
-    isLoading?: boolean;
+    // fetchBlogPost: (slug: string) => BlogPostNew;
+    // getRelatedPosts: (slug: string, limit?: number) => BlogPostNew[];
+    // isLoading?: boolean;
 }
 
 export default function BlogPostPage({
-    fetchBlogPost,
-    getRelatedPosts,
-    isLoading: initialLoading = false
+    // fetchBlogPost,
+    // getRelatedPosts,
+    // isLoading: initialLoading = false
 }: BlogPostPageProps) {
     const { slug } = useParams<{ slug: string }>();
     const navigate = useNavigate();
 
     const [post, setPost] = useState<BlogPostNew | null>(null);
     const [relatedPosts, setRelatedPosts] = useState<BlogPostNew[]>([]);
-    const [isLoading, setIsLoading] = useState(initialLoading);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         const loadBlogPost = async () => {
@@ -36,18 +38,18 @@ export default function BlogPostPage({
 
             setIsLoading(true);
             try {
-                const blogPost = await fetchBlogPost(slug);
+                const blogPost = await api.get(`/blog/${slug}`);
 
                 if (!blogPost) {
                     setError('Blog post not found');
                     return;
                 }
 
-                setPost(blogPost);
+                setPost(blogPost.data);
 
                 // Load related posts
-                const related = await getRelatedPosts(blogPost.slug, 3);
-                setRelatedPosts(related);
+                // const related = await getRelatedPosts(blogPost.data.slug, 3);
+                // setRelatedPosts(related);
 
             } catch (err) {
                 console.error('Error loading blog post:', err);
@@ -60,7 +62,10 @@ export default function BlogPostPage({
         loadBlogPost();
         // Scroll to top when slug changes
         window.scrollTo(0, 0);
-    }, [slug, fetchBlogPost, getRelatedPosts]);
+    }, [slug, 
+        // fetchBlogPost, 
+        // getRelatedPosts
+    ]);
 
     // Share functionality
     const shareUrl = window.location.href;
@@ -204,23 +209,23 @@ export default function BlogPostPage({
                         {/* Categories and tags */}
                         <div className="mb-8 flex flex-wrap gap-2">
                             {post.categories.map(category => (
-                                <Link
+                                <p
                                     key={category}
-                                    to={`/blog-list?category=${encodeURIComponent(category)}`}
+                                    // to={`/blog-list?category=${encodeURIComponent(category)}`}
                                     className="inline-flex items-center px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-sm hover:bg-primary-200 transition-colors"
                                 >
                                     {category}
-                                </Link>
+                                </p>
                             ))}
                             {post.tags && post.tags.map(tag => (
-                                <Link
+                                <p  
                                     key={tag}
-                                    to={`/blog-list?tag=${encodeURIComponent(tag)}`}
+                                    // to={`/blog-list?tag=${encodeURIComponent(tag)}`}
                                     className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-sm hover:bg-gray-200 transition-colors"
                                 >
                                     <TagIcon className="h-3 w-3 mr-1" />
                                     {tag}
-                                </Link>
+                                </p>
                             ))}
                         </div>
 
@@ -255,13 +260,13 @@ export default function BlogPostPage({
                             >
                                 <Share2 className="h-4 w-4" />
                             </button>
-                            <button
+                            {/* <button
                                 className="ml-auto p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors flex items-center"
                                 aria-label="Save blog post"
                             >
                                 <BookmarkPlus className="h-4 w-4 mr-1" />
                                 <span className="text-sm">Save</span>
-                            </button>
+                            </button> */}
                         </div>
 
                         {/* Blog content */}
@@ -321,11 +326,10 @@ export default function BlogPostPage({
                     </div>
 
                     {/* Related posts section */}
-                    {relatedPosts.length > 0 && (
+                    {post.categories.length > 0 && (
                         <div className="bg-gray-50 py-12">
                             <div className="max-w-4xl mx-auto px-4">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h2>
-                                <RelatedPosts posts={relatedPosts} />
+                                <RelatedPosts category={post.categories[0]} slug={post.slug} />
                             </div>
                         </div>
                     )}

@@ -24,13 +24,13 @@ export default function BlogCard({ blog }: BlogCardProps) {
                 {/* Categories */}
                 <div className="flex flex-wrap gap-2 mb-3">
                     {blog.categories.slice(0, 2).map(category => (
-                        <Link
+                        <p
                             key={category}
-                            to={`/blog-list?category=${encodeURIComponent(category)}`}
+                            // to={`/blog-list?category=${encodeURIComponent(category)}`}
                             className="inline-block px-2.5 py-0.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full hover:bg-primary-200"
                         >
                             {category}
-                        </Link>
+                        </p>
                     ))}
                     {blog.categories.length > 2 && (
                         <span className="inline-block px-2.5 py-0.5 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">

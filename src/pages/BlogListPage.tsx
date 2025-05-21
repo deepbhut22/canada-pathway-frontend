@@ -1,61 +1,107 @@
 import { useState, useEffect } from 'react';
 import { Search, Calendar, Tag, ChevronDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Layout from '../components/layout/Layout';
 import VantaHaloBackground from '../components/ui/backgrounds/HaloBg';
 import { BlogPostNew } from '../types';
 import BlogCard from '../components/ui/BlogCard';
+import BlogData from '../hooks/blogData';
+import api from '../utils/axios';
 
 // Sample categories for filter - replace with your actual categories
-const CATEGORIES = [
+let CATEGORIES = [
     'All Categories',
-    'Immigration Policy',
-    'Visa Updates',
-    'Express Entry',
-    'Provincial Programs',
-    'Study Permits',
-    'Work Permits',
-    'Citizenship',
-    'Family Sponsorship'
+    // 'Immigration Policy',
+    // 'Visa Updates',
+    // 'Express Entry',
+    // 'Provincial Programs',
+    // 'Study Permits',
+    // 'Work Permits',
+    // 'Citizenship',
+    // 'Family Sponsorship'
 ];
 
 // Sample tags for filter - replace with your actual tags
-const TAGS = [
+let TAGS = [
     'All Tags',
-    'IRCC',
-    'Work Permit',
-    'Study Permit',
-    'PR Card',
-    'NOC',
-    'LMIA',
-    'ECA',
-    'CEC',
-    'FSW'
+    // 'IRCC',
+    // 'Work Permit',
+    // 'Study Permit',
+    // 'PR Card',
+    // 'NOC',
+    // 'LMIA',
+    // 'ECA',
+    // 'CEC',
+    // 'FSW'
 ];
 
-interface BlogListingPageProps {
-    blogs: BlogPostNew[];
-    isLoading?: boolean;
-}
+export default function BlogListingPage() {
+    // const { blogs, isLoading } = BlogData();
 
-export default function BlogListingPage({ blogs, isLoading = false }: BlogListingPageProps) {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('All Categories');
-    const [selectedTag, setSelectedTag] = useState('All Tags');
+    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'All Categories');
+    const [selectedTag, setSelectedTag] = useState(searchParams.get('tag') || 'All Tags');
+    const [categories, setCategories] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
+    const [allBlogs, setAllBlogs] = useState<BlogPostNew[]>([]);
     const [showFilters, setShowFilters] = useState(false);
     const [sortOption, setSortOption] = useState('newest');
-    const [filteredBlogs, setFilteredBlogs] = useState<BlogPostNew[]>(blogs);
+    const [filteredBlogs, setFilteredBlogs] = useState<BlogPostNew[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 9;
 
     const navigate = useNavigate();
 
+
     // Filter and sort blogs whenever the filters change
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const fetchBlogs = async () => {
+            setIsLoading(true);
+            try {
+                const response = await api.get('/blog');
+                const Blogs = response.data;
+                setAllBlogs(Blogs);
+                setFilteredBlogs(Blogs);
+
+                const uniqueCategories = Array.from(new Set(Blogs.flatMap((blog: BlogPostNew) => blog.categories || []))) as string[];
+                const uniqueTags = Array.from(new Set(Blogs.flatMap((blog: BlogPostNew) => blog.tags || []))) as string[];
+
+                setCategories(['All Categories', ...uniqueCategories]);
+                setTags(['All Tags', ...uniqueTags]);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchBlogs();
+    }, []);
+
+
+    useEffect(() => {
+        const category = searchParams.get('category') || 'All Categories';
+        const tag = searchParams.get('tag') || 'All Tags';
+        const term = searchParams.get('search') || '';
+
+        setSelectedCategory(category);
+        setSelectedTag(tag);
+        setSearchTerm(term);
+    }, []);
+
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        let result = [...blogs];
+        setIsLoading(true); 
+        setFilteredBlogs(allBlogs);
+            
+        let result = [...allBlogs];
 
         // Apply search filter
         if (searchTerm) {
@@ -74,6 +120,7 @@ export default function BlogListingPage({ blogs, isLoading = false }: BlogListin
         // Apply tag filter
         if (selectedTag !== 'All Tags') {
             result = result.filter(item => item.tags?.includes(selectedTag));
+            // console.log(result);
         }
 
         // Apply sorting
@@ -92,7 +139,16 @@ export default function BlogListingPage({ blogs, isLoading = false }: BlogListin
 
         setFilteredBlogs(result);
         setCurrentPage(1); // Reset to first page when filters change
-    }, [blogs, searchTerm, selectedCategory, selectedTag, sortOption]);
+        setIsLoading(false);
+    }, [
+        searchTerm,
+        selectedCategory,
+        selectedTag,
+        sortOption
+    ]);
+
+
+    
 
     // Calculate pagination
     const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
@@ -167,7 +223,7 @@ export default function BlogListingPage({ blogs, isLoading = false }: BlogListin
                                             value={selectedCategory}
                                             onChange={(e) => setSelectedCategory(e.target.value)}
                                         >
-                                            {CATEGORIES.map((category) => (
+                                            {categories.map((category) => (
                                                 <option key={category} value={category}>
                                                     {category}
                                                 </option>
@@ -185,7 +241,7 @@ export default function BlogListingPage({ blogs, isLoading = false }: BlogListin
                                             value={selectedTag}
                                             onChange={(e) => setSelectedTag(e.target.value)}
                                         >
-                                            {TAGS.map((tag) => (
+                                            {tags.map((tag) => (
                                                 <option key={tag} value={tag}>
                                                     {tag}
                                                 </option>
@@ -231,8 +287,8 @@ export default function BlogListingPage({ blogs, isLoading = false }: BlogListin
                                 <p className="text-gray-600 mb-6">Showing {filteredBlogs.length} results</p>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {currentItems.map((blog) => (
-                                        <BlogCard key={blog.id} blog={blog} />
+                                    {filteredBlogs.map((blog) => (
+                                        <BlogCard key={blog._id} blog={blog} />
                                     ))}
                                 </div>
 

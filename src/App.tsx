@@ -26,7 +26,7 @@ import ConsultantInfoPage from './pages/ConsultantInfo';
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
 
-import { blogPostsData, getSingleBlogPost, getRelatedBlogPosts } from './utils/blogUtils';
+// import { blogPostsData, getSingleBlogPost, getRelatedBlogPosts } from './utils/blogUtils';
 
 // import Blog from './pages/Blog';
 export default function App() {
@@ -59,9 +59,9 @@ export default function App() {
           {/* <Route path="/consultants" element={<ConsultantListPage />} />
           <Route path="/consultants/:membershipNumber" element={<ConsultantInfoPage />} /> */}
 
-          <Route path="/blog-list" element={<BlogListPage blogs={blogPostsData} isLoading={false} />} />
+          <Route path="/blog-list" element={<BlogListPage />} />
 
-          <Route path="/blog-post/:slug" element={<BlogPostPage fetchBlogPost={getSingleBlogPost} getRelatedPosts={getRelatedBlogPosts} isLoading={false}  />} />
+          <Route path="/blog-post/:slug" element={<BlogPostPage />} />
 
           <Route
             path="/news"
