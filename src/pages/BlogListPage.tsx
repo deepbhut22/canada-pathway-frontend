@@ -166,9 +166,9 @@ export default function BlogListingPage() {
     return (
         <>
             <Helmet>
-                <title>Immigration Blog | Expert Insights & Updates</title>
+                <title>Immigration Blogs | Expert Insights & Updates</title>
                 <meta name="description" content="Explore expert insights on Canadian immigration with our comprehensive blog. Tips, guides and latest updates to help your immigration journey." />
-                <meta property="og:title" content="Immigration Blog | Expert Insights & Updates" />
+                <meta property="og:title" content="Immigration Blogs | Expert Insights & Updates" />
                 <meta property="og:description" content="Detailed guides and expert analysis on Canadian immigration pathways, requirements, and processes." />
                 <meta property="og:url" content="https://pathpr.ca/blog-list" />
             </Helmet>
@@ -181,7 +181,7 @@ export default function BlogListingPage() {
                         <VantaHaloBackground xOffset={0.35} yOffset={0.4} size={1.5} height='10vh' />
                     </div>
                     <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration Blog</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold text-white my-4">Immigration Blogs</h1>
                         <p className="text-sm md:text-lg text-gray-300 max-w-3xl">
                             In-depth articles, guides, and expert analysis on Canadian immigration pathways, requirements, and processes.
                         </p>

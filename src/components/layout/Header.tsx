@@ -82,6 +82,7 @@ export default function Header() {
     { path: '/profile', label: 'My Profile' },
     { path: '/mapleAi', label: 'MapleAI' },
     { path: "/report", label: 'My Report' },
+    { path: "/blog-list", label: 'Blogs' },
     // { path: '/news', label: 'News' },
   ];
 
@@ -97,7 +98,7 @@ export default function Header() {
     if (insightsItems.some(item => item.path === path)) {
       setIsDropdownOpen(false);
       navigate(path);
-    } else if (!isAuth && path !== '/') {
+    } else if (!isAuth && path !== '/' && path !== '/blog-list') {
       useAuthStore.getState().setIsLoginRequiredPopupOpen(true);
     } else if (isAuth && !isProfileComplete && path === '/report') {
       useAuthStore.getState().setIsPopupOpen(true);
