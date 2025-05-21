@@ -308,7 +308,7 @@ export default function Report() {
 
                 <Button
                   leftIcon={<Edit className="h-4 w-4" />}
-                  onClick={() => {console.log('clicked'); setRegenerateReport(true)}}
+                  onClick={() => setRegenerateReport(true)}
                   variant="outline"
                   className="w-full md:w-auto bg-white text-secondary-950 border border-secondary-950 hover:bg-white hover:text-secondary-950"
                 >

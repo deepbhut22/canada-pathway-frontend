@@ -15,16 +15,16 @@ import {
   Checkbox
 } from '../../ui/Form';
 import Button from '../../ui/Button';
-import { Plus, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 const EDUCATION_TYPE_OPTIONS = [
   { value: 'oneYear', label: 'One-year program at a university, college, trade or technical school, or other institute' },
   { value: 'twoYear', label: 'Two-year program at a university, college, trade or technical school, or other institute' },
   { value: 'threeYear', label: 'Two or more certificates, diplomas or degrees. One must be for a program of three or more years' },
-  { value: 'tradeCertificate', label: 'Trade Certificate' },
-  { value: 'bachelor', label: "Bachelor's Degree" },
-  { value: 'masters', label: "Master's Degree" },
-  { value: 'phd', label: 'Doctorate (PhD)' }
+  { value: 'bachelor', label: "Bachelor's degree (three or more year program at a university, college, trade or technical school, or other institute)" },
+  { value: 'masters', label: "Master's degree, or professional degree needed to practice in a licensed profession" },
+  { value: 'phd', label: 'Doctorate (PhD)' },
+  { value: 'highSchool', label: 'High School' }
 ];
 
 const COUNTRY_OPTIONS = [
