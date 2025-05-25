@@ -161,37 +161,6 @@ export default function BlogPostPage({
                             )}
                         </div>
                     </div>
-                    {/* <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
-                        <img
-                            src={post.thumbnailUrl}
-                            alt={post.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="max-w-4xl mx-auto text-center px-4">
-                                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                                    {post.title}
-                                </h1>
-                                <div className="flex flex-wrap justify-center items-center text-white text-opacity-90 text-sm md:text-base gap-4 md:gap-6">
-                                    <div className="flex items-center">
-                                        <Calendar className="h-4 w-4 mr-2" />
-                                        <span>{formatDate(post.publishedAt || post.createdAt)}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <User className="h-4 w-4 mr-2" />
-                                        <span>{post.author.name}</span>
-                                    </div>
-                                    {post.readingTime && (
-                                        <div className="flex items-center">
-                                            <Clock className="h-4 w-4 mr-2" />
-                                            <span>{post.readingTime} min read</span>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
 
                     {/* Content section */}
                     <div className="max-w-4xl mx-auto px-4 mt-4 py-12">
