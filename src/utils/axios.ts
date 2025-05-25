@@ -9,36 +9,55 @@ import axios from 'axios';
 
 const api = axios.create({
     baseURL: 'https://api.pathpr.ca/api',
-    withCredentials: true,
 });
 
 // const api = axios.create({
 //     baseURL: 'http://localhost:5000/api',
-//     withCredentials: true,
 // });
 
+// Add JWT to headers
+// api.interceptors.request.use((config) => {
+//     const token = localStorage.getItem('canda-pathway-auth-token');
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+// });
 api.interceptors.request.use((config) => {
-    // If you still want to exclude adding credentials for public routes:
     const publicRoutes = ['/auth/login', '/auth/register'];
+
     if (!publicRoutes.some(route => config.url?.includes(route))) {
-        // Nothing needed – browser sends the cookies automatically
+        const token = localStorage.getItem('canda-pathway-auth-token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
     }
+
     return config;
 });
 
-// 🟩 Global error handler – simplified
+
+// Global error handler
+// api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         if (error.response?.status === 401) {
+//             // Handle logout or token refresh
+//             localStorage.removeItem('canda-pathway-auth-token');
+//             window.location.href = '/login';
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Example: redirect to login if 401 and not on auth routes
-        const isAuthRoute =
-            window.location.pathname.includes('/login') ||
-            window.location.pathname.includes('/register');
+        const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
 
         if (error.response?.status === 401 && !isAuthRoute) {
+            localStorage.removeItem('canda-pathway-auth-token');
             window.location.href = '/login';
         }
-
         return Promise.reject(error);
     }
 );
