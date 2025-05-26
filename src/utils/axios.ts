@@ -62,18 +62,18 @@ api.interceptors.request.use((config) => {
 //         return Promise.reject(error);
 //     }
 // );
-api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
+// api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         // const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
 
-        if (error.response?.status === 401) {
-            // localStorage.removeItem('canda-pathway-auth-token');
-            window.location.href = '/login';
-        }
-        return Promise.reject(error);
-    }
-);
+//         if (error.response?.status === 401) {
+//             // localStorage.removeItem('canda-pathway-auth-token');
+//             window.location.href = '/login';
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
 
 export default api;
