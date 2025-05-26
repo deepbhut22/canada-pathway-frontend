@@ -7,8 +7,13 @@ import axios from 'axios';
 //     baseURL: 'http://3.98.13.227:5000/api',
 // });
 
+// const api = axios.create({
+//     baseURL: 'https://api.pathpr.ca/api',
+// });
+
 const api = axios.create({
     baseURL: 'https://api.pathpr.ca/api',
+    withCredentials: true,
 });
 
 // const api = axios.create({
@@ -23,19 +28,27 @@ const api = axios.create({
 //     }
 //     return config;
 // });
+// api.interceptors.request.use((config) => {
+//     const publicRoutes = ['/auth/login', '/auth/register'];
+
+//     if (!publicRoutes.some(route => config.url?.includes(route))) {
+//         const token = localStorage.getItem('canda-pathway-auth-token');
+//         if (token) {
+//             config.headers.Authorization = `Bearer ${token}`;
+//         }
+//     }
+
+//     return config;
+// });
+
 api.interceptors.request.use((config) => {
+    // If you still want to exclude adding credentials for public routes:
     const publicRoutes = ['/auth/login', '/auth/register'];
-
     if (!publicRoutes.some(route => config.url?.includes(route))) {
-        const token = localStorage.getItem('canda-pathway-auth-token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+        // Nothing needed – browser sends the cookies automatically
     }
-
     return config;
 });
-
 
 // Global error handler
 // api.interceptors.response.use(
@@ -52,10 +65,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
+        // const isAuthRoute = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
 
-        if (error.response?.status === 401 && !isAuthRoute) {
-            localStorage.removeItem('canda-pathway-auth-token');
+        if (error.response?.status === 401) {
+            // localStorage.removeItem('canda-pathway-auth-token');
             window.location.href = '/login';
         }
         return Promise.reject(error);

@@ -228,67 +228,60 @@ const useAuthStore = create<AuthState & {
   setIsConsultationDialogOpen: (isConsultationDialogOpen: boolean) => set({ isConsultationDialogOpen: isConsultationDialogOpen }),
   setIsLoginRequiredPopupOpen: (isLoginRequiredPopupOpen: boolean) => set({ isLoginRequiredPopupOpen: isLoginRequiredPopupOpen }),  
   initializeAuth: async () => {
-    set({ isLoading: true });
+    // set({ isLoading: true });
 
-    const token = localStorage.getItem('canda-pathway-auth-token');
-    if (token) {
-      try {
-        const response = await api.get('/auth/profile');
-        if (response.status === 200) {
-          set({
-            user: response.data.user,
-            isAuthenticated: true,
-          });
+    try {
+      const response = await api.get('/auth/profile');
+      if (response.status === 200) {
+        set({
+          user: response.data.user,
+          isAuthenticated: true,
+        });
 
-          useUserStore.getState().resetUserProfile();
+        useUserStore.getState().resetUserProfile();
 
-          // Check if profile is complete and set the isComplete flag
-          const userProfile = response.data.userProfile;
-          const profileComplete = isProfileComplete(userProfile);
-          userProfile.isComplete = profileComplete;
-          // userProfile.isComplete = true;
+        // Check if profile is complete and set the isComplete flag
+        const userProfile = response.data.userProfile;
+        const profileComplete = isProfileComplete(userProfile);
+        userProfile.isComplete = profileComplete;
+        // userProfile.isComplete = true;
 
-          useUserStore.setState({ userProfile });
-          set({ isLoading: false });
-        } else {
-          localStorage.removeItem('canda-pathway-auth-token');
-          set({
-            user: null,
-            isAuthenticated: false,
-            isLoading: false
-          });
-        }
-      } catch (error) {
-        localStorage.removeItem('canda-pathway-auth-token');
+        useUserStore.setState({ userProfile });
+        set({ isLoading: false });
+      } else {
         set({
           user: null,
           isAuthenticated: false,
           isLoading: false
         });
       }
-    } else {
-      set({ isLoading: false });
+    } catch (error) {
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false
+      });
     }
   },
 
   login: async (email: string, password: string): Promise<boolean> => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/auth/login', { email, password });
+      const response = await api.post('/auth/login', { email: email.toLowerCase(), password });
 
       if (response.status === 200) {
-        set({ user: response.data, isAuthenticated: true, isLoading: false });
-        localStorage.setItem('canda-pathway-auth-token', response.data.token);
+        useAuthStore.getState().initializeAuth();
+        // set({ user: response.data, isAuthenticated: true, isLoading: true });
 
-        const profileResponse = await api.get('/auth/profile');
-        useUserStore.getState().resetUserProfile();
+        // const profileResponse = await api.get('/auth/profile');
+        // useUserStore.getState().resetUserProfile();
 
-        const userProfile = profileResponse.data.userProfile;
-        const profileComplete = isProfileComplete(userProfile);
-        userProfile.isComplete = profileComplete;
-        set({ user: profileResponse.data.user, isAuthenticated: true });
-        useUserStore.setState({ userProfile });
-        return true;  
+        // const userProfile = profileResponse.data.userProfile;
+        // const profileComplete = isProfileComplete(userProfile);
+        // userProfile.isComplete = profileComplete;
+        // set({ user: profileResponse.data.user, isAuthenticated: true, isLoading: false });
+        // useUserStore.setState({ userProfile });
+        return true;
       }
       // If response status is not 200
       set({ isLoading: false });
@@ -317,8 +310,7 @@ const useAuthStore = create<AuthState & {
       });
 
       if (response.status === 201) {
-        set({ user: response.data, isAuthenticated: true, isLoading: false });
-        localStorage.setItem('canda-pathway-auth-token', response.data.token);
+        set({ user: response.data, isAuthenticated: true, isLoading: true });
 
         const profileResponse = await api.get('/auth/profile');
         useUserStore.getState().resetUserProfile();
@@ -326,9 +318,9 @@ const useAuthStore = create<AuthState & {
         const userProfile = profileResponse.data.userProfile;
         const profileComplete = isProfileComplete(userProfile);
         userProfile.isComplete = profileComplete;
-        set({ user: profileResponse.data.user, isAuthenticated: true });
+        set({ user: profileResponse.data.user, isAuthenticated: true, isLoading: false });
         useUserStore.setState({ userProfile });
-        return true; 
+        return true;
       } else if (response.status === 400) {
         set({ isLoading: false, error: "Email already exists" });
         return false;
@@ -348,10 +340,9 @@ const useAuthStore = create<AuthState & {
     set({ isLoading: true, error: null });
     try {
       const response = await api.post('/auth/google');
-      
+
       if (response.status === 200) {
-        set({ user: response.data, isAuthenticated: true, isLoading: false });
-        localStorage.setItem('canda-pathway-auth-token', response.data.token);
+        set({ user: response.data, isAuthenticated: true, isLoading: true });
 
         const profileResponse = await api.get('/auth/profile');
 
@@ -361,7 +352,7 @@ const useAuthStore = create<AuthState & {
         const userProfile = profileResponse.data.userProfile;
         const profileComplete = isProfileComplete(userProfile);
         userProfile.isComplete = profileComplete;
-
+        set({ user: profileResponse.data.user, isAuthenticated: true, isLoading: false });
         useUserStore.setState({ userProfile });
       } else {
         throw new Error('Google login failed');
@@ -372,11 +363,14 @@ const useAuthStore = create<AuthState & {
     }
   },
 
-  logout: () => {
-    localStorage.removeItem('canda-pathway-auth-token');
-    set({ user: null, isAuthenticated: false, error: null });
-    useUserStore.getState().resetUserProfile();
-  
+  logout: async () => {
+    const res = await api.post('/auth/logout');
+    if (res.status === 200) {
+      set({ user: null, isAuthenticated: false, error: null });
+      useUserStore.getState().resetUserProfile();
+    } else {
+      throw new Error('Logout failed');
+    }
   }
 }));
 
